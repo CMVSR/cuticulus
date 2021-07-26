@@ -53,7 +53,13 @@ class Textbox():
 
     def __update_value__(self, KEY_EVENT):
             try:
-                new_value = self.__to_int__(KEY_EVENT, 10)
-                self.value = self.value * 10 + new_value
+                if KEY_EVENT == pygame.K_BACKSPACE:
+                    print("Backspace")
+                else:
+                    new_value = self.__to_int__(KEY_EVENT, 10)
+                    self.value = self.value * 10 + new_value
             except Exception as e:
                 self.value = None
+    
+    def __clear_value__(self):
+        self.value = None

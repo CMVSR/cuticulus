@@ -95,7 +95,6 @@ def start():
                               "width": 50, "height": 50}, [next_bttn_pos[0], next_bttn_pos[1], 50])
         id_text = body_font.render(
             "Image ID: " + str(__image_id__), True, (0, 0, 0))
-
         main.get_surface().blit(id_text, [id_text_pos[0], id_text_pos[1]])
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -104,13 +103,10 @@ def start():
                 ant_iv.__delete_img_cache__()
                 os._exit(1)
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_KP_ENTER:
-                    print("Clear and search")
+                if event.type == pygame.K_KP_ENTER:
+                    print("Search and clear")
                 else:
-                    if event.key == pygame.K_BACKSPACE:
-                        print("Backspace")
-                    else:
-                        id_textbox.__update_value__(event.key)
+                    id_textbox.__update_value__(event.key)
         if ant_iv.__get_increment_flag__() == True:
             if __image_id__ < 1773:
                 __image_id__ += 1

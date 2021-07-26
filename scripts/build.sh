@@ -9,9 +9,9 @@ activate () {
 
 echo "install dependencies..."
 activate
-pip install wheel
-pip install -r requirements.txt
-pip install -e .
+python3 -m pip install wheel
+python3 -m pip install -r requirements.txt
+python3 -m pip install -e .
 
 echo "extracting dataset..."
 [ ! -d "./dataset" ] && python -c '
