@@ -48,8 +48,10 @@ class Buttons():
         self.surface.blit(self.text_object, ((
             self.position[0] + self.get_width()/4), (self.position[1])))
 
-    def start_click_listener(self):
-        "Runs loop that handles mouse click on button object."
+
+
+    def on_click(self, func):
+        "Set class parameters equal to parameter and launch event listener thread."
         while self.is_running == True:
             self.mouse_pos = pygame.mouse.get_pos()
             for event in pygame.event.get():
@@ -61,13 +63,8 @@ class Buttons():
                 if event.type == pygame.QUIT:
                     self.is_running = False
                     break
+        
 
-    def on_click(self, func):
-        "Set class parameters equal to parameter and launch event listener thread."
-        self.func = func
-        listener_thread = threading.Thread(target=self.start_click_listener)
-        listener_thread.start()
-        listener_thread.join()
 
     def get_width(self):
         "Returns the width of the button."
