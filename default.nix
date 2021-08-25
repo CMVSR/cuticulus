@@ -10,21 +10,23 @@ rec {
     src = lib.cleanSourceWith {
       filter = (path: type:
         ! (builtins.any
-            (r: (builtins.match r (builtins.baseNameOf path)) != null)
-            [
-              "dataset"
-              "logs"
-              "result"
-              "pip_packages"
-              ".*\.egg-info"
-              ".*\.zip"
-            ])
+          (r: (builtins.match r (builtins.baseNameOf path)) != null)
+          [
+            "dataset"
+            "logs"
+            "result"
+            "pip_packages"
+            "scripts"
+            "gui"
+            ".*\.egg-info"
+            ".*\.zip"
+          ])
       );
       src = lib.cleanSource ./.;
     };
 
     propagatedBuildInputs = with python39Packages; [
-      click
+      colorama
       gdown
       matplotlib
       numpy
@@ -32,11 +34,11 @@ rec {
       openpyxl
       pandas
       pillow
-      pygame
-      rich
+      python-dotenv
       scikit-learn
       scipy
       tensorflow
+      questionary
     ];
 
     doCheck = false;

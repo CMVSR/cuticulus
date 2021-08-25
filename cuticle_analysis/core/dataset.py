@@ -2,83 +2,68 @@
 import logging
 import os
 
-import click
-from rich import print
+import questionary
+
 
 logger = logging.getLogger(__name__)
 
 
-@click.command()
-@click.pass_context
-def download_unzip(ctx):
-    ctx.invoke(download_dataset)
-    ctx.invoke(unzip_dataset)
-
-
-@click.command()
 def download_dataset():
-    import gdown # type: ignore
+    import gdown  # type: ignore
 
-    print("Downloading dataset...")
+    logger.info("Downloading dataset...")
     url = "https://drive.google.com/uc?id=1xABlWE790uWmT0mMxbDjn9KZlNUB6Y57"
     output = "./dataset.zip"
     gdown.download(url, output, quiet=False)
 
     assert os.path.isfile(output)
-    print("Downloaded dataset!")
+    logger.info("Downloaded dataset!")
 
 
-@click.command()
-def unzip_dataset():
-    print("Extracting dataset...")
-    zip_path = f"./dataset.zip"
-    folder_path = f"./dataset"
+def unzip_dataset(path="./dataset.zip"):
+    logger.info("Extracting dataset...")
+    out_path = os.path.join(os.curdir, "dataset")
 
     try:
-        if not os.path.isdir(folder_path):
-            if os.path.isfile(zip_path):
+        if not os.path.isdir(out_path):
+            if os.path.isfile(path):
                 from zipfile import PyZipFile
-                zf = PyZipFile(zip_path)
-                zf.extractall(path=folder_path)
+                zf = PyZipFile(path)
+                zf.extractall(path=out_path)
 
-                assert os.path.isdir(folder_path)
-                print("Extracted dataset!")
+                assert os.path.isdir(out_path)
+                logger.info("Extracted dataset!")
             else:
-                raise Exception(f"Failed to find {zip_path}.")
+                raise Exception(f"Failed to find {path}.")
         else:
-            raise Exception(f"Directory {folder_path} already exists.")
+            raise Exception(f"Directory {out_path} already exists.")
 
     except Exception as e:
         logger.error(f'Failed to unzip dataset:" {e}')
         raise e
 
 
-menu = {
-    "0": "Quit",
-    "1": "Download dataset.zip from Google Drive",
-    "2": "I already have dataset.zip"
-}
-
-actions = {
-    "0": SystemExit,
-    "1": download_unzip,
-    "2": unzip_dataset
-}
-
-
-@click.command()
-@click.pass_context
-def dataset_setup(ctx):
+def dataset_setup():
     if os.path.isdir("dataset"):
-        print("Found dataset!")
+        logger.info("Found dataset!")
         return
     else:
-        for key in menu:
-            print(f'{key}: {menu[key]}')
-        dataset_init = click.prompt(
-            "How should dataset be initialized?", type=str)
-        func = actions.get(dataset_init, None)
-        ctx.invoke(func)
+        res = questionary.select("How should the dataset be initialized?",
+                                 choices=[
+                                     "Download dataset.zip from Google Drive",
+                                     "I already have dataset.zip"
+                                 ]
+                                 ).ask()
+
+        if res == "Download dataset.zip from Google Drive":
+            download_dataset()
+            unzip_dataset()
+        elif res == "I already have dataset.zip":
+            res = questionary.path("Path to dataset.zip").ask()
+            res = res.replace("\\", "/")
+            if res.endswith("dataset.zip"):
+                os.rename(res, "dataset.zip")
+                unzip_dataset(res)
 
     assert(os.path.isdir("dataset"))
-    print("Successfully initialized dataset.")
+    logger.info("Successfully initialized dataset.")
