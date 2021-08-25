@@ -6,6 +6,7 @@ import sys
 import colorama
 from colorama import Fore
 
+from .arguments import get_args
 from .dataset import dataset_setup
 from .display import description, debug_mode
 
@@ -33,4 +34,15 @@ def init():
 
 def start_app():
     init()
-    dataset_setup()
+
+    args = get_args()
+    print(args)
+
+    if not args:
+        dataset_setup()
+    else:
+        # run dataset setup only
+        if args.download_dataset:
+            from .dataset import download_dataset, unzip_dataset
+            download_dataset()
+            unzip_dataset()
