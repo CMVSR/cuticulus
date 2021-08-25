@@ -19,12 +19,10 @@ setup(
     license=license,
     packages=[
         "cuticle_analysis",
+        "cuticle_analysis/assets",
         "cuticle_analysis/core",
         "cuticle_analysis/datasets",
         "cuticle_analysis/models",
-        "cuticle_analysis/gui",
-        "cuticle_analysis/gui/objects",
-        "cuticle_analysis/gui/objects/buttons",
     ],
     entry_points='''
         [console_scripts]

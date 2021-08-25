@@ -5,7 +5,6 @@ import pygame
 
 import threading
 
-import click
 from pygame.locals import HIDDEN, DOUBLEBUF
 
 from cuticle_analysis.datasets import Dataset
@@ -13,15 +12,6 @@ from .objects.image_viewer import ImageViewer
 from .objects.buttons.buttons import Buttons
 from .objects.textbox import Textbox
 from . import const
-
-
-@click.command()
-def application():
-    # Temporary check verifying that the window staus is open until user quits.
-    gui_thread = threading.Thread(target=start)
-    pygame.init()
-    gui_thread.start()
-    gui_thread.join()
 
 
 class Gui:
@@ -132,3 +122,11 @@ def start():
         pygame.display.update()
     next_bttn_listener.join()
     prev_bttn_listener.join()
+
+
+if __name__ == "__main__":
+    # Temporary check verifying that the window staus is open until user quits.
+    gui_thread = threading.Thread(target=start)
+    pygame.init()
+    gui_thread.start()
+    gui_thread.join()

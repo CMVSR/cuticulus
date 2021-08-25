@@ -1,15 +1,15 @@
 
-import logging
-
-from rich.logging import RichHandler
-
-from .cli import cli
-
-FORMAT = "%(message)s"
-logging.basicConfig(
-    level="NOTSET", format=FORMAT, datefmt="[%X]", handlers=[RichHandler()]
-)
+try:
+    from dotenv import load_dotenv
+    load_dotenv('.env')
+except Exception:
+    pass
 
 
 def main():
-    cli()
+    from .core import start_app
+    start_app()
+
+
+if __name__ == "__main__":
+    main()
