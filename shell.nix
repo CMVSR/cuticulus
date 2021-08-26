@@ -19,5 +19,8 @@ pkgs.mkShell {
 
     # nix dev
     pkgs.nixpkgs-fmt
+
+    # paper dev
+    pkgs.texlive.combined.scheme-medium
   ];
 }

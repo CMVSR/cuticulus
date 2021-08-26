@@ -1,0 +1,218 @@
+\documentclass{aci}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{txfonts}
+\usepackage{cite}
+\def\typeofarticle{Article type} \def\currentvolume{1} \def\currentissue{1}
+\def\currentyear{2021} \def\currentmonth{} \def\ppages{1--30} \def\DOI{to
+appear} \def\Received{June 2022} \def\Accepted{July 2022} \def\Published{October
+2022 }
+
+
+\newcommand{\ep}{\varepsilon}
+\newcommand{\eps}[1]{{#1}_{\varepsilon}}
+
+%\numberwithin{equation}{section}
+\DeclareMathOperator*{\essinf}{ess\,inf}
+
+
+\begin{document}
+
+\title{Title of the paper}
+
+\author{%
+  First name Last name\affil{1}, First name Last name\affil{2} and First name
+  Last name\affil{3,}\corrauth}
+
+% \shortauthors is used in copyright information in the end of the paper
+\shortauthors{the Author(s)}
+
+\address{%
+  \addr{\affilnum{1}}{College of Computing and Software Engineering, Kennesaw
+    State University, 1000 Chastain Road, Kennesaw, GA 30144, USA; email}
+  \addr{\affilnum{2}}{Affiliation email} \addr{\affilnum{3}}{Affiliation email}}
+% corresponding author
+\corraddr{Email address of corresponding author; Tel: +1-111-111-1111; Fax:\\
+  +1-111-111-1111.}
+
+\editor{ First-name Last-name}
+
+\begin{abstract}
+  An abstract is normally of 150 to 250 words. List 4 to 8 keywords all with
+  lowercase (except special cases) for both highlighting the focuses of your
+  study and indexing/searching in databases. Article type can be one of the
+  following: regular article, case study, express letter, review or overview,
+  survey, opinion, perspective, communication, lecture notes, tutorial notes,
+  and editorial (special issue only).
+
+\end{abstract}
+
+\keywords{(4 to 8 keywords)}
+
+
+
+\maketitle
+
+\section{Introduction}
+
+Submission of a manuscript implies that the work described has not been
+published before, and not been under consideration for publishing anywhere else.
+Your submission also means that the manuscript has been approved by all
+co-authors with appropriate permission if required. The publisher will not be
+held legally responsible should any dispute be raised for any reason. AIMS-ACI
+is an OA publication published quarterly by AIMS Press in February, May, August,
+and November. Publishing is currently free of charge. Readers can access all
+published articles free of charge through the journal website
+https://aimspress.com/journal/aci
+
+
+
+\section{Layout and fonts}
+The page size is A4 ($8.5 \times 11.0$ in or $21.59 \times 27.94$ cm). The
+margin is set to moderate. Font for all text, except symbols and formulae,
+should use Times New Roman. Article title is bold with a font size 16 and
+aligned to the left. Authors are bold with a font size 12. Using Times New Roman
+size 12 for the main text, including figure captions and table titles. However,
+text size for contents in a table can be chosen from 8 to 12 to fit the table
+within the width of the page.
+
+\section{Headline and sub-headline}
+The first-level headline is numbered and bold with a font size 12, and has a
+space of 12 $pt$ before and after the headline. Each paragraph begins with an
+indentation of 0.63 $cm$ (the same by using the Tab key once) in the first line.
+A paragraph does not have a space before and after that paragraph.
+
+\subsection{The second-level headline}
+The second-level headline is numbered with a font size 12. The second-level
+headline has a default space of 6 $pt$ before and after it.
+
+\subsubsection{The third-level headline (if necessary)}
+If really necessary, the third-level headline should be numbered and italicized
+with a font size 12, indented by 0.63 $cm$ (the same by using the Tab key once).
+The third-level headline has a default space of 6 $pt$ before and after it. Any
+lower headline should be avoided.
+
+\subsection{Footnotes}
+Although not encouraged, footnotes can be used to provide additional information
+for an informal reference that cannot be included in the reference list. A
+footnote should be numbered and cannot contain any figure or table. Use font
+size 8 for footnotes.
+
+\section{Figures or images, captions, tables, table titles, and formulae}
+\subsection{Figure/image and caption}
+Leave a space of one line before and after a figure or an image, i.e., one line
+between the main text and the top of the figure or image, and one line between
+the bottom of the figure or image and the caption. The caption has a default
+space of 12 $pt$ after it so the main text can continue below the caption. If no
+text follows the figure caption, do not leave any space between the caption and
+the next headline (the headline has a default space).
+
+\begin{figure}[ht]
+  \centering
+  \vskip 0.2in
+  %\includegraphics[width=0.85\textwidth]{{logo_new.pdf}}
+  \vspace {12pt}
+  \caption{ Insert the figure/image here}
+  \label{fig:res}
+\end{figure}
+
+Figures should be numbered consecutively in the text. A figure can be referred
+explicitly in the text as Figure~\ref{fig:res}, or implicitly at the end of a
+sentence in parentheses (Fig. 1).
+
+Use black and white graphic for line drawings. All lines should be at least 0.1
+mm (0.3 $pt$) wide. Line drawings or scanned line drawings should have a
+resolution at least 600 dpi. Images with a large volume should be properly
+compressed within 1 MB each. Scanned images should be properly edited to balance
+the volume size and clarity of the image.
+
+Figure captions begin with \textbf{Figure x.} in bold, followed by the text. Do
+not add a full stop at the end of the caption.
+
+
+\subsection{Tables and table titles}
+\begin{table}[H]
+  \begin{center}
+    \caption{Publication schedule for AIMS-ACI in 2022}
+    \begin{tabular}{lll} \hline
+      Issue        & Publishing date   & Submission deadline \\\hline
+      First issue  & February 25, 2022 & January 15, 2022    \\
+      Second issue & May 25, 2022      & April 15, 2022      \\
+      Third issue  & August 25, 2022   & July 15, 2022       \\
+      Fourth issue & November 25, 2022 & October 15, 2022    \\\hline
+    \end{tabular}
+    \label{table}
+  \end{center}
+\end{table}
+
+Table title should be placed above the table, numbered consecutively, and
+referred in the text like Table~\ref{table} or (Table~\ref{table}). There is no
+space between the table and table title. Leave a space of one line above the
+table title and one line below the bottom of the table. If a new first-level
+headline follows the table immediately, do not leave the space below the table.
+
+The font of the table title is size 12 but the font of the table contents can be
+sizes 8 to 12 depending on the best fit for the table. Table title begins with
+\textbf{Table x}. in bold, followed by the text. Do not add a full stop at the
+end of the table title.
+
+
+
+
+\subsection{Mathematical formulae}
+Mathematical formulae should be numbered consecutively by placing the number in
+parentheses like (1), one TAB space away from the right line. Mathematical
+formulae should be typed using MS Word Equation or better using \emph{MathType}.
+Use size 10--12 for the main characters and size 6--8 for subscripts or
+superscripts. Leave a space of 6 $pt$ between two formula in separate lines.
+Some examples are shown below.
+
+\begin{equation}
+  \lim_{x \mapsto a^+ }f\left ( x \right )= \pm \infty \qquad \text{or} \qquad \lim_{x \mapsto a^- }f\left ( x \right )= \pm \infty
+  \label{equation1}
+\end{equation}
+
+\begin{equation}
+  \lim_{x \mapsto \infty }f\left ( x \right )=  a \qquad \text{or} \qquad \lim_{x \mapsto -\infty}f\left ( x \right )=  b
+  \label{equation2}
+\end{equation}
+
+To cite a formula in the text, use the number like Equation~(\ref{equation1}),
+or Eq.~(\ref{equation2}), or alike.
+
+\section{Submission, review, and decision}
+In the first year, submission, review and decisions of manuscripts is conducted
+through email communications. Please send your manuscript to one of the relevant
+Editors-in-Chief by their email available on the journal Website. With the
+increase in submissions from 2022, we would use the AIMS Editorial System to
+handle the process of submission, review, and decisions.
+
+Once a submission is received, the receiving Editor will pre-screen the article
+for its suitability and quality for the journal. After passing this
+pre-screening, the Editor may act as the “Academic Editor” or assign this
+manuscript to another Editor from the Editorial Board as the “Academic Editor”
+to handle the review of this paper, communicate with the authors on revisions,
+and inform the final decision after consultation with the relevant
+Editor-in-Chief.
+
+AIMS-ACI holds a high standard in peer review. A submitted manuscript should be
+reviewed by at least three independent reviewers who are scholars and
+knowledgeable of the area of research. Standard review forms are available for
+reviewers but they could choose own appropriate way of reporting to the Academic
+Editor.
+
+
+\section{Reference style, citation, and cross-reference}
+Test citation \cite{Jensen1996}.
+
+
+\section*{Acknowledgments}
+We would like to thank the constructive feedback provided by the reviewers.
+
+
+
+\bibliographystyle{unsrt}
+\bibliography{paper}
+
+
+\end{document}
