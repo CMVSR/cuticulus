@@ -36,13 +36,11 @@ def start_app():
     init()
 
     args = get_args()
-    print(args)
 
-    if not args:
-        dataset_setup()
+    if args.download_dataset:
+        from .dataset import download_dataset, unzip_dataset
+        download_dataset()
+        unzip_dataset()
+
     else:
-        # run dataset setup only
-        if args.download_dataset:
-            from .dataset import download_dataset, unzip_dataset
-            download_dataset()
-            unzip_dataset()
+        dataset_setup()
