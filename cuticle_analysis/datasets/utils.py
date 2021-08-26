@@ -5,13 +5,13 @@ from typing import Dict, Tuple
 
 import numpy as np
 import pandas as pd
-import PIL.Image
+from PIL import Image, ImageDraw
 
 
 def shape_to_mask(img_shape, points, shape_type=None, line_width=10, point_size=5):
     mask = np.zeros(img_shape[:2], dtype=np.uint8)
-    mask = PIL.Image.fromarray(mask)
-    draw = PIL.ImageDraw.Draw(mask)
+    mask = Image.fromarray(mask)
+    draw = ImageDraw.Draw(mask)
     xy = [tuple(point) for point in points]
     if shape_type == "circle":
         assert len(xy) == 2, "Shape of shape_type=circle must have 2 points"

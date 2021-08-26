@@ -33,8 +33,6 @@ def init():
 
 
 def start_app():
-    init()
-
     args = get_args()
 
     if args.download_dataset:

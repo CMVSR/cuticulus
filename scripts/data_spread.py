@@ -1,9 +1,15 @@
 
-import re
-
 import numpy as np
 
-from cuticle_analysis.datasets import RoughSmoothSub
+if __name__ == "__main__":
+    import cuticle_analysis
+    print(cuticle_analysis)
 
-data = RoughSmoothSub((16, 16))
-print(np.uniques(data.labels))
+    # for debugging
+    # from cuticle_analysis.core import init
+    # init()
+
+    from cuticle_analysis.datasets import RoughSmoothSub  # noqa
+
+    data = RoughSmoothSub((16, 16), save=True, rebuild=True)
+    print(np.unique(data.labels))

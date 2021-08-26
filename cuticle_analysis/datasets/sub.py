@@ -36,6 +36,16 @@ class SubDataset(Dataset):
                          rebuild=rebuild,
                          save=save)
 
+    def get_label_name(self, _id: int) -> str:
+        """
+        Args:   
+            _id (int): Label id.
+
+        Returns:
+            str: Label name (rough, smooth, or _background_).
+        """
+        return const.INT_RS_LABEL_MAP[self.get_label(_id)]
+
     def preprocess(self, img: np.ndarray) -> List[np.ndarray]:
         """Apply preprocessing step to the image
 
@@ -43,7 +53,7 @@ class SubDataset(Dataset):
             img (np.ndarray): Orginal image.
 
         Returns:
-            np.ndarray: Updated image with preprocessing, using a list to allow
+            List[np.ndarray]: Updated image with preprocessing, using a list to allow
             for multiple images to be output by preprocessing.
         """
         return [img]
