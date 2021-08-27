@@ -1,7 +1,7 @@
 
 import os
 import logging
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 import cv2
 import pandas as pd
@@ -72,9 +72,22 @@ class Dataset():
             f'Total of {len(self.labels)} sub-images built from {len(np.unique(self.ids))} images.')
 
         logger.info(f'Class data:')
+        for k, v in self.class_data().items():
+            logger.info(f'{k}: {v}')
+
+    def class_data(self) -> Dict:
+        """Return the class data for the dataset.
+        Intended to be overridden by the dataset type.
+
+        Returns:
+            Dict: Class data of the dataset.
+        """
         uniques = np.unique(self.labels, return_counts=True)
+        res = {}
         for i in range(len(uniques[0])):
-            logger.info(f'\t{uniques[0][i]}: {uniques[1][i]}')
+            res[uniques[0][i]] = uniques[1][i]
+
+        return res
 
     def _build_labels(self, rebuild: bool, save: bool):
         """Helper for Dataset.build_labels, it will use the rebuild variable to
