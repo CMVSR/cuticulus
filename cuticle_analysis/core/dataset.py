@@ -11,21 +11,25 @@ logger = logging.getLogger(__name__)
 def download_dataset():
     import gdown  # type: ignore
 
-    logger.info("Downloading dataset...")
-    url = "https://drive.google.com/uc?id=1xABlWE790uWmT0mMxbDjn9KZlNUB6Y57"
     output = "./dataset.zip"
-    gdown.download(url, output, quiet=False)
 
-    assert os.path.isfile(output)
-    logger.info("Downloaded dataset!")
+    if not os.path.isfile(output):
+        logger.info("Downloading dataset...")
+        url = "https://drive.google.com/uc?id=1xABlWE790uWmT0mMxbDjn9KZlNUB6Y57"
+        gdown.download(url, output, quiet=False)
+        assert os.path.isfile(output)
+        logger.info("Downloaded dataset!")
+
+    else:
+        logger.info("Found dataset!")
 
 
 def unzip_dataset(path="./dataset.zip"):
-    logger.info("Extracting dataset...")
     out_path = os.path.join(os.curdir, "dataset")
 
     try:
         if not os.path.isdir(out_path):
+            logger.info("Extracting dataset...")
             if os.path.isfile(path):
                 from zipfile import PyZipFile
                 zf = PyZipFile(path)
@@ -36,7 +40,7 @@ def unzip_dataset(path="./dataset.zip"):
             else:
                 raise Exception(f"Failed to find {path}.")
         else:
-            raise Exception(f"Directory {out_path} already exists.")
+            logger.info("Skipping extract...")
 
     except Exception as e:
         logger.error(f'Failed to unzip dataset:" {e}')
