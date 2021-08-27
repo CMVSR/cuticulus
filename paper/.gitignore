@@ -1,0 +1,13 @@
+*
+!.gitignore
+!paper.tex
+!paper.pdf
+!paper.bib
+
+# journal template assets
+!aci.cls
+!logo_new.pdf
+
+# assets
+!img/
+!img/*
