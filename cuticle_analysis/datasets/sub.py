@@ -37,9 +37,10 @@ class SubDataset(Dataset):
                          save=save)
 
     def get_label_name(self, _id: int) -> str:
-        """
+        """Given an image id, return the label name as a string.
+
         Args:   
-            _id (int): Label id.
+            _id (int): Image id.
 
         Returns:
             str: Label name (rough, smooth, or _background_).

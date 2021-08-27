@@ -35,7 +35,7 @@ class RoughSmoothFull(FullDataset):
         res = {}
         for k, v in temp.items():
             res[const.INT_RS_LABEL_MAP[k]] = v
-        return temp
+        return res
 
 
 class RoughSmoothSub(SubDataset):

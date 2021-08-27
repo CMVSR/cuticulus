@@ -91,7 +91,7 @@ def convert_labels(label: pd.Series) -> pd.Series:
     label = label.replace(
         to_replace=r'^[^0-5].*', value=np.nan, regex=True)
     label = label.replace(
-        to_replace=r'1e', value=np.nan, regex=True)
+        to_replace=r'[1-3][a,e].*', value=np.nan, regex=True)
 
     # convert to dataframe and filter by existing label
     label = label.to_frame('class')

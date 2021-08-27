@@ -1,4 +1,6 @@
 
+from typing import Dict
+
 from .. import const
 from .full import FullDataset
 
@@ -12,7 +14,7 @@ class AllFull(FullDataset):
                  random_seed: int = None,
                  rebuild: bool = False,
                  save: bool = False):
-        name = f'all_augmented'
+        name = f'all'
         d_type = const.DATASET_ALL  # used for converting labels
         super().__init__(size,
                          name=name,
@@ -21,6 +23,18 @@ class AllFull(FullDataset):
                          random_seed=random_seed,
                          rebuild=rebuild,
                          save=save)
+
+    def class_data(self) -> Dict:
+        """Return class data for the dataset.
+
+        Returns:
+            Dict: Class data for the dataset.
+        """
+        temp = super().class_data()
+        res = {}
+        for k, v in temp.items():
+            res[const.INT_ALL_LABEL_MAP[k]] = v
+        return res
 
 
 class AllFullAugmented(FullDataset):
@@ -44,4 +58,5 @@ class AllFullAugmented(FullDataset):
         self.augment()
 
     def augment(self):
-        self.images, self.labels = self.images, self.labels
+        # self.images, self.labels = self.images, self.labels
+        raise NotImplementedError
