@@ -25,6 +25,18 @@ class RoughSmoothFull(FullDataset):
                          rebuild=rebuild,
                          save=save)
 
+    def class_data(self) -> Dict:
+        """Return class data for the dataset.
+
+        Returns:
+            Dict: Class data for the dataset.
+        """
+        temp = super().class_data()
+        res = {}
+        for k, v in temp.items():
+            res[const.INT_RS_LABEL_MAP[k]] = v
+        return temp
+
 
 class RoughSmoothSub(SubDataset):
     'Subimage dataset with rough and smooth labels only.'
@@ -46,4 +58,13 @@ class RoughSmoothSub(SubDataset):
                          save=save)
 
     def class_data(self) -> Dict:
-        return super().class_data()
+        """Return class data for the dataset.
+
+        Returns:
+            Dict: Class data for the dataset.
+        """
+        temp = super().class_data()
+        res = {}
+        for k, v in temp.items():
+            res[const.INT_RS_LABEL_MAP[k+1]] = v
+        return res

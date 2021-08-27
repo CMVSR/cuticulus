@@ -1,5 +1,4 @@
 
-import os
 import logging
 from typing import Dict, List, Tuple
 
@@ -11,10 +10,6 @@ from numpy.random import default_rng
 from . import utils
 from .. import const
 
-if not os.path.exists('./logs'):
-    os.makedirs('./logs')
-
-logging.basicConfig(filename='./logs/dataset.log', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
