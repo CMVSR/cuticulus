@@ -83,7 +83,7 @@ for size in sizes:
     del temp
     gc.collect()
 
-# output
+# output all full df
 # add row for samples as percentage of total
 samples_pct = all_df.loc[:, all_cols[1:]].div(
     all_df[_TOTAL], axis=0)
@@ -91,16 +91,33 @@ samples_pct = samples_pct.astype(float).round(2)
 all_df = all_df.append(samples_pct, ignore_index=True)
 all_df = all_df.transpose().rename(
     columns={_TYPE: 'Label', 0: 'Samples (n)', 1: 'Samples (%)'})
-rs_df = rs_df.transpose()
 
 # drop first row
 all_df = all_df.iloc[1:]
 
 # save to file
 logger.info(all_df)
-logger.info(rs_df)
-all_df.to_latex('./paper/tables/all_samples_int.tex')
-rs_df.to_latex('./paper/tables/rs_samples_int.tex')
+all_df.to_latex('./paper/tables/all_samples_full.tex')
+
+# output rs full df
+rs_full_df = rs_df.loc[0, :].to_frame()
+
+# drop first row
+rs_full_df = rs_full_df.iloc[1:]
+rs_full_df = rs_full_df.transpose()
+logger.info(rs_full_df)
+
+
+# add row for samples as percentage of total
+samples_pct = rs_full_df.loc[:, rs_cols[1:]].div(
+    rs_full_df[_TOTAL], axis=0)
+samples_pct = samples_pct.astype(float).round(2)
+rs_full_df = rs_full_df.append(samples_pct, ignore_index=True)
+rs_full_df = rs_full_df.transpose().rename(
+    columns={_TYPE: 'Label', 0: 'Samples (n)', 1: 'Samples (%)'})
+
+logger.info(rs_full_df)
+rs_full_df.to_latex('./paper/tables/rs_samples_full.tex')
 
 # rs_df.loc[:, rs_cols[1:]] = rs_df.loc[:, rs_cols[1:]].div(
 #     rs_df[_TOTAL], axis=0) * 100

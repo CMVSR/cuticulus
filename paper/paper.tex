@@ -97,21 +97,30 @@ similar.
 
 \begin{table}[h]
   \centering
+  \caption{Dataset Subclass Distribution}
+  \label{table:classdist_all_full}
+  \include{tables/all_samples_full.tex}
+\end{table}
+
+\begin{table}[h]
+  \centering
   \caption{Dataset Class Distribution}
-  \label{table:classdist}
-  \include{tables/all_samples.tex}
+  \label{table:classdist_rs_full}
+  \include{tables/rs_samples_full.tex}
 \end{table}
 
 Images were collected and classified by undergraduate students according to the
 sculpturing identification protocol. Overall, there are a total of 2443 images
-in the dataset. The class distribution is shown in Table \ref{table:classdist}.
-The relatively small number of images in the dataset paired with the uneven
-class distribution makes it difficult to perform a meaningful classification.
-However, the goal of this project is to develop a classification algorithm that
-can be used to help classify over 200,000 ant images. Therefore, it is desirable
-to use a few representative images from each class to train the algorithm.
-Additionally, data augmentation and other methods are performed to increase the
-number of training images to create a more robust classification algorithm.
+in the dataset. The class distribution with all considered subclasses is shown
+in Table \ref{table:classdist_all_full}, and the class distribution with overall
+distribution is dhown in Table \ref{table:classdist_rs_full}. The relatively
+small number of images in the dataset paired with the uneven class distribution
+makes it difficult to perform a meaningful classification. However, the goal of
+this project is to develop a classification algorithm that can be used to help
+classify over 200,000 ant images. Therefore, it is desirable to use a few
+representative images from each class to train the algorithm. Additionally, data
+augmentation and other methods are performed to increase the number of training
+images to create a more robust classification algorithm.
 
 \section{Experimental Results}
 
