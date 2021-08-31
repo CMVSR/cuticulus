@@ -91,18 +91,27 @@ In order to classify the cuticle, we used ant head images sourced from AntWeb
 \cite{antweb}. In general, the ant head images are centered in the image, facing
 the front, and share a similar posture. However, some images may not be
 centered, show the ant head in a different orientation, or may have a
-drastically different resolution from the average image. Additionally, images
-can vary in scale. Fortunately, each can have several scales available such that
-the images' scales can be roughly similar.
+drastically different resolution from the average image. Fortunately, each can
+have several scales available such that the images' scales can be roughly
+similar.
 
-\begin{table}
+\begin{table}[h]
   \centering
-  \include{tables/all_samples_int.tex}
+  \caption{Dataset Class Distribution}
+  \label{table:classdist}
+  \include{tables/all_samples.tex}
 \end{table}
 
 Images were collected and classified by undergraduate students according to the
 sculpturing identification protocol. Overall, there are a total of 2443 images
-in the dataset. The class spread is shown in
+in the dataset. The class distribution is shown in Table \ref{table:classdist}.
+The relatively small number of images in the dataset paired with the uneven
+class distribution makes it difficult to perform a meaningful classification.
+However, the goal of this project is to develop a classification algorithm that
+can be used to help classify over 200,000 ant images. Therefore, it is desirable
+to use a few representative images from each class to train the algorithm.
+Additionally, data augmentation and other methods are performed to increase the
+number of training images to create a more robust classification algorithm.
 
 \section{Experimental Results}
 
