@@ -9,29 +9,24 @@ import pandas as pd
 from cuticle_analysis.core import init
 init()
 
+from cuticle_analysis import const  # noqa
 from cuticle_analysis.datasets import AllFull  # noqa
 from cuticle_analysis.datasets import RoughSmoothFull  # noqa
 from cuticle_analysis.datasets import RoughSmoothSub  # noqa
 
+
 logger = logging.getLogger(__name__)
 
+all_labels = list(const.ALL_LABEL_MAP.keys())
+all_labels.remove('_background_')
+rs_labels = list(const.RS_LABEL_MAP.keys())
+rs_labels.remove('_background_')
 
-all_cols = [
-    'type',
-    'rough dimpled',
-    'rough netted',
-    'rough ridged',
-    'rough T',
-    'smooth gritty',
-    'smooth smooth',
-    'total'
-]
-rs_cols = [
-    'type',
-    'rough',
-    'smooth',
-    'total'
-]
+_TOTAL = 'Total'
+_TYPE = 'Type'
+
+all_cols = [_TYPE] + all_labels + [_TOTAL]
+rs_cols = [_TYPE] + rs_labels + [_TOTAL]
 
 
 def total_samples(class_data: Dict) -> int:
@@ -45,16 +40,10 @@ def total_samples(class_data: Dict) -> int:
 
 
 def all_row(type: str, class_data: Dict) -> pd.DataFrame:
-    row = pd.DataFrame([[
-        type,
-        class_data['rough dimpled'],
-        class_data['rough netted'],
-        class_data['rough ridged'],
-        class_data['rough T'],
-        class_data['smooth gritty'],
-        class_data['smooth smooth'],
-        total_samples(class_data)
-    ]], columns=all_cols)
+    data = [class_data[label] for label in all_labels]
+    cols = [type] + data + [total_samples(class_data)]
+    row = pd.DataFrame(
+        [cols], columns=all_cols)
     return row
 
 
@@ -62,12 +51,9 @@ def rs_row(type: str, size: tuple, class_data: Dict) -> pd.DataFrame:
     if type != 'full':
         type = f'{type}_{size}'
 
-    row = pd.DataFrame([[
-        type,
-        class_data['rough'],
-        class_data['smooth'],
-        total_samples(class_data)
-    ]], columns=rs_cols)
+    data = [class_data[label] for label in rs_labels]
+    cols = [type] + data + [total_samples(class_data)]
+    row = pd.DataFrame([cols], columns=rs_cols)
     return row
 
 
@@ -99,23 +85,28 @@ for size in sizes:
 
 # output
 logger.info("number of samples per class per dataset")
-logger.info(all_df.transpose())
-logger.info(rs_df.transpose())
+all_df = all_df.transpose().rename(columns={_TYPE: 'Label', 0: 'Samples'})
+rs_df = rs_df.transpose()
+
+# drop first row
+all_df = all_df.iloc[1:]
 
 # save to file
-all_df.transpose().to_latex('./paper/tables/all_samples_int.tex')
-rs_df.transpose().to_latex('./paper/tables/rs_samples_int.tex')
-
-logger.info("\n samples per class as percentage")
-all_df.loc[:, all_cols[1:]] = all_df.loc[:, all_cols[1:]].div(
-    all_df["total"], axis=0) * 100
-rs_df.loc[:, rs_cols[1:]] = rs_df.loc[:, rs_cols[1:]].div(
-    rs_df["total"], axis=0) * 100
-all_df = all_df.drop(columns=['total'])
-rs_df = rs_df.drop(columns=['total'])
 logger.info(all_df)
 logger.info(rs_df)
+all_df.to_latex('./paper/tables/all_samples_int.tex')
+rs_df.to_latex('./paper/tables/rs_samples_int.tex')
 
-# save to file
-all_df.to_latex('./paper/tables/all_samples_pct.tex')
-rs_df.to_latex('./paper/tables/rs_samples_pct.tex')
+# logger.info("\n samples per class as percentage")
+# all_df.loc[:, all_cols[1:]] = all_df.loc[:, all_cols[1:]].div(
+#     all_df[_TOTAL], axis=0) * 100
+# rs_df.loc[:, rs_cols[1:]] = rs_df.loc[:, rs_cols[1:]].div(
+#     rs_df[_TOTAL], axis=0) * 100
+# all_df = all_df.drop(columns=[_TOTAL])
+# rs_df = rs_df.drop(columns=[_TOTAL])
+# logger.info(all_df)
+# logger.info(rs_df)
+
+# # save to file
+# all_df.to_latex('./paper/tables/all_samples_pct.tex')
+# rs_df.to_latex('./paper/tables/rs_samples_pct.tex')
