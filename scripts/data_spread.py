@@ -1,5 +1,5 @@
 
-from typing import Dict
+from typing import Dict, List
 import gc
 import logging
 
@@ -83,41 +83,50 @@ for size in sizes:
     del temp
     gc.collect()
 
-# output all full df
-# add row for samples as percentage of total
-samples_pct = all_df.loc[:, all_cols[1:]].div(
-    all_df[_TOTAL], axis=0)
-samples_pct = samples_pct.astype(float).round(2)
-all_df = all_df.append(samples_pct, ignore_index=True)
-all_df = all_df.transpose().rename(
-    columns={_TYPE: 'Label', 0: 'Samples (n)', 1: 'Samples (%)'})
 
-# drop first row
-all_df = all_df.iloc[1:]
-
-# save to file
-logger.info(all_df)
-all_df.to_latex('./paper/tables/all_samples_full.tex')
-
-# output rs full df
-rs_full_df = rs_df.loc[0, :].to_frame()
-
-# drop first row
-rs_full_df = rs_full_df.iloc[1:]
-rs_full_df = rs_full_df.transpose()
-logger.info(rs_full_df)
+def distribution_pct(df: pd.DataFrame, cols: List) -> pd.DataFrame:
+    """
+    Calculate the distribution of a class in a dataframe as a percent.
+    Returns:
+        df: Transposed dataframe with the columns ['Label', 'Samples (n)', 'Samples (%)']
+    """
+    sample_pct = df.loc[:, cols[1:]].div(
+        df[_TOTAL], axis=0).astype(float).round(2)
+    df = df.append(sample_pct, ignore_index=True)
+    return df.transpose().rename(
+        columns={_TYPE: 'Label', 0: 'Samples (n)', 1: 'Samples (%)'})
 
 
-# add row for samples as percentage of total
-samples_pct = rs_full_df.loc[:, rs_cols[1:]].div(
-    rs_full_df[_TOTAL], axis=0)
-samples_pct = samples_pct.astype(float).round(2)
-rs_full_df = rs_full_df.append(samples_pct, ignore_index=True)
-rs_full_df = rs_full_df.transpose().rename(
-    columns={_TYPE: 'Label', 0: 'Samples (n)', 1: 'Samples (%)'})
+def save_all_full_df(df: pd.DataFrame, cols: List) -> None:
+    """
+    Save the dataframe to a latex file. Add percent samples column.
+    """
+    # add row for samples as percentage of total
+    all_full_df = distribution_pct(df, cols)
 
-logger.info(rs_full_df)
-rs_full_df.to_latex('./paper/tables/rs_samples_full.tex')
+    # drop first row
+    all_full_df = all_full_df.iloc[1:]
 
-# rs_df.loc[:, rs_cols[1:]] = rs_df.loc[:, rs_cols[1:]].div(
-#     rs_df[_TOTAL], axis=0) * 100
+    # save to file
+    logger.info(all_full_df)
+    all_full_df.to_latex('./paper/tables/all_samples_full.tex')
+
+
+def save_rs_df(df: pd.DataFrame, cols: List) -> None:
+    # output rs full df
+    rs_full_df = df.loc[0, :].to_frame()
+
+    # drop first row
+    rs_full_df = rs_full_df.iloc[1:]
+    rs_full_df = rs_full_df.transpose()
+
+    # add row for samples as percentage of total
+    rs_full_df = distribution_pct(rs_full_df, cols)
+
+    logger.info(rs_full_df)
+    rs_full_df.to_latex('./paper/tables/rs_samples_full.tex')
+
+
+if __name__ == '__main__':
+    save_all_full_df(all_df, all_cols)
+    save_rs_df(rs_df, rs_cols)
