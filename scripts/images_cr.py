@@ -1,4 +1,5 @@
 
+import re
 import logging
 
 from bs4 import BeautifulSoup
@@ -14,9 +15,6 @@ logger = logging.getLogger(__name__)
 
 ids = [1]
 for _id in ids:
-    logger.info(f"Processing  ID: {_id}")
-    res = scraper.get_specimen_by_id(_id)
-    if res:
-        logger.info(res)
-    else:
-        logger.info(f"No data found for ID: {_id}")
+    logger.info(f"Processing ID: {_id}")
+    res = scraper.get_meta_by_specimen(_id)
+    logger.info(f"{res}")

@@ -51,14 +51,14 @@ class DatasetHelper():
 
         res = {}
         if not row['Sub-species'].isnull().any():
-            res['subspecies'] = row["Sub-species"].values[0]
+            res['subspecies'] = str(row["Sub-species"].values[0]).lower()
         if not row['Species'].isnull().any():
-            res['species'] = row["Species"].values[0]
+            res['species'] = str(row["Species"].values[0]).lower()
         if not row['Subgenus'].isnull().any():
-            res['subgenus'] = row["Subgenus"].values[0]
+            res['subgenus'] = str(row["Subgenus"].values[0]).lower()
         if not row['Genus'].isnull().any():
-            res['genus'] = row["Genus"].values[0]
+            res['genus'] = str(row["Genus"].values[0]).lower()
         if not row['Sub-Family'].isnull().any():
-            res['subfamily'] = row["Sub-Family"].values[0]
+            res['subfamily'] = str(row["Sub-Family"].values[0]).lower()
 
         return res
