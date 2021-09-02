@@ -9,11 +9,12 @@ from numpy.random import default_rng
 
 from . import utils
 from .. import const
+from .helper import DatasetHelper
 
 logger = logging.getLogger(__name__)
 
 
-class Dataset():
+class Dataset(DatasetHelper):
     def __init__(self,
                  size: tuple,
                  name: str = "",
@@ -207,25 +208,6 @@ class Dataset():
                 raise ValueError(
                     f'Class of ID[{_id}] is NA or not considered in this version.')
 
-    def get_image(self, _id: int) -> np.ndarray:
-        """Get image by ID.
-
-        Args:
-            _id (int): ID of the sample.
-
-        Returns:
-            img (np.ndarray): Image as cv2 image object (numpy array).
-        """
-        path = f'./dataset/data/{_id}.jpg'
-        img = cv2.imread(path)
-
-        if img is None:
-            msg = f'Failed to open image {path}'
-            logger.error(msg)
-            raise ValueError(msg)
-
-        return img
-
     def is_included(self, _id: int) -> bool:
         """Given an image id, return if the image is included from the dataset.
 
@@ -238,31 +220,6 @@ class Dataset():
         if _id in self.ids:
             return True
         return False
-
-    def get_ant_info(self, _id: int) -> List[str]:
-        """Get ant species info from original dataset.
-
-        Args:
-            _id (int): ID of the sample.
-
-        Returns:
-            List[str]: List of ant species info.
-        """
-        row = self.ant_data.loc[self.ant_data['Photo_number'] == _id]
-
-        res = []
-        if not row['Sub-species'].isnull().any():
-            res.append(f'Sub-species: {row["Sub-species"].values[0]}')
-        if not row['Species'].isnull().any():
-            res.append(f'Species: {row["Species"].values[0]}')
-        if not row['Subgenus'].isnull().any():
-            res.append(f'Subgenus: {row["Subgenus"].values[0]}')
-        if not row['Genus'].isnull().any():
-            res.append(f'Genus: {row["Genus"].values[0]}')
-        if not row['Sub-Family'].isnull().any():
-            res.append(f'Sub-Family: {row["Sub-Family"].values[0]}')
-
-        return res
 
     def stratified_split(self, n: int) -> Tuple[np.ndarray, np.ndarray]:
         """Stratified split with $n samples per class.

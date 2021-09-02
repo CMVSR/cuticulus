@@ -1,7 +1,5 @@
 
-from .. import const
-
-# register datasets
+# exports
 from .dataset import Dataset
 from .full import FullDataset
 from .sub import SubDataset

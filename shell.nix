@@ -22,6 +22,6 @@ pkgs.mkShell {
 
     # paper dev
     pkgs.texlive.combined.scheme-medium
-    jabref
+    pkgs.jabref
   ];
 }
