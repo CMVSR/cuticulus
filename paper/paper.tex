@@ -54,10 +54,7 @@ appear} \def\Received{June 2022} \def\Accepted{July 2022} \def\Published{October
 \keywords{Texture Analysis, Image Processing, Clustering, Machine Learning,
   Myrmecology, Ecology}
 
-
-
 \maketitle
-
 \section{Introduction}
 Insects compose half of biodiversity and rank among the most dominant organisms
 in terrestrial ecosystems \cite{sheikh_diverse_2017}. A key factor for the
@@ -69,6 +66,25 @@ and internal chemical components that make the exoskeleton functional and more
 recent work is being done to understand the functional aspects of external
 cuticle micro sculpturing \cite{muthukrishnan_insect_2020,
   gunderson_insect_1989, watson_diversity_2017}.
+
+Texture is an important feature in many applications, such as image processing,
+pattern recognition, and computer vision. Analysis of textures can be broken
+into three main categories: texture classification, texture segmentation, and
+texture synthesis. The process of classifying a texture into a set of categories
+and relies on three different approaches: feature-based, model-based, or
+structural \cite{reed_review_1993}. In this paper, we focus on a
+\textit{model-based approach} which attempt to extract parameters to reveal
+common patterns and use those parameters to automatically distinguish between
+different textures \cite{maillard_texture_2003}.
+
+Although there is some work regarding grouping ants into categories of similar
+cuticle, automated classification has yet to become an active area of research.
+Due to the large number of different ant species, the classification of ants
+into categories of similar texture is difficult to accomplish manually. Texture
+analysis has shown promising results in related fields, such as plant
+identification \cite{boudra_plant_2018}. With modern texture analysis methods,
+the classifications of ants can be automated and the results can be used to
+study the influence of cuticle texture on ant ecology.
 
 We examine ants (\textit{Formicidae}) as they display an extreme diversity of
 cuticle micro sculpturing across all subfamilies. Sculpturing ranges from
@@ -113,7 +129,7 @@ Images were collected and classified by undergraduate students according to the
 sculpturing identification protocol. Overall, there are a total of 2443 images
 in the dataset. The class distribution with all considered subclasses is shown
 in Table \ref{table:classdist_all_full}, and the class distribution with overall
-distribution is dhown in Table \ref{table:classdist_rs_full}. The relatively
+distribution is shown in Table \ref{table:classdist_rs_full}. The relatively
 small number of images in the dataset paired with the uneven class distribution
 makes it difficult to perform a meaningful classification. However, the goal of
 this project is to develop a classification algorithm that can be used to help
