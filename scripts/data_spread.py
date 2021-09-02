@@ -93,8 +93,10 @@ def distribution_pct(df: pd.DataFrame, cols: List) -> pd.DataFrame:
     sample_pct = df.loc[:, cols[1:]].div(
         df[_TOTAL], axis=0).astype(float).round(2)
     df = df.append(sample_pct, ignore_index=True)
-    return df.transpose().rename(
+    df = df.transpose().rename(
         columns={_TYPE: 'Label', 0: 'Samples (n)', 1: 'Samples (%)'})
+    df.rename_axis('Label', axis=1, inplace=True)
+    return df
 
 
 def save_all_full_df(df: pd.DataFrame, cols: List) -> None:
