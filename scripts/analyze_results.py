@@ -41,7 +41,7 @@ def experiment_1() -> pd.DataFrame:
                 {
                     size_col: f"({int(size)}, {int(size)})",
                     samples_col: samples,
-                    acc_col: round(temp["test_accuracy"].mean(), 3)*100,
+                    acc_col: f"{round(temp['test_accuracy'].mean()*100, 2)}%",
                     loss_col: round(temp["test_loss"].mean(), 3)
                 }, ignore_index=True)
 
