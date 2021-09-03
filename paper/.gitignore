@@ -6,8 +6,11 @@
 
 # journal template assets
 !aci.cls
+!*.bst
 !logo_new.pdf
 
 # assets
 !img/
 !img/*
+!tables
+!tables/*.tex

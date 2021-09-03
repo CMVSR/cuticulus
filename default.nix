@@ -26,6 +26,7 @@ rec {
     };
 
     propagatedBuildInputs = with python39Packages; [
+      beautifulsoup4
       colorama
       gdown
       matplotlib
@@ -35,6 +36,7 @@ rec {
       pandas
       pillow
       python-dotenv
+      requests
       scikit-learn
       scipy
       tensorflow

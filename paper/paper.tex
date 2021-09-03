@@ -3,25 +3,30 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{txfonts}
 \usepackage{cite}
-\def\typeofarticle{Article type} \def\currentvolume{1} \def\currentissue{1}
-\def\currentyear{2021} \def\currentmonth{} \def\ppages{1--30} \def\DOI{to
-appear} \def\Received{June 2022} \def\Accepted{July 2022} \def\Published{October
-2022 }
+\usepackage{booktabs}
 
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\ep}{\varepsilon}
 \newcommand{\eps}[1]{{#1}_{\varepsilon}}
 
+\def\typeofarticle{Research Article} \def\currentvolume{1} \def\currentissue{1}
+\def\currentyear{2021} \def\currentmonth{} \def\ppages{1--30} \def\DOI{to
+appear} \def\Received{June 2022} \def\Accepted{July 2022} \def\Published{October
+2022 }
 %\numberwithin{equation}{section}
 \DeclareMathOperator*{\essinf}{ess\,inf}
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
-\title{Title of the paper}
+\title{An Ant Cuticle Texture Classification Algorithm for Ecological Anaylsis}
 
 \author{%
-  Noah Gardner\affil{1} and Chih-Cheng Hung\affil{1}\corrauth}
+  Noah Gardner\affil{1}, John Paul Hellenbrand\affil{2}, and Chih-Cheng
+  Hung\affil{1}\corrauth}
 
 % \shortauthors is used in copyright information in the end of the paper
 \shortauthors{the Author(s)}
@@ -29,12 +34,12 @@ appear} \def\Received{June 2022} \def\Accepted{July 2022} \def\Published{October
 \address{%
   \addr{\affilnum{1}}{College of Computing and Software Engineering, Kennesaw
     State University, 1000 Chastain Road, Kennesaw, GA 30144, USA; email}
-  % \addr{\affilnum{2}}{Affiliation email}
-}
+  \addr{\affilnum{2}}{College of Science and Mathematics, Kennesaw State
+    University, 1000 Chastain Road, Kennesaw, GA 30144, USA; email}}
 % corresponding author
 \corraddr{chung1@kennesaw.edu}
 
-\editor{ First-name Last-name}
+\editor{First-name Last-name}
 
 \begin{abstract}
   There is a large variety of ant species, and most species are diverse in terms
@@ -42,177 +47,104 @@ appear} \def\Received{June 2022} \def\Accepted{July 2022} \def\Published{October
   the significance of ant cuticle texture is not widely researched. This
   research employs modern machine learning methods such as texture analysis and
   classification with CNN and clustering to automatically group similar ant
-  species to allow for the study of influences cuticle texture on ant
-  ecology.
+  species to allow for the study of influences cuticle texture on ant ecology.
 
 \end{abstract}
 
 \keywords{Texture Analysis, Image Processing, Clustering, Machine Learning,
   Myrmecology, Ecology}
 
-
-
 \maketitle
-
 \section{Introduction}
+Insects compose half of biodiversity and rank among the most dominant organisms
+in terrestrial ecosystems \cite{sheikh_diverse_2017}. A key factor for the
+ecological success of insects is their exoskeleton, also known as cuticle. The
+cuticle protects insects from predation, provides structural support, prevents
+desiccation, and serves as a canvas for advertising visual and chemical signals
+\cite{gullan_insects_2009}. Research has heavily focused on the macrostructures
+and internal chemical components that make the exoskeleton functional and more
+recent work is being done to understand the functional aspects of external
+cuticle micro sculpturing \cite{muthukrishnan_insect_2020,
+  gunderson_insect_1989, watson_diversity_2017}.
 
-Submission of a manuscript implies that the work described has not been
-published before, and not been under consideration for publishing anywhere else.
-Your submission also means that the manuscript has been approved by all
-co-authors with appropriate permission if required. The publisher will not be
-held legally responsible should any dispute be raised for any reason. AIMS-ACI
-is an OA publication published quarterly by AIMS Press in February, May, August,
-and November. Publishing is currently free of charge. Readers can access all
-published articles free of charge through the journal website
-https://aimspress.com/journal/aci
+Texture is an important feature in many applications, such as image processing,
+pattern recognition, and computer vision. Analysis of textures can be broken
+into three main categories: texture classification, texture segmentation, and
+texture synthesis. The process of classifying a texture into a set of categories
+and relies on three different approaches: feature-based, model-based, or
+structural \cite{reed_review_1993}. In this paper, we focus on a
+\textit{model-based approach} which attempt to extract parameters to reveal
+common patterns and use those parameters to automatically distinguish between
+different textures \cite{maillard_texture_2003}.
 
+Although there is some work regarding grouping ants into categories of similar
+cuticle, automated classification has yet to become an active area of research.
+Due to the large number of different ant species, the classification of ants
+into categories of similar texture is difficult to accomplish manually. Texture
+analysis has shown promising results in related fields, such as plant
+identification \cite{boudra_plant_2018}. With modern texture analysis methods,
+the classifications of ants can be automated and the results can be used to
+study the influence of cuticle texture on ant ecology.
 
+We examine ants (\textit{Formicidae}) as they display an extreme diversity of
+cuticle micro sculpturing across all subfamilies. Sculpturing ranges from
+parallel longitudinal ridges to deep oval impressions to erratic protuberances.
+The sculpturing has arisen convergently and independently throughout ant’s
+evolutionary history, which suggests some inherent function. Cuticle sculpturing
+on ants may help increase strength and rigidness, resist abrasion, increase
+internal and external surface area, resist microbial growth, and rear beneficial
+anti-biotic producing bacteria \cite{johnson_effect_2011,
+  bruckner_relationship_2017, currie_coevolved_2006}. These specific functions may
+be associated with certain sculpturing types and the purpose of classification
+is to group similar textures based on proposed function.
 
-\section{Layout and fonts}
-The page size is A4 ($8.5 \times 11.0$ in or $21.59 \times 27.94$ cm). The
-margin is set to moderate. Font for all text, except symbols and formulae,
-should use Times New Roman. Article title is bold with a font size 16 and
-aligned to the left. Authors are bold with a font size 12. Using Times New Roman
-size 12 for the main text, including figure captions and table titles. However,
-text size for contents in a table can be chosen from 8 to 12 to fit the table
-within the width of the page.
+\section{Methods}
 
-\section{Headline and sub-headline}
-The first-level headline is numbered and bold with a font size 12, and has a
-space of 12 $pt$ before and after the headline. Each paragraph begins with an
-indentation of 0.63 $cm$ (the same by using the Tab key once) in the first line.
-A paragraph does not have a space before and after that paragraph.
+\subsection{Sculpture Identification Protocol}
 
-\subsection{The second-level headline}
-The second-level headline is numbered with a font size 12. The second-level
-headline has a default space of 6 $pt$ before and after it.
+\subsection{Dataset}
+In order to classify the cuticle, we used ant head images sourced from AntWeb
+\cite{antweb}. In general, the ant head images are centered in the image, facing
+the front, and share a similar posture. However, some images may not be
+centered, show the ant head in a different orientation, or may have a
+drastically different resolution from the average image. Fortunately, each can
+have several scales available such that the images' scales can be roughly
+similar.
 
-\subsubsection{The third-level headline (if necessary)}
-If really necessary, the third-level headline should be numbered and italicized
-with a font size 12, indented by 0.63 $cm$ (the same by using the Tab key once).
-The third-level headline has a default space of 6 $pt$ before and after it. Any
-lower headline should be avoided.
-
-\subsection{Footnotes}
-Although not encouraged, footnotes can be used to provide additional information
-for an informal reference that cannot be included in the reference list. A
-footnote should be numbered and cannot contain any figure or table. Use font
-size 8 for footnotes.
-
-\section{Figures or images, captions, tables, table titles, and formulae}
-\subsection{Figure/image and caption}
-Leave a space of one line before and after a figure or an image, i.e., one line
-between the main text and the top of the figure or image, and one line between
-the bottom of the figure or image and the caption. The caption has a default
-space of 12 $pt$ after it so the main text can continue below the caption. If no
-text follows the figure caption, do not leave any space between the caption and
-the next headline (the headline has a default space).
-
-\begin{figure}[ht]
+\begin{table}[h]
   \centering
-  \vskip 0.2in
-  %\includegraphics[width=0.85\textwidth]{{logo_new.pdf}}
-  \vspace {12pt}
-  \caption{ Insert the figure/image here}
-  \label{fig:res}
-\end{figure}
-
-Figures should be numbered consecutively in the text. A figure can be referred
-explicitly in the text as Figure~\ref{fig:res}, or implicitly at the end of a
-sentence in parentheses (Fig. 1).
-
-Use black and white graphic for line drawings. All lines should be at least 0.1
-mm (0.3 $pt$) wide. Line drawings or scanned line drawings should have a
-resolution at least 600 dpi. Images with a large volume should be properly
-compressed within 1 MB each. Scanned images should be properly edited to balance
-the volume size and clarity of the image.
-
-Figure captions begin with \textbf{Figure x.} in bold, followed by the text. Do
-not add a full stop at the end of the caption.
-
-
-\subsection{Tables and table titles}
-\begin{table}[H]
-  \begin{center}
-    \caption{Publication schedule for AIMS-ACI in 2022}
-    \begin{tabular}{lll} \hline
-      Issue        & Publishing date   & Submission deadline \\\hline
-      First issue  & February 25, 2022 & January 15, 2022    \\
-      Second issue & May 25, 2022      & April 15, 2022      \\
-      Third issue  & August 25, 2022   & July 15, 2022       \\
-      Fourth issue & November 25, 2022 & October 15, 2022    \\\hline
-    \end{tabular}
-    \label{table}
-  \end{center}
+  \caption{Dataset Subclass Distribution}
+  \label{table:classdist_all_full}
+  \include{tables/all_samples_full.tex}
 \end{table}
 
-Table title should be placed above the table, numbered consecutively, and
-referred in the text like Table~\ref{table} or (Table~\ref{table}). There is no
-space between the table and table title. Leave a space of one line above the
-table title and one line below the bottom of the table. If a new first-level
-headline follows the table immediately, do not leave the space below the table.
+\begin{table}[h]
+  \centering
+  \caption{Dataset Class Distribution}
+  \label{table:classdist_rs_full}
+  \include{tables/rs_samples_full.tex}
+\end{table}
 
-The font of the table title is size 12 but the font of the table contents can be
-sizes 8 to 12 depending on the best fit for the table. Table title begins with
-\textbf{Table x}. in bold, followed by the text. Do not add a full stop at the
-end of the table title.
+Images were collected and classified by undergraduate students according to the
+sculpturing identification protocol. Overall, there are a total of 2443 images
+in the dataset. The class distribution with all considered subclasses is shown
+in Table \ref{table:classdist_all_full}, and the class distribution with overall
+distribution is shown in Table \ref{table:classdist_rs_full}. The relatively
+small number of images in the dataset paired with the uneven class distribution
+makes it difficult to perform a meaningful classification. However, the goal of
+this project is to develop a classification algorithm that can be used to help
+classify over 200,000 ant images. Therefore, it is desirable to use a few
+representative images from each class to train the algorithm. Additionally, data
+augmentation and other methods are performed to increase the number of training
+images to create a more robust classification algorithm.
 
-
-
-
-\subsection{Mathematical formulae}
-Mathematical formulae should be numbered consecutively by placing the number in
-parentheses like (1), one TAB space away from the right line. Mathematical
-formulae should be typed using MS Word Equation or better using \emph{MathType}.
-Use size 10--12 for the main characters and size 6--8 for subscripts or
-superscripts. Leave a space of 6 $pt$ between two formula in separate lines.
-Some examples are shown below.
-
-\begin{equation}
-  \lim_{x \mapsto a^+ }f\left ( x \right )= \pm \infty \qquad \text{or} \qquad \lim_{x \mapsto a^- }f\left ( x \right )= \pm \infty
-  \label{equation1}
-\end{equation}
-
-\begin{equation}
-  \lim_{x \mapsto \infty }f\left ( x \right )=  a \qquad \text{or} \qquad \lim_{x \mapsto -\infty}f\left ( x \right )=  b
-  \label{equation2}
-\end{equation}
-
-To cite a formula in the text, use the number like Equation~(\ref{equation1}),
-or Eq.~(\ref{equation2}), or alike.
-
-\section{Submission, review, and decision}
-In the first year, submission, review and decisions of manuscripts is conducted
-through email communications. Please send your manuscript to one of the relevant
-Editors-in-Chief by their email available on the journal Website. With the
-increase in submissions from 2022, we would use the AIMS Editorial System to
-handle the process of submission, review, and decisions.
-
-Once a submission is received, the receiving Editor will pre-screen the article
-for its suitability and quality for the journal. After passing this
-pre-screening, the Editor may act as the “Academic Editor” or assign this
-manuscript to another Editor from the Editorial Board as the “Academic Editor”to
-handle the review of this paper, communicate with the authors on revisions, and
-inform the final decision after consultation with the relevant Editor-in-Chief.
-
-AIMS-ACI holds a high standard in peer review. A submitted manuscript should be
-reviewed by at least three independent reviewers who are scholars and
-knowledgeable of the area of research. Standard review forms are available for
-reviewers but they could choose own appropriate way of reporting to the Academic
-Editor.
-
-
-\section{Reference style, citation, and cross-reference}
-Test citation \cite{ward_phylogeny_2014}.
+\section{Experimental Results}
 
 
 \section*{Acknowledgments}
 We would like to thank the constructive feedback provided by the reviewers.
 
-
-
-\bibliographystyle{unsrt}
 \bibliography{paper}
-
+\bibliographystyle{unsrt}
 
 \end{document}

@@ -1,5 +1,5 @@
 
-from typing import Dict
+from typing import Dict, List
 import gc
 import logging
 
@@ -9,29 +9,24 @@ import pandas as pd
 from cuticle_analysis.core import init
 init()
 
+from cuticle_analysis import const  # noqa
 from cuticle_analysis.datasets import AllFull  # noqa
 from cuticle_analysis.datasets import RoughSmoothFull  # noqa
 from cuticle_analysis.datasets import RoughSmoothSub  # noqa
 
+
 logger = logging.getLogger(__name__)
 
+all_labels = list(const.ALL_LABEL_MAP.keys())
+all_labels.remove('_background_')
+rs_labels = list(const.RS_LABEL_MAP.keys())
+rs_labels.remove('_background_')
 
-all_cols = [
-    'type',
-    'rough dimpled',
-    'rough netted',
-    'rough ridged',
-    'rough T',
-    'smooth gritty',
-    'smooth smooth',
-    'total'
-]
-rs_cols = [
-    'type',
-    'rough',
-    'smooth',
-    'total'
-]
+_TOTAL = 'Total'
+_TYPE = 'Type'
+
+all_cols = [_TYPE] + all_labels + [_TOTAL]
+rs_cols = [_TYPE] + rs_labels + [_TOTAL]
 
 
 def total_samples(class_data: Dict) -> int:
@@ -45,16 +40,10 @@ def total_samples(class_data: Dict) -> int:
 
 
 def all_row(type: str, class_data: Dict) -> pd.DataFrame:
-    row = pd.DataFrame([[
-        type,
-        class_data['rough dimpled'],
-        class_data['rough netted'],
-        class_data['rough ridged'],
-        class_data['rough T'],
-        class_data['smooth gritty'],
-        class_data['smooth smooth'],
-        total_samples(class_data)
-    ]], columns=all_cols)
+    data = [class_data[label] for label in all_labels]
+    cols = [type] + data + [total_samples(class_data)]
+    row = pd.DataFrame(
+        [cols], columns=all_cols)
     return row
 
 
@@ -62,12 +51,9 @@ def rs_row(type: str, size: tuple, class_data: Dict) -> pd.DataFrame:
     if type != 'full':
         type = f'{type}_{size}'
 
-    row = pd.DataFrame([[
-        type,
-        class_data['rough'],
-        class_data['smooth'],
-        total_samples(class_data)
-    ]], columns=rs_cols)
+    data = [class_data[label] for label in rs_labels]
+    cols = [type] + data + [total_samples(class_data)]
+    row = pd.DataFrame([cols], columns=rs_cols)
     return row
 
 
@@ -97,25 +83,52 @@ for size in sizes:
     del temp
     gc.collect()
 
-# output
-logger.info("number of samples per class per dataset")
-logger.info(all_df.transpose())
-logger.info(rs_df.transpose())
 
-# save to file
-all_df.transpose().to_latex('./paper/tables/all_samples_int.tex')
-rs_df.transpose().to_latex('./paper/tables/rs_samples_int.tex')
+def distribution_pct(df: pd.DataFrame, cols: List) -> pd.DataFrame:
+    """
+    Calculate the distribution of a class in a dataframe as a percent.
+    Returns:
+        df: Transposed dataframe with the columns ['Label', 'Samples (n)', 'Samples (%)']
+    """
+    sample_pct = df.loc[:, cols[1:]].div(
+        df[_TOTAL], axis=0).astype(float).round(2)
+    df = df.append(sample_pct, ignore_index=True)
+    df = df.transpose().rename(
+        columns={_TYPE: 'Label', 0: 'Samples (n)', 1: 'Samples (%)'})
+    df.rename_axis('Label', axis=1, inplace=True)
+    return df
 
-logger.info("\n samples per class as percentage")
-all_df.loc[:, all_cols[1:]] = all_df.loc[:, all_cols[1:]].div(
-    all_df["total"], axis=0) * 100
-rs_df.loc[:, rs_cols[1:]] = rs_df.loc[:, rs_cols[1:]].div(
-    rs_df["total"], axis=0) * 100
-all_df = all_df.drop(columns=['total'])
-rs_df = rs_df.drop(columns=['total'])
-logger.info(all_df)
-logger.info(rs_df)
 
-# save to file
-all_df.to_latex('./paper/tables/all_samples_pct.tex')
-rs_df.to_latex('./paper/tables/rs_samples_pct.tex')
+def save_all_full_df(df: pd.DataFrame, cols: List) -> None:
+    """
+    Save the dataframe to a latex file. Add percent samples column.
+    """
+    # add row for samples as percentage of total
+    all_full_df = distribution_pct(df, cols)
+
+    # drop first row
+    all_full_df = all_full_df.iloc[1:]
+
+    # save to file
+    logger.info(all_full_df)
+    all_full_df.to_latex('./paper/tables/all_samples_full.tex')
+
+
+def save_rs_df(df: pd.DataFrame, cols: List) -> None:
+    # output rs full df
+    rs_full_df = df.loc[0, :].to_frame()
+
+    # drop first row
+    rs_full_df = rs_full_df.iloc[1:]
+    rs_full_df = rs_full_df.transpose()
+
+    # add row for samples as percentage of total
+    rs_full_df = distribution_pct(rs_full_df, cols)
+
+    logger.info(rs_full_df)
+    rs_full_df.to_latex('./paper/tables/rs_samples_full.tex')
+
+
+if __name__ == '__main__':
+    save_all_full_df(all_df, all_cols)
+    save_rs_df(rs_df, rs_cols)

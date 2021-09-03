@@ -20,6 +20,7 @@ setup(
     packages=[
         "cuticle_analysis",
         "cuticle_analysis/assets",
+        "cuticle_analysis/antweb",
         "cuticle_analysis/core",
         "cuticle_analysis/datasets",
         "cuticle_analysis/models",

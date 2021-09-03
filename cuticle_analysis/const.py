@@ -23,8 +23,8 @@ BG_LABEL_MAP = {
 
 RS_LABEL_MAP = {
     '_background_': 0,
-    'rough': 1,
-    'smooth': 2,
+    'Rough': 1,
+    'Smooth': 2,
 }
 
 INT_RS_LABEL_MAP = {v: k for k, v in RS_LABEL_MAP.items()}
@@ -32,12 +32,12 @@ INT_RS_LABEL_MAP = {v: k for k, v in RS_LABEL_MAP.items()}
 # for all cuticle
 ALL_LABEL_MAP = {
     '_background_': 0,
-    'rough dimpled': 1,
-    'rough netted': 2,
-    'rough ridged': 3,
-    'rough T': 4,
-    'smooth gritty': 5,
-    'smooth smooth': 6,
+    'Rough Dimpled': 1,
+    'Rough Netted': 2,
+    'Rough Ridged': 3,
+    'Rough Tuberous': 4,
+    'Smooth Gritty': 5,
+    'Smooth': 6,
 }
 
 INT_ALL_LABEL_MAP = {v: k for k, v in ALL_LABEL_MAP.items()}
