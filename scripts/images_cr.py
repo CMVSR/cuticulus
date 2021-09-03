@@ -1,8 +1,5 @@
 
-import re
 import logging
-
-from bs4 import BeautifulSoup
 
 # for debugging, env logging level must be set to debug/info
 from cuticle_analysis.core import init
@@ -10,11 +7,10 @@ init()
 
 from cuticle_analysis.antweb import SpecimenScraper  # noqa
 
-scraper = SpecimenScraper()
 logger = logging.getLogger(__name__)
 
-ids = [1]
-for _id in ids:
-    logger.info(f"Processing ID: {_id}")
-    res = scraper.get_meta_by_specimen(_id)
-    logger.info(f"{res}")
+
+if __name__ == "__main__":
+    scraper = SpecimenScraper()
+    fig = scraper.build_figure(1)
+    print("done")

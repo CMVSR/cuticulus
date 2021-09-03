@@ -18,6 +18,7 @@ rec {
             "pip_packages"
             "scripts"
             "gui"
+            "paper"
             ".*\.egg-info"
             ".*\.zip"
           ])
@@ -26,7 +27,6 @@ rec {
     };
 
     propagatedBuildInputs = with python39Packages; [
-      beautifulsoup4
       colorama
       gdown
       matplotlib

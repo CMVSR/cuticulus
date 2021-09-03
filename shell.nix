@@ -23,5 +23,7 @@ pkgs.mkShell {
     # paper dev
     pkgs.texlive.combined.scheme-medium
     pkgs.jabref
+    beautifulsoup4
+    pkgs.pylatex
   ];
 }

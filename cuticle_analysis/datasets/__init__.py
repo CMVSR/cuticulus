@@ -1,5 +1,6 @@
 
 # exports
+from .helper import DatasetHelper
 from .dataset import Dataset
 from .full import FullDataset
 from .sub import SubDataset
