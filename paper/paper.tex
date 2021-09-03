@@ -176,9 +176,17 @@ Table \ref{table:classdist_rs_sub}.
 In the first experiment, we investigate the ability of a basic CNN to classify
 cuticle texture into the two main categories: \textit{rough} and
 \textit{smooth}. The goal of this experiment is to determine if more intricate
-data preprocessing is necessary to classify the texture of the ant. The dataset
-used is shown in Table \ref{table:classdist_rs_full}, and the results are shown
-in (TODO).
+data preprocessing is necessary to classify the texture of the ant. Images were
+resized to different sizes for CNN input and different samples per class were
+also tested.The dataset used is shown in Table \ref{table:classdist_rs_full},
+and the results are shown in Table \ref{table:exp1_full}.
+
+\begin{table}[h]
+  \centering
+  \caption{Binary Classification of Full Size Images}
+  \label{table:exp1_full}
+  \include{tables/experiment_1.tex}
+\end{table}
 
 \section*{Acknowledgments}
 We would like to thank the constructive feedback provided by the reviewers.
