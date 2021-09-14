@@ -14,9 +14,5 @@ This project utilizes [nix](https://nixos.org/) for building and running.
 ```
 git clone https://github.com/ngngardner/cuticle_analysis
 cd cuticle_analysis
-nix-build
+nix-shell --run "cuticle_analysis"
 ```
-
-## Running
-
-Run with: `nix-shell --run "cuticle_analysis"`
