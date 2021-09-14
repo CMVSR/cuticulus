@@ -42,5 +42,10 @@ def start_app():
         download_dataset()
         unzip_dataset()
 
+    elif args.cite:
+        from ..antweb import SpecimenScraper
+        scraper = SpecimenScraper()
+        scraper.build_figure(args.cite)
+
     else:
         dataset_setup()
