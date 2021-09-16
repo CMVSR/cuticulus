@@ -1,8 +1,9 @@
 
 from typing import List
 
-from tensorflow import keras
 import numpy as np
+import tensorflow as tf
+from tensorflow import keras
 
 from ..datasets import Dataset
 
@@ -44,13 +45,10 @@ class TFModel(Model):
         # compile
         self.model.compile(
             optimizer='adam',
-            loss='categorical_crossentropy',
+            loss='sparse_categorical_crossentropy',
             metrics=[
                 'accuracy',
-                'mean_squared_error',
-                'categorical_crossentropy',
-                'precision',
-                'recall',
+                tf.keras.metrics.MeanSquaredError(),
             ]
         )
         self.model.summary()

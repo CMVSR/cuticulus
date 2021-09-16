@@ -13,7 +13,8 @@ from cuticle_analysis.models import Model  # noqa
 
 logger = logging.getLogger(__name__)
 
-RES_COLS = ['size', 'samples_per_class', 'run', 'test_loss', 'test_accuracy']
+RES_COLS = ['size', 'samples_per_class', 'run',
+            'loss', 'accuracy', 'error (mse)']
 
 
 class ExperimentRunner:
@@ -21,6 +22,13 @@ class ExperimentRunner:
         self.name = name
         self.dataset_type = dataset_type
         self.model_type = model_type
+        self.res_df = pd.DataFrame(columns=RES_COLS)
+
+    def append_df(self, df: pd.DataFrame):
+        self.res_df = self.res_df.append(df, ignore_index=True)
+
+    def save_df(self):
+        self.res_df.to_csv(f'./output/{self.name}.csv')
 
     def run(self,
             samples: int,
@@ -29,15 +37,21 @@ class ExperimentRunner:
             epochs: int = 10,
             excludes: list = []):
         dataset = self.dataset_type(size=size, excludes=excludes, save=True)
-        res_df = pd.DataFrame(columns=RES_COLS)
 
         for run in range(runs):
             model = self.model_type(dataset)
             model.train(epochs, samples)
-            loss, acc = model.evaluate()
+            loss, acc, err = model.evaluate()
 
             # save results
             run_df = pd.DataFrame(
-                [[size, samples, run, loss, acc]], columns=RES_COLS)
-            res_df = res_df.append(run_df, ignore_index=True)
-            res_df.to_csv(f'./output/{self.name}')
+                [[
+                    size,
+                    samples,
+                    run,
+                    loss,
+                    acc,
+                    err
+                ]], columns=RES_COLS)
+            self.append_df(run_df)
+            self.save_df()

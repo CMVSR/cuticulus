@@ -19,7 +19,7 @@ class DatasetHelper():
     def __init__(self):
         self.ant_data = pd.read_excel(f'./dataset/labels.xlsx', header=0)
 
-    def get_image(self, _id: int) -> np.ndarray:
+    def get_image(self, _id: int, grayscale: bool = True) -> np.ndarray:
         """Get image by ID.
 
         Args:
@@ -35,6 +35,9 @@ class DatasetHelper():
             msg = f'Failed to open image {path}'
             logger.error(msg)
             raise ValueError(msg)
+
+        if grayscale:
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
         return img
 

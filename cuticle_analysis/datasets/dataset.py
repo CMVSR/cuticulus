@@ -257,7 +257,7 @@ class Dataset(DatasetHelper):
     def build_validation_set(self, split: float = 0.5) -> Tuple[np.ndarray, np.ndarray]:
         try:
             # see if test_y exists
-            self.train_y
+            self.test_y
         except Exception as e:
             msg = "Test samples have yet to be made."
             logger.error(msg)
@@ -272,10 +272,10 @@ class Dataset(DatasetHelper):
         test_idxs = np.array([idx for idx in range(
             len(self.test_y)) if idx not in val_idxs])
 
-        self.test_x = self.test_x[(test_idxs)]
-        self.test_y = self.test_y[(test_idxs)]
         self.val_x = self.test_x[(val_idxs)]
         self.val_y = self.test_y[(val_idxs)]
+        self.test_x = self.test_x[(test_idxs)]
+        self.test_y = self.test_y[(test_idxs)]
 
         return self.val_x, self.val_y
 
