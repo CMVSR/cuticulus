@@ -2,7 +2,7 @@
 import os
 import re
 import logging
-from typing import Dict, List
+from typing import Dict
 
 import cv2
 import requests

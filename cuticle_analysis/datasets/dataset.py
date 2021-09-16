@@ -1,8 +1,7 @@
 
 import logging
-from typing import Dict, List, Tuple
+from typing import Dict, Tuple
 
-import cv2
 import pandas as pd
 import numpy as np
 from numpy.random import default_rng

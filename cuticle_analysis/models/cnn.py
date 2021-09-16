@@ -1,6 +1,6 @@
 
 import logging
-from typing import List, Tuple
+from typing import Tuple
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras import layers

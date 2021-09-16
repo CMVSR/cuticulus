@@ -1,6 +1,6 @@
 
 import logging
-from typing import Type, List
+from typing import Type
 
 import pandas as pd
 from cuticle_analysis.datasets import Dataset
