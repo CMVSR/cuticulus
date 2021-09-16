@@ -2,7 +2,7 @@
 import os
 import re
 import logging
-from typing import Dict
+from typing import Dict, Tuple
 
 import cv2
 import requests
@@ -13,6 +13,9 @@ from bs4 import BeautifulSoup
 from ..datasets.helper import DatasetHelper
 
 logger = logging.getLogger(__name__)
+
+ANT_WEB_URL = "https://antweb.org/"
+CC_URL = "https://creativecommons.org/licenses/by/4.0/"
 
 
 def hyperlink(url: str, text: str) -> str:
@@ -33,12 +36,13 @@ def hyperlink(url: str, text: str) -> str:
 class SpecimenScraper():
     def __init__(self):
         self.dh = DatasetHelper()
-        self.cc_url = "https://creativecommons.org/licenses/by/4.0/"
-        self.base_url = "https://www.antweb.org"
         self.images_url = f"{self.base_url}/images.do"
         self.pic_url = f"{self.base_url}/bigPicture.do"
         self.assets_path = "./paper/assets"
         self.images_path = "./paper/assets/images"
+
+        self.antweb_str = hyperlink(ANT_WEB_URL, "AntWeb")
+        self.cc_str = hyperlink(CC_URL, "CC BY 4.0")
 
     def get_specimen(self, info: dict) -> str:
         """
@@ -142,7 +146,7 @@ class SpecimenScraper():
         # remove tif
         os.remove(f"{path}.tif")
 
-    def build_figure(self, _id: int):
+    def build_figure(self, _id: int) -> Tuple[Dict, pylatex.Figure]:
         """
             Build latex figure with included image and CC attribution from a
             list of given ids
@@ -159,11 +163,14 @@ class SpecimenScraper():
                       width=NoEscape(r'0.2\textwidth'))
         specimen_str = hyperlink(info['specimen_url'], info['specimen'])
         author_str = hyperlink(info['author_url'], info['author'])
-        antweb_str = hyperlink(self.base_url, "AntWeb")
-        cc_str = hyperlink(self.cc_url, "CC BY 4.0")
-        fig.add_caption(NoEscape(
-            f"{specimen_str} by {author_str}, from {antweb_str}, is licensed under {cc_str}"))
+        fig.add_caption(
+            NoEscape(str(
+                specimen_str
+                + " by " + author_str
+                + ", from " + self.antweb_str
+                + ", is licensed under " + self.cc_str)))
 
+    def save_figure(self, info: dict, fig: pylatex.Figure):
         # save to file
         filename = f"{info['specimen']}.tex"
         logger.debug(f"Saving figure to {filename}")

@@ -3,12 +3,17 @@ import logging
 from typing import Type
 
 import pandas as pd
-from cuticle_analysis.datasets import Dataset
-from cuticle_analysis.models import Model
+
+# for debugging, env logging level must be set to debug/info
+from cuticle_analysis.core import init
+init()
+
+from cuticle_analysis.datasets import Dataset  # noqa
+from cuticle_analysis.models import Model  # noqa
 
 logger = logging.getLogger(__name__)
 
-res_cols = ['size', 'samples_per_class', 'run', 'test_loss', 'test_accuracy']
+RES_COLS = ['size', 'samples_per_class', 'run', 'test_loss', 'test_accuracy']
 
 
 class ExperimentRunner:
@@ -24,7 +29,7 @@ class ExperimentRunner:
             epochs: int = 10,
             excludes: list = []):
         dataset = self.dataset_type(size=size, excludes=excludes, save=True)
-        res_df = pd.DataFrame(columns=res_cols)
+        res_df = pd.DataFrame(columns=RES_COLS)
 
         for run in range(runs):
             model = self.model_type(dataset)
@@ -33,6 +38,6 @@ class ExperimentRunner:
 
             # save results
             run_df = pd.DataFrame(
-                [[size, samples, run, loss, acc]], columns=res_cols)
+                [[size, samples, run, loss, acc]], columns=RES_COLS)
             res_df = res_df.append(run_df, ignore_index=True)
             res_df.to_csv(f'./output/{self.name}')
