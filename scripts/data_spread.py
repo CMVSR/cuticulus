@@ -1,6 +1,5 @@
 
 from typing import Dict, List
-import gc
 import logging
 
 import pandas as pd
@@ -10,6 +9,7 @@ from cuticle_analysis.core import init
 init()
 
 from cuticle_analysis import const  # noqa
+from cuticle_analysis.datasets import Dataset  # noqa
 from cuticle_analysis.datasets import AllFull  # noqa
 from cuticle_analysis.datasets import RoughSmoothFull  # noqa
 from cuticle_analysis.datasets import RoughSmoothSub  # noqa
@@ -25,13 +25,16 @@ rs_labels.remove('_background_')
 _TOTAL = 'Total'
 _TYPE = 'Type'
 
-all_cols = [_TYPE] + all_labels + [_TOTAL]
-rs_cols = [_TYPE] + rs_labels + [_TOTAL]
-
 
 def total_samples(class_data: Dict) -> int:
     """
-    Total number of samples in the dataset.
+        Total number of samples in the dataset.
+
+        Args:
+            class_data: Dictionary of class labels and number of samples.
+
+        Returns:
+            total: Total number of samples per class label.
     """
     res = 0
     for _, data in class_data.items():
@@ -39,49 +42,48 @@ def total_samples(class_data: Dict) -> int:
     return res
 
 
-def all_row(type: str, class_data: Dict) -> pd.DataFrame:
-    data = [class_data[label] for label in all_labels]
-    cols = [type] + data + [total_samples(class_data)]
-    row = pd.DataFrame(
-        [cols], columns=all_cols)
-    return row
+def append_all(df: pd.DataFrame, data: Dataset, cols: List, _type: str) -> pd.DataFrame:
+    """
+        Build a all class distribution row from an input dataset and append the
+        row to a dataframe.
+    """
+    def all_row(type: str, class_data: Dict, _cols: List) -> pd.DataFrame:
+        """
+            Build a row for the all class distribution table.
+        """
+        data = [class_data[label] for label in all_labels]
+        cols = [type] + data + [total_samples(class_data)]
+        row = pd.DataFrame(
+            [cols], columns=_cols)
+        return row
+
+    row = all_row(_type, data.class_data(), cols)
+    df = df.append(row, ignore_index=True)
+
+    return df
 
 
-def rs_row(type: str, size: tuple, class_data: Dict) -> pd.DataFrame:
-    if type != 'full':
-        type = f'{type}_{size}'
+def append_rs(df: pd.DataFrame, data: Dataset, cols: List, _type: str) -> pd.DataFrame:
+    """
+        Build a rough smooth class distribution row from an input dataset and
+        append the row to a dataframe.
+    """
+    def rs_row(type: str, size: tuple, class_data: Dict, _cols: List) -> pd.DataFrame:
+        """
+            Build a row for the rough smooth class distribution table.
+        """
+        if type != 'full':
+            type = f'{size}'
 
-    data = [class_data[label] for label in rs_labels]
-    cols = [type] + data + [total_samples(class_data)]
-    row = pd.DataFrame([cols], columns=rs_cols)
-    return row
+        data = [class_data[label] for label in rs_labels]
+        cols = [type] + data + [total_samples(class_data)]
+        row = pd.DataFrame([cols], columns=_cols)
+        return row
 
+    row = rs_row(_type, data.size, data.class_data(), cols)
+    df = df.append(row, ignore_index=True)
 
-# init output tables
-all_df = pd.DataFrame(columns=all_cols)
-rs_df = pd.DataFrame(columns=rs_cols)
-
-# add all full dataset
-af = AllFull((512, 512), save=True)
-all_df = all_df.append(all_row('full', af.class_data()), ignore_index=True)
-del af
-gc.collect()
-
-# add rough smooth full dataset
-rsf = RoughSmoothFull((512, 512), save=True)
-rs_df = rs_df.append(
-    rs_row('full', rsf.size, rsf.class_data()), ignore_index=True)
-del rsf
-gc.collect()
-
-# add subimage datasets, show samples for different sizes
-sizes = [(8, 8), (16, 16), (32, 32), (64, 64)]
-for size in sizes:
-    temp = RoughSmoothSub(size, save=True)
-    rs_df = rs_df.append(
-        rs_row('sub', size, temp.class_data()), ignore_index=True)
-    del temp
-    gc.collect()
+    return df
 
 
 def distribution_pct(df: pd.DataFrame, cols: List) -> pd.DataFrame:
@@ -99,36 +101,89 @@ def distribution_pct(df: pd.DataFrame, cols: List) -> pd.DataFrame:
     return df
 
 
-def save_all_full_df(df: pd.DataFrame, cols: List) -> None:
+def all_full_df(cols: List) -> pd.DataFrame:
     """
-    Save the dataframe to a latex file. Add percent samples column.
+        Create all full dataset class distribution table. Add percent samples
+        column.
     """
+    # init output tables
+    df = pd.DataFrame(columns=cols)
+
+    # add all full dataset
+    af = AllFull((512, 512), save=True)
+    df = append_all(df, af, cols, 'full')
+
     # add row for samples as percentage of total
-    all_full_df = distribution_pct(df, cols)
+    af_df = distribution_pct(df, cols)
 
     # drop first row
-    all_full_df = all_full_df.iloc[1:]
-
-    # save to file
-    logger.info(all_full_df)
-    all_full_df.to_latex('./paper/tables/all_samples_full.tex')
+    af_df = af_df.iloc[1:]
+    return af_df
 
 
-def save_rs_df(df: pd.DataFrame, cols: List) -> None:
+def rs_full_df(cols: List) -> pd.DataFrame:
+    """
+        Create rough smooth class distribution table. Add percent samples
+        column.
+    """
+    df = pd.DataFrame(columns=cols)
+
+    # add rough smooth full dataset
+    rsf = RoughSmoothFull((512, 512), save=True)
+    df = append_rs(df, rsf, cols, 'full')
+
     # output rs full df
-    rs_full_df = df.loc[0, :].to_frame()
+    rsf_df = df.loc[0, :].to_frame()
 
     # drop first row
-    rs_full_df = rs_full_df.iloc[1:]
-    rs_full_df = rs_full_df.transpose()
+    rsf_df = rsf_df.iloc[1:]
+    rsf_df = rsf_df.transpose()
 
     # add row for samples as percentage of total
-    rs_full_df = distribution_pct(rs_full_df, cols)
+    rsf_df = distribution_pct(rsf_df, cols)
+    return rsf_df
 
-    logger.info(rs_full_df)
-    rs_full_df.to_latex('./paper/tables/rs_samples_full.tex')
+
+def rs_sub_df(cols: list) -> pd.DataFrame:
+    """
+        Create rough smooth subimage dataset class distribution table.
+    """
+    df = pd.DataFrame(columns=cols)
+
+    # add subimage datasets, show samples for different sizes
+    sizes = [(8, 8), (16, 16), (24, 24), (32, 32)]
+    for size in sizes:
+        temp = RoughSmoothSub(size, save=True)
+        df = append_rs(df, temp, cols, 'sub')
+
+    # output rs sub df
+    # map first row to column headers
+    df = df.transpose()
+    df.columns = df.iloc[0]
+
+    # drop first row
+    df = df.iloc[1:]
+    df.rename_axis('Label', axis=1, inplace=True)
+
+    return df
 
 
 if __name__ == '__main__':
-    save_all_full_df(all_df, all_cols)
-    save_rs_df(rs_df, rs_cols)
+    # columns for both dataset types
+    all_cols = [_TYPE] + all_labels + [_TOTAL]
+    rs_cols = [_TYPE] + rs_labels + [_TOTAL]
+
+    # create tables
+    af_df = all_full_df(all_cols)
+    rsf_df = rs_full_df(rs_cols)
+    rss_df = rs_sub_df(rs_cols)
+
+    # log tables
+    logger.info(af_df)
+    logger.info(rsf_df)
+    logger.info(rss_df)
+
+    # save tables
+    af_df.to_latex('./paper/tables/all_samples_full.tex')
+    rsf_df.to_latex('./paper/tables/rs_samples_full.tex')
+    rss_df.to_latex('./paper/tables/rs_samples_sub.tex')

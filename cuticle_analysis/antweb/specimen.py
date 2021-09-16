@@ -2,7 +2,7 @@
 import os
 import re
 import logging
-from typing import Dict, List
+from typing import Dict
 
 import cv2
 import requests
@@ -33,6 +33,7 @@ def hyperlink(url: str, text: str) -> str:
 class SpecimenScraper():
     def __init__(self):
         self.dh = DatasetHelper()
+        self.cc_url = "https://creativecommons.org/licenses/by/4.0/"
         self.base_url = "https://www.antweb.org"
         self.images_url = f"{self.base_url}/images.do"
         self.pic_url = f"{self.base_url}/bigPicture.do"
@@ -159,8 +160,9 @@ class SpecimenScraper():
         specimen_str = hyperlink(info['specimen_url'], info['specimen'])
         author_str = hyperlink(info['author_url'], info['author'])
         antweb_str = hyperlink(self.base_url, "AntWeb")
+        cc_str = hyperlink(self.cc_url, "CC BY 4.0")
         fig.add_caption(NoEscape(
-            f"{specimen_str} by {author_str}, from {antweb_str}"))
+            f"{specimen_str} by {author_str}, from {antweb_str}, is licensed under {cc_str}"))
 
         # save to file
         filename = f"{info['specimen']}.tex"

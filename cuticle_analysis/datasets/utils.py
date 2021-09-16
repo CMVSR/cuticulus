@@ -82,8 +82,9 @@ def convert_labels(label: pd.Series) -> pd.Series:
         to_replace=r'^[r][r].*', value=2, regex=True)
     label = label.replace(
         to_replace=r'^[r][t].*', value=3, regex=True)
+    # smooth gritty to rough tuberous
     label = label.replace(
-        to_replace=r'^[s][g].*', value=4, regex=True)
+        to_replace=r'^[s][g].*', value=3, regex=True)
     label = label.replace(
         to_replace=r'^[s][s].*', value=5, regex=True)
 

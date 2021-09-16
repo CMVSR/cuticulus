@@ -44,7 +44,9 @@ class Args:
 _builder = Args(
     group=[
         Args('--download-dataset', action='store_true',
-             help='download and unzip dataset')
+             help='download and unzip dataset'),
+        # int of id to store
+        Args('--cite', type=int, default=0,)
     ],
 )
 

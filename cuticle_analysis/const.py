@@ -36,8 +36,7 @@ ALL_LABEL_MAP = {
     'Rough Netted': 2,
     'Rough Ridged': 3,
     'Rough Tuberous': 4,
-    'Smooth Gritty': 5,
-    'Smooth': 6,
+    'Smooth': 5,
 }
 
 INT_ALL_LABEL_MAP = {v: k for k, v in ALL_LABEL_MAP.items()}
