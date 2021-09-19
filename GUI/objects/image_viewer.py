@@ -22,8 +22,8 @@ class ImageViewer():
         self.bkg_color = (50, 50, 50)
         self.bkg_obj = pygame.Rect(position[0], position[1], size[0], size[1])
         self.size = size
-        self.increment_id = False
-        self.decrement_id = False
+        self.increment_flag = False
+        self.decrement_flag = False
 
     def __scale_image__(self):
         """
@@ -62,32 +62,40 @@ class ImageViewer():
 
     def __get_increment_flag__(self):
         "Returns the increment id flag for the main thread to increment image id."
-        return self.increment_id
+        return self.increment_flag
 
     def __get_decrement_flag__(self):
         "Returns the increment id flag for the main thread to decrement image id."
-        return self.decrement_id
+        return self.decrement_flag
 
-    def __set_increment_flag__(self, new_flag):
+    def __increment_image__(self):
         "Sets the increment id flag for the main thread to increment image id."
-        self.increment_id = new_flag
+        if self.id < 2876:
+            self.id = self.id + 1
 
-    def __set_decrement_flag__(self, new_flag):
+    def __decrement_image__(self):
         "Sets the decrement id flag for the main thread to decrement image id."
-        self.decrement_id = new_flag
+        if self.id > 1:
+            self.id -= 1
 
-    def __update_image__(self, id):
+    def __correct_color__(self):
+        """Corrects the color of the image by swapping blue and red color values."""
+        print(str(self.image_arr[0][0]))
+
+    def __update_image__(self, id=None):
         """
             Updates the image viewer to current image, which is an image cache.
             Post-condition: Ant image is shown in image viewer. If file not found,
             The cache image is deleted and the image viewer shows error.
         """
         #IMPLEMENT FUNCTION THAT OBTAINS THE MAXIMUM IMAGE ID.
-        if id >= 1 and id <= 2876:
-            self.id = id
+        if (id >= 1 and id <= 2876) or id is None:
+            if id is not None:
+                self.id = id
             try:
                 self.image_arr = im.fromarray(
                     self.image_list.get_image(self.id))
+                self.__correct_color__()
                 self.image_arr.save(self.cache_path)
                 return 1
             except Exception as e:
@@ -104,3 +112,8 @@ class ImageViewer():
         except Exception as e:
             print("Cache deleted.")
         self.image = None
+
+    
+    def get_image_id(self):
+        """Returns the image id."""
+        return self.id

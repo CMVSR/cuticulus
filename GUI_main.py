@@ -46,8 +46,6 @@ def start():
         (const.WINDOW_SIZE[0], const.WINDOW_SIZE[1]), HIDDEN)
     main = Gui(window)
     white = (255, 255, 255)
-    __image_id__ = 1
-    main.set_caption(str(__image_id__) + ".jpg")
     main.get_surface().fill(white)
     pygame.mouse.set_visible(1)
     body_font = pygame.font.SysFont('Arial', const.BODY_FONT_SIZE)
@@ -70,11 +68,12 @@ def start():
                               "width": 50, "height": 50}, [prev_bttn_pos[0], prev_bttn_pos[1], 50])
     next_button = Buttons(main.get_surface(), "rectangle", ">", const.BUTTON_COLOR, {
                           "width": 50, "height": 50}, [next_bttn_pos[0], next_bttn_pos[1], 50])
-    id_text = body_font.render(str(__image_id__), True, (0, 0, 0))
     ant_iv = ImageViewer(main.get_surface(), data,
                          'rough_smooth', (225, 100), (350, 350))
-    next_button.on_click(lambda: ant_iv.__set_increment_flag__(True))
-    previous_button.on_click(lambda: ant_iv.__set_decrement_flag__(True))
+    id_text = body_font.render(str(ant_iv.get_image_id()), True, (0, 0, 0))
+    main.set_caption(str(ant_iv.get_image_id()) + ".jpg")
+    next_button.on_click(lambda: ant_iv.__increment_image__())
+    previous_button.on_click(lambda: ant_iv.__decrement_image__())
     ant_iv.__show__()
     previous_button.show()
     next_button.show()
@@ -84,14 +83,14 @@ def start():
     #Launch event listener
     is_running = True
     while is_running == True:
-        main.set_caption(str(__image_id__) + ".jpg")
+        main.set_caption(str(ant_iv.get_image_id()) + ".jpg")
         main.get_surface().fill(white)
         previous_button = Buttons(main.get_surface(), "rectangle", "<", (200, 200, 200), {
                                   "width": 50, "height": 50}, [prev_bttn_pos[0], prev_bttn_pos[1], 50])
         next_button = Buttons(main.get_surface(), "rectangle", ">", (200, 200, 200), {
                               "width": 50, "height": 50}, [next_bttn_pos[0], next_bttn_pos[1], 50])
         id_text = body_font.render(
-            "Image ID: " + str(__image_id__), True, (0, 0, 0))
+            "Image ID: " + str(ant_iv.get_image_id()), True, (0, 0, 0))
         main.get_surface().blit(id_text, [id_text_pos[0], id_text_pos[1]])
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -103,23 +102,15 @@ def start():
                     print()
                 else:
                     id_textbox.__update_value__(event.key)
-        if ant_iv.__get_increment_flag__() == True:
-            if __image_id__ < 1773:
-                __image_id__ += 1
-        if ant_iv.__get_decrement_flag__() == True:
-            if __image_id__ > 1:
-                __image_id__ -= 1
-                ant_iv.__update_image__(__image_id__)
-                ant_iv.__show__()
-                ant_iv.__set_decrement_flag__(False)
-        ant_iv.__update_image__(__image_id__)
+        ant_iv.__update_image__()
         ant_iv.__show__()
         previous_button.show()
         next_button.show()
         id_textbox.__show__()
-        ant_iv.__set_increment_flag__(False)
-        ant_iv.__set_decrement_flag__(False)
+        ant_iv.__increment_image__()
+        ant_iv.__decrement_image__()
         pygame.display.update()
+    ant_iv.__delete_img_cache__()
     
 
 # Temporary check verifying that the window staus is open until user quits.
