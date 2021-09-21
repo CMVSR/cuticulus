@@ -70,12 +70,11 @@ cuticle micro sculpturing \cite{muthukrishnan_insect_2020,
 Texture is an important feature in many applications, such as image processing,
 pattern recognition, and computer vision. Analysis of textures can be broken
 into three main categories: texture classification, texture segmentation, and
-texture synthesis. The process of classifying a texture into a set of categories
-and relies on three different approaches: feature-based, model-based, or
-structural \cite{reed_review_1993}. In this paper, we focus on a
-\textit{model-based approach} which attempt to extract parameters to reveal
-common patterns and use those parameters to automatically distinguish between
-different textures \cite{maillard_texture_2003}.
+texture synthesis \cite{reed_review_1993}. The process of classifying a texture
+into a set of categories and relies on three different approaches. In this
+paper, we focus on a \textit{model-based approach} which attempts to extract
+parameters to reveal common patterns and use those parameters to automatically
+distinguish between different textures \cite{maillard_texture_2003}.
 
 Although there is some work regarding grouping ants into categories of similar
 cuticle, automated classification has yet to become an active area of research.
@@ -98,37 +97,83 @@ anti-biotic producing bacteria \cite{johnson_effect_2011,
 be associated with certain sculpturing types and the purpose of classification
 is to group similar textures based on proposed function.
 
+\section{Related Work}
+Taxonomists have developed extensive terminology describing ant cuticle
+sculpturing as it is often a useful diagnostic trait to distinguish between
+closely related ant species \cite{blaimer_taxonomy_2019,fisher_ants_2007}. The
+definitive text on ant cuticle terminology — \textit{The Glossary of Surface
+  Sculpturing} — contains over 100 terms to describe the cuticle sculpturing
+patterns of ants \cite{harris_glossary_1979}. There is often substantial overlap
+among terms, and closely related cuticle patterns are likely to be functionally
+similar. For example, the definition for “imbricate” is, “partly overlapping and
+appearing like shingles on a roof or scales on a fish,” which is difficult to
+distinguish from the definition of tesselate, “made up of squares like a chess
+board, either in sculpturing or in color.”
+
+Cuticle sculpturing in ants has been explored thoroughly from a taxonomic
+perspective; however, the function of nano and microstructures on insect
+exoskeletons is a developing topic in entomology. Watson et al. reviews the
+literature of cuticle nano and microstructure function and proposes 21 possible
+functions associated with these structures \cite{watson_diversity_2017}. Many of
+these functions are related to structures not found in ants such as scales and
+nanostructures. The review does include functions that may relate to ants such
+as friction control, enhanced surface area, and increased hardness.  Watson et
+al. also describe seven types of cuticle structures ranging from hairs and
+scales to nano and micro structures \cite{watson_diversity_2017}. The cuticle
+sculpturing of ants seems to fall within one type – complex microstructures.
+
+The five broad functional groupings developed that describes the complex
+microstructures found on ants were derived from reviewing the variation of
+cuticle sculpturing across ants. These functional groupings were also reflected
+in Harris as many terms could be grouped together based on similar definitions
+and comparing the SEM photographs provided in the publication
+\cite{harris_glossary_1979}.
+
+
+\section{Proposed Approach}
+
 \section{Methods}
 
 \subsection{Sculpture Identification Protocol}
+A team of three assistants were in charge of the manual identification process.
+The team was trained to identify cuticle sculpturing through a process which
+consisted of one 45-minute introductory lesson explaining the project and
+texture categories and then given a training set of photos to identify from the
+genus \textit{Polyrhachis}, whose members display among the highest diversity of
+cuticle patterns all categories. The training set identifications were reviewed
+together as a group. Once training was complete, assistants were assigned the
+same genera of ants to identify independently each week. A weekly meeting was
+held to discuss identifications and assign new ones. These identifications were
+collected in a spreadsheet and the identifications were assigned to individual
+ant species on a majority basis.
 
 \subsection{Dataset}
 In order to classify the cuticle, we used ant head images sourced from AntWeb
-\cite{antweb}. In general, the ant head images are centered in the image, facing
-the front, and share a similar posture. However, some images may not be
-centered, show the ant head in a different orientation, or may have a
+\cite{perrichot_antweb_2012}. In general, the ant head images are centered in
+the image, facing the front, and share a similar posture. However, some images
+may not be centered, show the ant head in a different orientation, or may have a
 drastically different resolution from the average image. Fortunately, each can
 have several scales available such that the images' scales can be roughly
 similar.
 
-\begin{table}[h]
+\begin{table}[ht]
   \centering
   \caption{Dataset Subclass Distribution}
   \label{table:classdist_all_full}
   \include{tables/all_samples_full.tex}
 \end{table}
 
-\begin{table}[h]
+\begin{table}[ht]
   \centering
   \caption{Dataset Class Distribution}
   \label{table:classdist_rs_full}
   \include{tables/rs_samples_full.tex}
 \end{table}
 
-Images were collected and classified by undergraduate students according to the
-sculpturing identification protocol. Overall, there are a total of 2443 images
-in the dataset. The class distribution with all considered subclasses is shown
-in Table \ref{table:classdist_all_full}, and the class distribution with overall
+Images were collected and classified by according to the sculpturing
+identification protocol. Overall, there are a total of 2443 images in the
+dataset. The class distribution with all considered subclasses is shown in Table
+\ref{table:classdist_all_full}, and the class distribution with overall
 distribution is shown in Table \ref{table:classdist_rs_full}. The relatively
 small number of images in the dataset paired with the uneven class distribution
 makes it difficult to perform a meaningful classification. However, the goal of
@@ -138,9 +183,89 @@ representative images from each class to train the algorithm. Additionally, data
 augmentation and other methods are performed to increase the number of training
 images to create a more robust classification algorithm.
 
+\subsection{Subimage Dataset}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.8\textwidth]{assets/images/segmented_1.png}
+  \caption{Hand segmented ant head image to separate head cuticle from other
+    sections of the image.
+    \href{https://www.antweb.org/bigPicture.do?name=casent0217419&shot=h&number=1}{CASENT0217419}
+    by \href{https://www.antweb.org/artist.do?id=92}{Estella Ortega}, from
+    \href{https://www.antweb.org}{AntWeb}, is licensed under
+    \href{https://creativecommons.org/licenses/by/4.0/}{CC BY 4.0}}
+  \label{fig:segmented_1}
+\end{figure}
+
+When using the Sculpture Identification Protocol, the class of the overall image
+is based only on the texture of the head, not the eyes, antenna, or any other
+exposed cuticle. We use image segmentation to analyze the texture by splitting
+the ant head image into a set of regions: \textit{cuticle} and
+\textit{background}. A benefit of this approach allows us to pull patches or
+subimages of various sizes from the region to increase the number of samples
+available for training and at the same time, reduce the number of features to
+simplify the classification algorithm. With a given subimage size to extract
+from the segmented image, we label each subimage extracted based on the class of
+the input image. Overall, there are 73 images that were hand segmented in this
+manner and the class distribution for various sizes of subimages are shown in
+Table \ref{table:classdist_rs_sub}.
+
+\begin{table}[ht]
+  \centering
+  \caption{Subimage Dataset Class Distribution}
+  \label{table:classdist_rs_sub}
+  \include{tables/rs_samples_sub.tex}
+\end{table}
+
 \section{Experimental Results}
 
-\input{assets/CASENT0217419.tex}
+\subsection{Sculpturing Identification}
+In our initial trial, we examined the entire \textit{Polyrhachis} genus, which
+was 581 eligible specimens out of the 775 species. 71\% of the classifications
+were unanimous. We then expanded our categorizations to 2846 images of
+individual species from 13 genera. These genera were from the four major ant
+subfamilies Ponerinae, Myrmicinae, Formicinae, and Dolichoderinae along with
+Dorylinus and Ectatomminae. 87\% (2486) of classifications were unanimous. This
+percentage represents the accuracy for the entirety of identifications starting
+November 2020 and ending in March 2021. Assistants were also asked to complete
+an ant cuticle assessment near the end of the identification process. The
+assessment consisted of images from forty species of ants that spanned all
+categories. The purpose of the assessment was to measure the consistency of
+identifications while removing any biases from weekly meeting discussions and
+cross referencing of other identifications. Unanimous classification was reached
+90\% of the time during the individual assessment.
+
+Classifications became more consistent overtime. One likely reason for this
+increase was that students gained additional experience in cuticle
+classification over the course of these trials. However, definitions of cuticle
+texture categories were refined overtime. At the inception of the project,
+assistants based classifications off of reference photos and tentative
+definitions that were sometimes unclear. For example, striate was initially
+defined as “long linear ridges, corresponding in-between ridges vary in length.”
+Also, some tentative categories had low agreement amongst the team. For example,
+striate initially was a broad category containing two subclasses (Severe and
+Mild) and encompassed longitudinal and latitudinal ridges. Based on several
+rounds of feedback from students and identification of these problem categories
+where there was low agreement, the definitions developed into the current
+classification system.
+
+\subsection{Binary Classification}
+
+In the first experiment, we investigate the ability of a basic CNN to classify
+cuticle texture into the two main categories: \textit{rough} and
+\textit{smooth}. The goal of this experiment is to determine if more intricate
+data preprocessing or a more powerful model is necessary to classify the texture
+of the ant. Images were resized to different sizes for CNN input and different
+samples per class were also tested. The dataset used is shown in Table
+\ref{table:classdist_rs_full}, and the results are shown in Table
+\ref{table:exp1_full}.
+
+\begin{table}[ht]
+  \centering
+  \caption{Binary Classification of Full Size Images}
+  \label{table:exp1_full}
+  \include{tables/experiment_1.tex}
+\end{table}
 
 \section*{Acknowledgments}
 We would like to thank the constructive feedback provided by the reviewers.

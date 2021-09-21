@@ -1,7 +1,6 @@
 
 import logging
 import os
-import sys
 
 import colorama
 from colorama import Fore
@@ -41,6 +40,11 @@ def start_app():
         from .dataset import download_dataset, unzip_dataset
         download_dataset()
         unzip_dataset()
+
+    elif args.cite:
+        from ..antweb import SpecimenScraper
+        scraper = SpecimenScraper()
+        scraper.build_figure(args.cite)
 
     else:
         dataset_setup()

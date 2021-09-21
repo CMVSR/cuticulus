@@ -1,6 +1,6 @@
 
-
-from typing import List, Tuple
+import logging
+from typing import Tuple
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras import layers
@@ -8,21 +8,20 @@ from tensorflow import keras
 import numpy as np
 
 from ..datasets import Dataset
+from .model import Model
+
+logger = logging.getLogger(__name__)
 
 
-class CNN():
+class CNN(Model):
     def __init__(self, data: Dataset):
-        self.data = data
-        self.name = 'CNN'
-        self.num_classes = len(np.unique(data.labels))
-        self.subimage_size = data.size
-        self.path = f'./output/model_{data.size[0]}_{data.size[1]}'
+        super().__init__('CNN', data)
 
         self.model = Sequential([
             layers.experimental.preprocessing.Rescaling(
                 1./255,
                 input_shape=(
-                    self.subimage_size[0], self.subimage_size[1], 3)),
+                    self.size[0], self.size[1], 3)),
             layers.Conv2D(16, 3, padding='same', activation='relu'),
             layers.MaxPooling2D(),
             layers.Conv2D(32, 3, padding='same', activation='relu'),
@@ -34,13 +33,8 @@ class CNN():
             layers.Dense(self.num_classes)
         ])
 
-    def metadata(self) -> List[str]:
-        return [
-            f'Model Type: {self.name}'
-        ]
-
-    def train(self, epochs: int, n: int) -> None:
-        train_x, train_y = self.data.stratified_split(n)
+    def train(self, epochs: int, samples_per_class: int) -> None:
+        train_x, train_y = self.data.stratified_split(samples_per_class)
         val_x, val_y = self.data.build_validation_set()
 
         self.model.compile(
@@ -56,12 +50,6 @@ class CNN():
             validation_data=(val_x, val_y),
             epochs=epochs
         )
-
-    def save_weights(self) -> None:
-        self.model.save(self.path)
-
-    def load_weights(self) -> None:
-        self.model = keras.models.load_model(self.path)
 
     def predict(self, image: np.ndarray) -> np.ndarray:
         pred = self.model.predict(image)
