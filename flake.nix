@@ -7,41 +7,83 @@
     configs = { url = "github:ngngardner/configs"; };
   };
 
-  outputs = { self, nixpkgs, flake-utils, ... }:
-    flake-utils.lib.eachDefaultSystem (system: let
-      pkgs = import nixpkgs { inherit system; };
+  outputs = { self, nixpkgs, flake-utils, configs }:
+    flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = import nixpkgs { 
+          inherit system; 
+          overlays = [
+            configs.overlay
+          ];
+        };
 
-      python = pkgs.python39;
-      projectDir = ./.;
-      overrides = pkgs.poetry2nix.overrides.withDefaults (final: prev: {
-        # Python dependency overrides go here
+        cuticle = pkgs.python39Packages.buildPythonPackage {
+          pname = "cuticle_analysis";
+          version = "0.0.1";
+
+          src = pkgs.lib.cleanSourceWith {
+            filter = (path: type:
+              ! (builtins.any
+                (r: (builtins.match r (builtins.baseNameOf path)) != null)
+                [
+                  "dataset"
+                  "logs"
+                  "result"
+                  "pip_packages"
+                  "scripts"
+                  "gui"
+                  "paper"
+                  ".*\.egg-info"
+                  ".*\.zip"
+                ])
+            );
+            src = pkgs.lib.cleanSource ./.;
+          };
+
+          propagatedBuildInputs = with pkgs.python39Packages; [
+            colorama
+            gdown
+            matplotlib
+            numpy
+            opencv3
+            openpyxl
+            pandas
+            pillow
+            python-dotenv
+            requests
+            scikit-learn
+            scipy
+            tensorflow
+            questionary
+          ];
+
+          doCheck = false;
+          pythonImportsCheck = [ "cuticle_analysis" ];
+        };
+      in
+      {
+        packages.cuticle = cuticle;
+        defaultPackage = cuticle;
+
+        devShell = pkgs.mkShell {
+          packages = [
+            cuticle
+
+            # python dev
+            pkgs.python39Packages.autopep8
+            pkgs.python39Packages.pycodestyle
+            pkgs.python39Packages.pylint
+            pkgs.python39Packages.pytest
+            pkgs.python39Packages.coverage
+
+            # nix dev
+            pkgs.nixpkgs-fmt
+
+            # paper dev
+            pkgs.texlive.combined.scheme-small
+            pkgs.jabref
+            pkgs.pylatex
+          ];
+        };
       });
-
-      packageName = "cuticle_analysis";
-    in {
-      packages.${packageName} = pkgs.poetry2nix.mkPoetryApplication {
-        inherit python projectDir overrides;
-        # Non-Python runtime dependencies go here
-        propogatedBuildInputs = [ pkgs.opencv3];
-      };
-
-      defaultPackage = self.packages.${system}.${packageName};
-
-      devShell = pkgs.mkShell {
-        buildInputs = [
-          (pkgs.poetry2nix.mkPoetryEnv {
-            inherit python projectDir overrides;
-          })
-          pkgs.python39Packages.poetry
-
-          # paper dev
-          pkgs.texlive.combined.scheme-small
-          pkgs.jabref
-
-          # nix dev
-          pkgs.nixpkgs-fmt
-        ];
-      };
-
-    });
 }
