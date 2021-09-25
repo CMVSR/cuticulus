@@ -1,4 +1,4 @@
-{ pkgs ? import ./nix { } }:
+{ pkgs }:
 
 let
   pythonLibs = pkgs.python39.buildEnv.override {
@@ -21,7 +21,7 @@ pkgs.mkShell {
     pkgs.nixpkgs-fmt
 
     # paper dev
-    pkgs.texlive.combined.scheme-medium
+    pkgs.texlive.combined.scheme-small
     pkgs.jabref
     beautifulsoup4
     pkgs.pylatex

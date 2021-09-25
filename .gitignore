@@ -141,6 +141,7 @@ cuticle_analysis.egg-info
 .vscode
 .env
 .snakemake
+.direnv
 *.zip
 temp.py
 

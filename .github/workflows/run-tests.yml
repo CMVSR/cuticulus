@@ -12,11 +12,11 @@ jobs:
       - name: install nix
         uses: cachix/install-nix-action@v13
       - name: download dataset
-        run: nix-shell shell.ci.nix --run "cuticle_analysis --download-dataset"
+        run: nix-shell --run "cuticle_analysis --download-dataset"
       - name: run tests
-        run: nix-shell shell.ci.nix --run "coverage run --source=cuticle_analysis --module pytest --verbose tests"
+        run: nix-shell --run "coverage run --source=cuticle_analysis --module pytest --verbose tests"
       - name: coverage report
-        run: nix-shell shell.ci.nix --run "coverage xml"
+        run: nix-shell --run "coverage xml"
       - name: upload coverage to codecov
         uses: codecov/codecov-action@v1
         with:
