@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "cuticle_analysis"
+version = "0.1.0"
+description = ""
+authors = ["Noah Gardner <ngngardner@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.10"
+colorama = "^0.4.4"
+gdown = "^3.13.1"
+PyLaTeX = "^1.4.1"
+beautifulsoup4 = "^4.10.0"
+numpy = "^1.19.2"
+matplotlib = "^3.4.3"
+openpyxl = "^3.0.9"
+pandas = "^1.3.3"
+Pillow = "^8.3.2"
+python-dotenv = "^0.19.0"
+requests = "^2.26.0"
+scikit-learn = "^1.0"
+scipy = "^1.7.1"
+tensorflow = "^2.6.0"
+questionary = "^1.10.0"
+
+[tool.poetry.dev-dependencies]
+autopep8 = "^1.5.7"
+pycodestyle = "^2.7.0"
+pytest = "^6.2.5"
+coverage = "^5.5"
+pylint = "2.10.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+cuticle_analysis = 'cuticle_analysis.__main__:main'
