@@ -1,0 +1,110 @@
+{
+  "nodes": {
+    "configs": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": "nixpkgs",
+        "pylatex_src": "pylatex_src"
+      },
+      "locked": {
+        "lastModified": 1632599150,
+        "narHash": "sha256-5faqCjnMz0NPU0XIjUWswrCdCJ2vcaR4E6Z3nDDgkD4=",
+        "owner": "ngngardner",
+        "repo": "configs",
+        "rev": "3e81d971a5c3f0ef05abbc52f555237117d94968",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ngngardner",
+        "repo": "configs",
+        "type": "github"
+      }
+    },
+    "flake-utils": {
+      "locked": {
+        "lastModified": 1631561581,
+        "narHash": "sha256-3VQMV5zvxaVLvqqUrNz3iJelLw30mIVSfZmAaauM3dA=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "7e5bf3925f6fbdfaf50a2a7ca0be2879c4261d19",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_2": {
+      "locked": {
+        "lastModified": 1631561581,
+        "narHash": "sha256-3VQMV5zvxaVLvqqUrNz3iJelLw30mIVSfZmAaauM3dA=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "7e5bf3925f6fbdfaf50a2a7ca0be2879c4261d19",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1632589674,
+        "narHash": "sha256-QQuXromHBOHeQiadgwiMs5gdkFnriX6Q5K6dUI3oicE=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "9f371831e260c28324f268b7e55938b5d19da901",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "release-21.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1632600271,
+        "narHash": "sha256-2WndMSEsdnamVktLmYLd8dZrRsGCH5Bd8mu5L4HuupU=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "6201954aa117d24cc73e46f355c0ea19b8fcad6f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "pylatex_src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1625904937,
+        "narHash": "sha256-am+dAiyOWJ9M55/lsgMpkypk3sdFRtQFR0CMFWih5Yc=",
+        "owner": "JelteF",
+        "repo": "PyLaTeX",
+        "rev": "1a73261b771ae15afbb3ca5f06d4ba61328f1c62",
+        "type": "github"
+      },
+      "original": {
+        "owner": "JelteF",
+        "repo": "PyLaTeX",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "configs": "configs",
+        "flake-utils": "flake-utils_2",
+        "nixpkgs": "nixpkgs_2"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
