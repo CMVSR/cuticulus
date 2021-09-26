@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD:gui/__main__.py
 import pygame
 
 from pygame.locals import HIDDEN, DOUBLEBUF
@@ -8,6 +9,19 @@ from gui.objects.image_viewer import ImageViewer
 from gui.objects.buttons.buttons import Buttons
 from gui.objects.textbox import Textbox
 from gui import const
+=======
+import threading
+import pygame
+import os
+
+from pygame.locals import HIDDEN, DOUBLEBUF
+
+from cuticle_analysis.dataset import Dataset
+from GUI.objects.image_viewer import ImageViewer
+from GUI.objects.buttons.buttons import Buttons
+from GUI.objects.textbox import Textbox
+from GUI import const
+>>>>>>> bf733a9 (gui from unstable branch):gui/gui.py
 
 
 class Gui:
@@ -38,7 +52,11 @@ def start():
     The function opens the main window and adds the imageviewer navigation buttons with their corresponding
     event listeners, image id, image, ant's species classification, and the ant's texture classification.
     """
+<<<<<<< HEAD:gui/__main__.py
     data = DatasetHelper()
+=======
+    data = Dataset(size=(16, 16), dataset_type='rough_smooth')
+>>>>>>> bf733a9 (gui from unstable branch):gui/gui.py
     # Initializes GUI objects and launches window.
     window = pygame.display.set_mode(
         (const.WINDOW_SIZE[0], const.WINDOW_SIZE[1]), HIDDEN)
@@ -70,6 +88,11 @@ def start():
                          'rough_smooth', (225, 100), (350, 350))
     id_text = body_font.render(str(ant_iv.get_image_id()), True, (0, 0, 0))
     main.set_caption(str(ant_iv.get_image_id()) + ".jpg")
+<<<<<<< HEAD:gui/__main__.py
+=======
+    next_button.on_click(lambda: ant_iv.__increment_image__())
+    previous_button.on_click(lambda: ant_iv.__decrement_image__())
+>>>>>>> bf733a9 (gui from unstable branch):gui/gui.py
     ant_iv.__show__()
     previous_button.show()
     next_button.show()
@@ -80,7 +103,10 @@ def start():
     is_running = True
     initialized = False
     while is_running == True:
+<<<<<<< HEAD:gui/__main__.py
         old_id = ant_iv.get_image_id()
+=======
+>>>>>>> bf733a9 (gui from unstable branch):gui/gui.py
         main.set_caption(str(ant_iv.get_image_id()) + ".jpg")
         main.get_surface().fill(white)
         previous_button = Buttons(main.get_surface(), "rectangle", "<", (200, 200, 200), {
@@ -94,6 +120,7 @@ def start():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 is_running = False
+<<<<<<< HEAD:gui/__main__.py
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     ant_iv.__update_image__(id=id_textbox.__get_value__())
@@ -108,10 +135,25 @@ def start():
             while ant_iv.get_color_corrected() is False:
                 print("Color correcting")
             initialized = True
+=======
+                previous_button.set_running_status(is_running)
+                ant_iv.__delete_img_cache__()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    print()
+                else:
+                    id_textbox.__update_value__(event.key)
+        ant_iv.__update_image__()
+>>>>>>> bf733a9 (gui from unstable branch):gui/gui.py
         ant_iv.__show__()
         previous_button.show()
         next_button.show()
         id_textbox.__show__()
+<<<<<<< HEAD:gui/__main__.py
+=======
+        ant_iv.__increment_image__()
+        ant_iv.__decrement_image__()
+>>>>>>> bf733a9 (gui from unstable branch):gui/gui.py
         pygame.display.update()
     ant_iv.__delete_img_cache__()
 

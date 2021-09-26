@@ -25,7 +25,10 @@ class ImageViewer():
         self.size = size
         self.increment_flag = False
         self.decrement_flag = False
+<<<<<<< HEAD
         self.__color_corrected = False
+=======
+>>>>>>> bf733a9 (gui from unstable branch)
 
     def __scale_image__(self):
         """
@@ -87,6 +90,7 @@ class ImageViewer():
         if self.id > 1:
             self.id -= 1
 
+<<<<<<< HEAD
     #Implement function where image gets split into eight threads to reduce
     #Recursion limit error.
     #def __correct_pixel_color(self, x, y):
@@ -109,6 +113,11 @@ class ImageViewer():
                 x[0] = x[2].copy()
                 x[2] = actl_blue
         self.image_arr = im.fromarray(self.image_arr)
+=======
+    def __correct_color__(self):
+        """Corrects the color of the image by swapping blue and red color values."""
+        print(str(self.image_arr[0][0]))
+>>>>>>> bf733a9 (gui from unstable branch)
 
     def __update_image__(self, id=None):
         """
@@ -117,19 +126,32 @@ class ImageViewer():
             The cache image is deleted and the image viewer shows error.
         """
         #IMPLEMENT FUNCTION THAT OBTAINS THE MAXIMUM IMAGE ID.
+<<<<<<< HEAD
         if (id is None) or (id >= 1 and id <= 2876):
+=======
+        if (id >= 1 and id <= 2876) or id is None:
+>>>>>>> bf733a9 (gui from unstable branch)
             if id is not None:
                 self.id = id
             try:
                 self.image_arr = im.fromarray(
+<<<<<<< HEAD
                     self.image_list.get_image(self.id, False))
                 self.__color_corrected = False
                 self.__correct_color__()
                 self.__color_corrected = True
+=======
+                    self.image_list.get_image(self.id))
+                self.__correct_color__()
+>>>>>>> bf733a9 (gui from unstable branch)
                 self.image_arr.save(self.cache_path)
                 self.image = pygame.image.load(self.cache_path)
                 return 1
+<<<<<<< HEAD
             except ValueError as ve:
+=======
+            except Exception as e:
+>>>>>>> bf733a9 (gui from unstable branch)
                 self.image_arr = None
                 self.__delete_img_cache__()
                 return -1
@@ -147,7 +169,11 @@ class ImageViewer():
     
     def get_image_id(self):
         """Returns the image id."""
+<<<<<<< HEAD
         return self.id
     
     def get_color_corrected(self):
         return self.__color_corrected
+=======
+        return self.id
+>>>>>>> bf733a9 (gui from unstable branch)
