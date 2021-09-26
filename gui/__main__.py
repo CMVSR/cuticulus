@@ -1,15 +1,13 @@
 
-import threading
 import pygame
-import os
 
 from pygame.locals import HIDDEN, DOUBLEBUF
 
-from cuticle_analysis.dataset import Dataset
-from GUI.objects.image_viewer import ImageViewer
-from GUI.objects.buttons.buttons import Buttons
-from GUI.objects.textbox import Textbox
-from GUI import const
+from cuticle_analysis.datasets import DatasetHelper
+from gui.objects.image_viewer import ImageViewer
+from gui.objects.buttons.buttons import Buttons
+from gui.objects.textbox import Textbox
+from gui import const
 
 
 class Gui:
@@ -40,7 +38,7 @@ def start():
     The function opens the main window and adds the imageviewer navigation buttons with their corresponding
     event listeners, image id, image, ant's species classification, and the ant's texture classification.
     """
-    data = Dataset(size=(16, 16), dataset_type='rough_smooth')
+    data = DatasetHelper()
     # Initializes GUI objects and launches window.
     window = pygame.display.set_mode(
         (const.WINDOW_SIZE[0], const.WINDOW_SIZE[1]), HIDDEN)
