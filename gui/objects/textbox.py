@@ -1,15 +1,7 @@
 
-<<<<<<< HEAD
 import pygame
 
 from gui import const
-=======
-from concurrent.futures import thread
-import pygame
-
-from GUI import const
-import threading
->>>>>>> bf733a9 (gui from unstable branch)
 
 
 class Textbox():
@@ -35,14 +27,9 @@ class Textbox():
         self.is_running = True
         self.shape_object = pygame.Rect(self.position[0], self.position[1], int(list(size.values())[list(
             size.keys()).index("width")]), int(list(size.values())[list(size.keys()).index("height")]))
-<<<<<<< HEAD
         self.keyboard_events = [pygame.K_0, pygame.K_1, pygame.K_2, pygame.K_3,
                                 pygame.K_4, pygame.K_5, pygame.K_6, pygame.K_7, pygame.K_8, pygame.K_9]
-=======
-        self.keyboard_events = [pygame.K_0, pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6, pygame.K_7, pygame.K_8, pygame.K_9]
->>>>>>> bf733a9 (gui from unstable branch)
 
-    
     def __show__(self):
         """Sets textbox visible"""
         pygame.draw.rect(
@@ -68,10 +55,6 @@ class Textbox():
                 return
             else:
                 self.__to_int__(KEY_EVENT, (max_events - 1))
-<<<<<<< HEAD
-=======
-        
->>>>>>> bf733a9 (gui from unstable branch)
 
     def __update_value__(self, KEY_EVENT):
         """Updates the textbox on keyboard press.
@@ -92,13 +75,3 @@ class Textbox():
                     self.value = self.value * 10 + self.__k_input__
         except Exception as e:
             self.value = None
-<<<<<<< HEAD
-
-    def __clear_value__(self):
-        self.value = None
-
-    def __get_value__(self):
-        if self.value is not None:
-            return self.value
-=======
->>>>>>> bf733a9 (gui from unstable branch)
