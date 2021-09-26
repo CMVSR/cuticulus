@@ -4,10 +4,11 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs";
     flake-utils = { url = "github:numtide/flake-utils"; };
+    flake-compat = { url = "github:edolstra/flake-compat"; flake = false; };
     configs = { url = "github:ngngardner/configs"; };
   };
 
-  outputs = { self, nixpkgs, flake-utils, configs }:
+  outputs = { self, nixpkgs, flake-utils, flake-compat, configs }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { 
