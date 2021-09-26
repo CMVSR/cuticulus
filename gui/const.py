@@ -1,4 +1,3 @@
-
 # constants for gui classes
 PROGAM_NAME = "Cuticle Analyzer"
 WINDOW_SIZE = (800, 600)
