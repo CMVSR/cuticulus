@@ -70,8 +70,6 @@ def start():
                          'rough_smooth', (225, 100), (350, 350))
     id_text = body_font.render(str(ant_iv.get_image_id()), True, (0, 0, 0))
     main.set_caption(str(ant_iv.get_image_id()) + ".jpg")
-    next_button.on_click(lambda: ant_iv.__increment_image__())
-    previous_button.on_click(lambda: ant_iv.__decrement_image__())
     ant_iv.__show__()
     previous_button.show()
     next_button.show()
@@ -80,33 +78,40 @@ def start():
     pygame.display.update()
     # Launch event listener
     is_running = True
+    initialized = False
     while is_running == True:
+        old_id = ant_iv.get_image_id()
         main.set_caption(str(ant_iv.get_image_id()) + ".jpg")
         main.get_surface().fill(white)
         previous_button = Buttons(main.get_surface(), "rectangle", "<", (200, 200, 200), {
                                   "width": 50, "height": 50}, [prev_bttn_pos[0], prev_bttn_pos[1], 50])
         next_button = Buttons(main.get_surface(), "rectangle", ">", (200, 200, 200), {
                               "width": 50, "height": 50}, [next_bttn_pos[0], next_bttn_pos[1], 50])
+        #print(str(ant_iv.get_image_id()))
         id_text = body_font.render(
             "Image ID: " + str(ant_iv.get_image_id()), True, (0, 0, 0))
         main.get_surface().blit(id_text, [id_text_pos[0], id_text_pos[1]])
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 is_running = False
-                previous_button.set_running_status(is_running)
-                ant_iv.__delete_img_cache__()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    print()
+                    ant_iv.__update_image__(id=id_textbox.__get_value__())
+                    id_textbox.__clear_value__()
                 else:
                     id_textbox.__update_value__(event.key)
-        ant_iv.__update_image__()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                next_button.on_click(lambda: ant_iv.__increment_image__())
+                previous_button.on_click(lambda: ant_iv.__decrement_image__())
+        if (initialized is False) or (ant_iv.get_color_corrected() is False) or (old_id != ant_iv.get_image_id()):
+            ant_iv.__update_image__()
+            while ant_iv.get_color_corrected() is False:
+                print("Color correcting")
+            initialized = True
         ant_iv.__show__()
         previous_button.show()
         next_button.show()
         id_textbox.__show__()
-        ant_iv.__increment_image__()
-        ant_iv.__decrement_image__()
         pygame.display.update()
     ant_iv.__delete_img_cache__()
 

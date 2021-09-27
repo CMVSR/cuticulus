@@ -1,5 +1,6 @@
 
 import os
+import numpy as np
 
 import pygame  # GUI Framework
 from PIL import Image as im  # Import library that reads image array
@@ -12,9 +13,9 @@ class ImageViewer():
         self.surface = surface
         self.id = 1
         self.image_list = image_list
-        self.image_arr = im.fromarray(image_list.get_image(self.id))
+        self.image_arr = im.fromarray(image_list.get_image(self.id, False))
         self.dataset_type = dataset_type
-        self.cache_path = f'./dataset/iv_cache.jpg'
+        self.cache_path = f'./dataset/.iv_cache.jpg'
         self.image_arr.save(self.cache_path)
         self.image = pygame.image.load(self.cache_path)
         self.img_size = None
@@ -24,6 +25,7 @@ class ImageViewer():
         self.size = size
         self.increment_flag = False
         self.decrement_flag = False
+        self.__color_corrected = False
 
     def __scale_image__(self):
         """
@@ -54,11 +56,18 @@ class ImageViewer():
             self.__scale_image__()
             self.surface.blit(self.image, self.position)
         else:
-            body_font = pygame.font.SysFont('Arial', 16)
+            body_font = pygame.font.SysFont('Arial', 12)
+            cwd = os.getcwd()
+            if len(cwd) > 50:
+                cwd_folders = cwd.split('/')
+                if len(cwd_folders) > 1:
+                    cwd = "/" + cwd_folders[1] + "/..."
+                else:
+                    cwd = cwd[0:10:1] + "..."
             error_text = body_font.render(
-                "Could not locate image '" + f'./{const.DS_MAP[self.dataset_type]}_dataset/{self.id}.jpg' + "'.", True, (255, 255, 255))
+                "Could not locate image '" + f'{cwd}/dataset/{self.id}.jpg' + "'.", True, (255, 255, 255))
             self.surface.blit(
-                error_text, (self.position[0], self.position[1] + self.size[1]/2))
+                error_text, (self.position[0], self.size[1]/3))
 
     def __get_increment_flag__(self):
         "Returns the increment id flag for the main thread to increment image id."
@@ -78,9 +87,28 @@ class ImageViewer():
         if self.id > 1:
             self.id -= 1
 
+    #Implement function where image gets split into eight threads to reduce
+    #Recursion limit error.
+    #def __correct_pixel_color(self, x, y):
+     #   if y < 0:
+     #       return
+     #   elif x < 0 and y >= 0:
+     #       self.__correct_pixel_color(len(self.image_arr[0]) - 1, y - 1)
+     #   else:
+     #       actl_blue = self.image_arr[y][x][0].copy()
+     #       self.image_arr[y][x][0] = self.image_arr[y][x][2].copy()
+     #       self.image_arr[y][x][2] = actl_blue
+     #       self.__correct_pixel_color(x -1 , y)
+
     def __correct_color__(self):
         """Corrects the color of the image by swapping blue and red color values."""
-        print(str(self.image_arr[0][0]))
+        self.image_arr = np.array(self.image_arr)
+        for y in range(len(self.image_arr)):
+            for x in self.image_arr[y]:
+                actl_blue = x[0].copy()
+                x[0] = x[2].copy()
+                x[2] = actl_blue
+        self.image_arr = im.fromarray(self.image_arr)
 
     def __update_image__(self, id=None):
         """
@@ -89,16 +117,19 @@ class ImageViewer():
             The cache image is deleted and the image viewer shows error.
         """
         #IMPLEMENT FUNCTION THAT OBTAINS THE MAXIMUM IMAGE ID.
-        if (id >= 1 and id <= 2876) or id is None:
+        if (id is None) or (id >= 1 and id <= 2876):
             if id is not None:
                 self.id = id
             try:
                 self.image_arr = im.fromarray(
-                    self.image_list.get_image(self.id))
+                    self.image_list.get_image(self.id, False))
+                self.__color_corrected = False
                 self.__correct_color__()
+                self.__color_corrected = True
                 self.image_arr.save(self.cache_path)
+                self.image = pygame.image.load(self.cache_path)
                 return 1
-            except Exception as e:
+            except ValueError as ve:
                 self.image_arr = None
                 self.__delete_img_cache__()
                 return -1
@@ -117,3 +148,6 @@ class ImageViewer():
     def get_image_id(self):
         """Returns the image id."""
         return self.id
+    
+    def get_color_corrected(self):
+        return self.__color_corrected

@@ -75,3 +75,10 @@ class Textbox():
                     self.value = self.value * 10 + self.__k_input__
         except Exception as e:
             self.value = None
+
+    def __clear_value__(self):
+        self.value = None
+
+    def __get_value__(self):
+        if self.value is not None:
+            return self.value
