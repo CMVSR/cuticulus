@@ -77,6 +77,9 @@
             pkgs.python39Packages.pytest
             pkgs.python39Packages.coverage
 
+            # gui
+            pkgs.python39Packages.pygame
+
             # nix dev
             pkgs.nixpkgs-fmt
 

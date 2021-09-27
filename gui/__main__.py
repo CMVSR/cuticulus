@@ -1,17 +1,13 @@
 
-from os import environ
-environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'  # noqa
 import pygame
-
-import threading
 
 from pygame.locals import HIDDEN, DOUBLEBUF
 
-from cuticle_analysis.datasets import Dataset
-from .objects.image_viewer import ImageViewer
-from .objects.buttons.buttons import Buttons
-from .objects.textbox import Textbox
-from . import const
+from cuticle_analysis.datasets import DatasetHelper
+from gui.objects.image_viewer import ImageViewer
+from gui.objects.buttons.buttons import Buttons
+from gui.objects.textbox import Textbox
+from gui import const
 
 
 class Gui:
@@ -42,14 +38,12 @@ def start():
     The function opens the main window and adds the imageviewer navigation buttons with their corresponding
     event listeners, image id, image, ant's species classification, and the ant's texture classification.
     """
-    data = Dataset(size=(16, 16), dataset_type='rough_smooth')
-    # Initializes and launches window.
+    data = DatasetHelper()
+    # Initializes GUI objects and launches window.
     window = pygame.display.set_mode(
         (const.WINDOW_SIZE[0], const.WINDOW_SIZE[1]), HIDDEN)
     main = Gui(window)
     white = (255, 255, 255)
-    __image_id__ = 1
-    main.set_caption(str(__image_id__) + ".jpg")
     main.get_surface().fill(white)
     pygame.mouse.set_visible(1)
     body_font = pygame.font.SysFont('Arial', const.BODY_FONT_SIZE)
@@ -72,61 +66,56 @@ def start():
                               "width": 50, "height": 50}, [prev_bttn_pos[0], prev_bttn_pos[1], 50])
     next_button = Buttons(main.get_surface(), "rectangle", ">", const.BUTTON_COLOR, {
                           "width": 50, "height": 50}, [next_bttn_pos[0], next_bttn_pos[1], 50])
-    id_text = body_font.render(str(__image_id__), True, (0, 0, 0))
     ant_iv = ImageViewer(main.get_surface(), data,
                          'rough_smooth', (225, 100), (350, 350))
-    next_bttn_listener = threading.Thread(target=next_button.on_click, args=[
-                                          lambda: ant_iv.__set_increment_flag__(True)])
-    next_bttn_listener.start()
-    prev_bttn_listener = threading.Thread(target=previous_button.on_click, args=[
-                                          lambda: ant_iv.__set_decrement_flag__(True)])
-    prev_bttn_listener.start()
+    id_text = body_font.render(str(ant_iv.get_image_id()), True, (0, 0, 0))
+    main.set_caption(str(ant_iv.get_image_id()) + ".jpg")
     ant_iv.__show__()
     previous_button.show()
     next_button.show()
     id_textbox.__show__()
     main.get_surface().blit(id_text, [id_text_pos[0], id_text_pos[1]])
     pygame.display.update()
+    # Launch event listener
     is_running = True
+    initialized = False
     while is_running == True:
-        main.set_caption(str(__image_id__) + ".jpg")
+        old_id = ant_iv.get_image_id()
+        main.set_caption(str(ant_iv.get_image_id()) + ".jpg")
         main.get_surface().fill(white)
         previous_button = Buttons(main.get_surface(), "rectangle", "<", (200, 200, 200), {
                                   "width": 50, "height": 50}, [prev_bttn_pos[0], prev_bttn_pos[1], 50])
         next_button = Buttons(main.get_surface(), "rectangle", ">", (200, 200, 200), {
                               "width": 50, "height": 50}, [next_bttn_pos[0], next_bttn_pos[1], 50])
+        #print(str(ant_iv.get_image_id()))
         id_text = body_font.render(
-            "Image ID: " + str(__image_id__), True, (0, 0, 0))
-
+            "Image ID: " + str(ant_iv.get_image_id()), True, (0, 0, 0))
         main.get_surface().blit(id_text, [id_text_pos[0], id_text_pos[1]])
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 is_running = False
-                previous_button.set_running_status(is_running)
-        if ant_iv.__get_increment_flag__() == True:
-            if __image_id__ < 1773:
-                __image_id__ += 1
-        if ant_iv.__get_decrement_flag__() == True:
-            if __image_id__ > 1:
-                __image_id__ -= 1
-                ant_iv.__update_image__(__image_id__)
-                ant_iv.__show__()
-                ant_iv.__set_decrement_flag__(False)
-        ant_iv.__update_image__(__image_id__)
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    ant_iv.__update_image__(id=id_textbox.__get_value__())
+                    id_textbox.__clear_value__()
+                else:
+                    id_textbox.__update_value__(event.key)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                next_button.on_click(lambda: ant_iv.__increment_image__())
+                previous_button.on_click(lambda: ant_iv.__decrement_image__())
+        if (initialized is False) or (ant_iv.get_color_corrected() is False) or (old_id != ant_iv.get_image_id()):
+            ant_iv.__update_image__()
+            while ant_iv.get_color_corrected() is False:
+                print("Color correcting")
+            initialized = True
         ant_iv.__show__()
         previous_button.show()
         next_button.show()
         id_textbox.__show__()
-        ant_iv.__set_increment_flag__(False)
-        ant_iv.__set_decrement_flag__(False)
         pygame.display.update()
-    next_bttn_listener.join()
-    prev_bttn_listener.join()
+    ant_iv.__delete_img_cache__()
 
 
-if __name__ == "__main__":
-    # Temporary check verifying that the window staus is open until user quits.
-    gui_thread = threading.Thread(target=start)
-    pygame.init()
-    gui_thread.start()
-    gui_thread.join()
+# Temporary check verifying that the window staus is open until user quits.
+pygame.init()
+start()

@@ -1,9 +1,7 @@
 
-from os import environ
-environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'  # noqa
-import pygame
-
 import threading
+
+import pygame  # GUI Framework
 
 
 class Buttons():
@@ -22,7 +20,6 @@ class Buttons():
         self.shape_object = None
         self.func = None
         self.func_param = None
-        self.is_running = True
         self.mouse_pos = pygame.mouse.get_pos()
         self.__create_button__()
 
@@ -50,26 +47,17 @@ class Buttons():
         self.surface.blit(self.text_object, ((
             self.position[0] + self.get_width()/4), (self.position[1])))
 
-    def start_click_listener(self):
-        "Runs loop that handles mouse click on button object."
-        while self.is_running == True:
-            self.mouse_pos = pygame.mouse.get_pos()
-            for event in pygame.event.get():
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if (self.position[0] <= self.mouse_pos[0] <= self.position[0]+self.get_width()
-                            and self.position[1] <= self.mouse_pos[1] <= self.position[1]+self.get_height()):
-                        self.func()
-                        self.show()
-                if event.type == pygame.QUIT:
-                    self.is_running = False
-                    break
+
 
     def on_click(self, func):
         "Set class parameters equal to parameter and launch event listener thread."
-        self.func = func
-        listener_thread = threading.Thread(target=self.start_click_listener)
-        listener_thread.start()
-        listener_thread.join()
+        self.mouse_pos = pygame.mouse.get_pos()
+        if (self.position[0] <= self.mouse_pos[0] <= self.position[0]+self.get_width()
+                and self.position[1] <= self.mouse_pos[1] <= self.position[1]+self.get_height()):
+            func()
+            self.show()
+        
+
 
     def get_width(self):
         "Returns the width of the button."
@@ -79,9 +67,6 @@ class Buttons():
         "Returns the height of the button."
         return list(self.size.values())[list(self.size.keys()).index("height")]
 
-    def set_running_status(self, new_state):
-        "Updates the is_running state."
-        self.is_running = new_state
 
     def set_position(self, new_position):
         "Updates position of button"
