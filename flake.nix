@@ -2,17 +2,16 @@
   description = "Ant cuticle texture analysis";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs";
-    flake-utils = { url = "github:numtide/flake-utils"; };
-    flake-compat = { url = "github:edolstra/flake-compat"; flake = false; };
+    nixpkgs.url = "github:NixOS/nixpkgs/d189bf92f9be23f9b0f6c444f6ae29351bb7125c";
+    utils = { url = "github:numtide/flake-utils"; };
     configs = { url = "github:ngngardner/configs"; };
   };
 
-  outputs = { self, nixpkgs, flake-utils, flake-compat, configs }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs = { self, nixpkgs, utils, configs }:
+    utils.lib.eachDefaultSystem (system:
       let
-        pkgs = import nixpkgs { 
-          inherit system; 
+        pkgs = import nixpkgs {
+          inherit system;
           overlays = [
             configs.overlay
           ];
@@ -79,9 +78,6 @@
 
             # gui
             pkgs.python39Packages.pygame
-
-            # nix dev
-            pkgs.nixpkgs-fmt
 
             # paper dev
             pkgs.texlive.combined.scheme-small
