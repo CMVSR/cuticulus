@@ -31,7 +31,6 @@ class Gui:
     def set_surface(self, surface):
         self.surface = surface
 
-
 def start():
     """
     This file contains the gui functions for the main window.
@@ -67,27 +66,20 @@ def start():
     next_button = Buttons(main.get_surface(), "rectangle", ">", const.BUTTON_COLOR, {
                           "width": 50, "height": 50}, [next_bttn_pos[0], next_bttn_pos[1], 50])
     ant_iv = ImageViewer(main.get_surface(), data,
-                         'rough_smooth', (225, 100), (350, 350))
+                         (225, 100), (350, 350))
     id_text = body_font.render(str(ant_iv.get_image_id()), True, (0, 0, 0))
     main.set_caption(str(ant_iv.get_image_id()) + ".jpg")
-    next_button.on_click(lambda: ant_iv.__increment_image__())
-    previous_button.on_click(lambda: ant_iv.__decrement_image__())
     ant_iv.__show__()
-    previous_button.show()
-    next_button.show()
+    previous_button.__show__()
+    next_button.__show__()
     id_textbox.__show__()
     main.get_surface().blit(id_text, [id_text_pos[0], id_text_pos[1]])
     pygame.display.update()
     # Launch event listener
     is_running = True
-    initialized = False
     while is_running == True:
         main.set_caption(str(ant_iv.get_image_id()) + ".jpg")
         main.get_surface().fill(white)
-        previous_button = Buttons(main.get_surface(), "rectangle", "<", (200, 200, 200), {
-                                  "width": 50, "height": 50}, [prev_bttn_pos[0], prev_bttn_pos[1], 50])
-        next_button = Buttons(main.get_surface(), "rectangle", ">", (200, 200, 200), {
-                              "width": 50, "height": 50}, [next_bttn_pos[0], next_bttn_pos[1], 50])
         #print(str(ant_iv.get_image_id()))
         id_text = body_font.render(
             "Image ID: " + str(ant_iv.get_image_id()), True, (0, 0, 0))
@@ -95,20 +87,19 @@ def start():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 is_running = False
-                previous_button.set_running_status(is_running)
-                ant_iv.__delete_img_cache__()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    print()
+                    id_textbox.on_k_return(lambda: ant_iv.set_image_id(id_textbox.get_value()))
                 else:
                     id_textbox.__update_value__(event.key)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                next_button.on_click(lambda: ant_iv.__increment_image__())
+                previous_button.on_click(lambda: ant_iv.__decrement_image__())
         ant_iv.__update_image__()
         ant_iv.__show__()
-        previous_button.show()
-        next_button.show()
+        previous_button.__show__()
+        next_button.__show__()
         id_textbox.__show__()
-        ant_iv.__increment_image__()
-        ant_iv.__decrement_image__()
         pygame.display.update()
     ant_iv.__delete_img_cache__()
 

@@ -1,6 +1,7 @@
 
 import os
 import numpy as np
+import cv2
 
 import pygame  # GUI Framework
 from PIL import Image as im  # Import library that reads image array
@@ -9,22 +10,19 @@ from cuticle_analysis import const
 
 
 class ImageViewer():
-    def __init__(self, surface, image_list, dataset_type, position, size):
+    def __init__(self, surface, image_list, position, size):
         self.surface = surface
         self.id = 1
         self.image_list = image_list
-        self.image_arr = im.fromarray(image_list.get_image(self.id, False))
-        self.dataset_type = dataset_type
+        self.image_arr = self.image_list.get_image(self.id, False)
         self.cache_path = f'./dataset/.iv_cache.jpg'
-        self.image_arr.save(self.cache_path)
+        cv2.imwrite(self.cache_path, self.image_arr)
         self.image = pygame.image.load(self.cache_path)
         self.img_size = None
         self.position = position
         self.bkg_color = (50, 50, 50)
         self.bkg_obj = pygame.Rect(position[0], position[1], size[0], size[1])
         self.size = size
-        self.increment_flag = False
-        self.decrement_flag = False
 
     def __scale_image__(self):
         """
@@ -50,7 +48,7 @@ class ImageViewer():
         "Sets the image to visible"
         pygame.draw.rect(self.surface, self.bkg_color, self.bkg_obj)
 
-        if self.image_arr is not None:
+        if self.image is not None:
             self.image = pygame.image.load(self.cache_path)
             self.__scale_image__()
             self.surface.blit(self.image, self.position)
@@ -68,14 +66,6 @@ class ImageViewer():
             self.surface.blit(
                 error_text, (self.position[0], self.size[1]/3))
 
-    def __get_increment_flag__(self):
-        "Returns the increment id flag for the main thread to increment image id."
-        return self.increment_flag
-
-    def __get_decrement_flag__(self):
-        "Returns the increment id flag for the main thread to decrement image id."
-        return self.decrement_flag
-
     def __increment_image__(self):
         "Sets the increment id flag for the main thread to increment image id."
         if self.id < 2876:
@@ -88,7 +78,7 @@ class ImageViewer():
 
     def __correct_color__(self):
         """Corrects the color of the image by swapping blue and red color values."""
-        print(str(self.image_arr[0][0]))
+        #self.image_arr = cv2.imwrite()
 
     def __update_image__(self, id=None):
         """
@@ -97,16 +87,16 @@ class ImageViewer():
             The cache image is deleted and the image viewer shows error.
         """
         #IMPLEMENT FUNCTION THAT OBTAINS THE MAXIMUM IMAGE ID.
-        if (id >= 1 and id <= 2876) or id is None:
+        if id is None or id >= 1:
             if id is not None:
                 self.id = id
             try:
-                self.image_arr = im.fromarray(
-                    self.image_list.get_image(self.id))
-                self.__correct_color__()
-                self.image_arr.save(self.cache_path)
+                self.image_arr = self.image_list.get_image(self.id, False)
+                #self.__correct_color__()
+                #self.image_im.save(self.cache_path)
+                cv2.imwrite(self.cache_path, self.image_arr)
                 self.image = pygame.image.load(self.cache_path)
-                return 1
+                return 0
             except Exception as e:
                 self.image_arr = None
                 self.__delete_img_cache__()
@@ -126,3 +116,6 @@ class ImageViewer():
     def get_image_id(self):
         """Returns the image id."""
         return self.id
+
+    def set_image_id(self, id):
+        self.id = id

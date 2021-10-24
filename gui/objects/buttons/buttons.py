@@ -37,7 +37,7 @@ class Buttons():
         self.shape_object = pygame.Rect(
             self.position[0], self.position[1], self.get_width(), self.get_height())
 
-    def show(self):
+    def __show__(self):
         "Sets button visible."
         cases = {
             "rectangle": pygame.draw.rect(self.surface, self.color, self.shape_object),
@@ -51,17 +51,11 @@ class Buttons():
 
     def on_click(self, func):
         "Set class parameters equal to parameter and launch event listener thread."
-        while self.is_running == True:
-            self.mouse_pos = pygame.mouse.get_pos()
-            for event in pygame.event.get():
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if (self.position[0] <= self.mouse_pos[0] <= self.position[0]+self.get_width()
-                            and self.position[1] <= self.mouse_pos[1] <= self.position[1]+self.get_height()):
-                        self.func()
-                        self.show()
-                if event.type == pygame.QUIT:
-                    self.is_running = False
-                    break
+        self.mouse_pos = pygame.mouse.get_pos()
+        if (self.position[0] <= self.mouse_pos[0] <= self.position[0]+self.get_width()
+                and self.position[1] <= self.mouse_pos[1] <= self.position[1]+self.get_height()):
+            func()
+            self.__show__()
         
 
 

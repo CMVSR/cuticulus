@@ -22,7 +22,6 @@ class Textbox():
         self.size = size
         self.position = position
         self.function = None
-        self.func_param = None
         self.text_color = const.TEXTBOX_LABEL_COLOR
         self.is_running = True
         self.shape_object = pygame.Rect(self.position[0], self.position[1], int(list(size.values())[list(
@@ -75,3 +74,12 @@ class Textbox():
                     self.value = self.value * 10 + self.__k_input__
         except Exception as e:
             self.value = None
+
+    def on_k_return(self, func):
+        ##Function that executes another function when keyboard is returned
+        func()
+        self.value = None
+
+    def get_value(self):
+        return self.value   
+
