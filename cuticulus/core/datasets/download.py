@@ -27,7 +27,7 @@ class Download(object):
         if not self.raw.exists():
             console.log('Dataset .zip not found.')
 
-            prompt = 'Okay to download dataset to: {0}'.format(self.raw)
+            prompt = 'Okay to download dataset to: "{0}"?'.format(self.raw)
             if questionary.confirm(prompt).ask():
                 log.info('Downloading dataset...')
                 gdown.download(const.DATASET_URL, str(self.raw))
@@ -40,7 +40,7 @@ class Download(object):
         if not self.base_path.exists():
             console.log('Dataset directory not found.')
 
-            prompt = 'Okay to unzip dataset to: "{0}"'.format(self.base_path)
+            prompt = 'Okay to unzip dataset to: "{0}"?'.format(self.base_path)
             if questionary.confirm(prompt).ask():
                 log.info('Extracting dataset...')
                 PyZipFile(self.raw).extractall(str(self.base_path))

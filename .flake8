@@ -10,4 +10,6 @@ ignore = [
     WPS323,
     # noqa
     WPS400,
+    # const
+    WPS410,
 ]

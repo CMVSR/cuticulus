@@ -5,6 +5,8 @@
 dataset
 dataset/**/*
 dataset.zip
+input
+input/**/*
 
 # nix
 result

@@ -68,6 +68,21 @@ class KViews(ModelHelper):
         console.log('Fitting K-views model...')
         self.model.fit(train_x)
 
+    def preprocess(self, image: np.ndarray) -> np.ndarray:
+        """Preprocess an image before input to predict.
+
+        Args:
+            image (np.ndarray): Image to preprocess.
+
+        Returns:
+            np.ndarray: Preprocessed image.
+        """
+        if self.pca:
+            shape = (1, image.shape[0] * image.shape[1])
+            image = image.reshape(shape)
+            return self.pca.transform(image)
+        return image
+
     def predict_test(self):
         """Predict test data."""
         test_x = self.test_x
@@ -91,7 +106,7 @@ class KViews(ModelHelper):
         self.remapped = True
 
     @beartype
-    def predict(self, images: np.ndarray):
+    def predict(self, images: np.ndarray) -> np.ndarray:
         """Predict labels for given images.
 
         Args:
@@ -102,8 +117,9 @@ class KViews(ModelHelper):
         """
         preds = self.model.predict(images)
         if self.remapped:
-            preds = np.array(preds)[self.adjusted_centers]
-
+            preds = np.array(
+                [self.adjusted_centers[1][pred] for pred in preds],
+            )
         return preds
 
     @beartype
