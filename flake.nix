@@ -1,57 +1,48 @@
 {
-  description = "Ant cuticle texture analysis";
+  description = "Python application managed with poetry2nix";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/d189bf92f9be23f9b0f6c444f6ae29351bb7125c";
+    nixpkgs = { url = "github:nixos/nixpkgs/d189bf92f9be23f9b0f6c444f6ae29351bb7125c"; };
     utils = { url = "github:numtide/flake-utils"; };
-    configs = { url = "github:ngngardner/configs"; };
     gitignore = {
       url = "github:hercules-ci/gitignore.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, utils, configs, gitignore }:
-    {
-      overlay = final: prev: {
-        cuticle = final.callPackage ./default.nix { };
-        inherit (gitignore.lib) gitignoreSource;
-      };
-    } //
-    (utils.lib.eachDefaultSystem (system:
+  outputs = { self, nixpkgs, utils, gitignore, ... }:
+    utils.lib.eachDefaultSystem (system:
       let
-        pkgs = import nixpkgs {
-          inherit system;
-          overlays = [
-            configs.overlay
-            self.overlay
-          ];
-        };
+        pkgs = import nixpkgs { inherit system; };
+
+        python = pkgs.python39;
+        projectDir = gitignore.lib.gitignoreSource ./.;
+        overrides = pkgs.poetry2nix.overrides.withDefaults (final: prev: {
+          # Python dependency overrides go here
+        });
+
+        packageName = "cuticulus";
       in
       {
-        defaultPackage = pkgs.callPackage ./default.nix { };
+        packages.${packageName} = pkgs.poetry2nix.mkPoetryApplication {
+          inherit python projectDir overrides;
+          # Non-Python runtime dependencies go here
+          propogatedBuildInputs = [ ];
+        };
+
+        defaultPackage = self.packages.${system}.${packageName};
 
         devShell = pkgs.mkShell {
-          packages = [
-            pkgs.cuticle
-
-            # python dev
-            pkgs.python39Packages.autopep8
-            pkgs.python39Packages.pycodestyle
-            pkgs.python39Packages.pylint
-            pkgs.python39Packages.pytest
-            pkgs.python39Packages.coverage
-
-            # gui
-            pkgs.python39Packages.pygame
-
-            # paper dev
-            (pkgs.texlive.combine {
-              inherit (pkgs.texlive) scheme-small;
+          buildInputs = [
+            (pkgs.poetry2nix.mkPoetryEnv {
+              inherit python projectDir overrides;
+              editablePackageSources = {
+                package = ./.;
+              };
             })
-            pkgs.pylatex
+            pkgs.poetry
           ];
         };
-      })
-    );
+
+      });
 }
