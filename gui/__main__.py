@@ -8,7 +8,7 @@ from gui.objects.image_viewer import ImageViewer
 from gui.objects.buttons.buttons import Buttons
 from gui.objects.textbox import Textbox
 from gui import const
-
+from gui.objects.panes import SpeciesPane
 
 class Gui:
     # Object constructor
@@ -72,8 +72,10 @@ def start():
     ant_iv.__show__()
     previous_button.__show__()
     next_button.__show__()
-    id_textbox.__show__()
+    id_textbox.show()
     main.get_surface().blit(id_text, [id_text_pos[0], id_text_pos[1]])
+    spec_pane = SpeciesPane(main.get_surface(), [const.SP_POS[0], const.SP_POS[1]], "Ant info", None, [200, 200], data.get_ant_info())
+    spec_pane.show()
     pygame.display.update()
     # Launch event listener
     is_running = True
@@ -91,15 +93,17 @@ def start():
                 if event.key == pygame.K_RETURN:
                     id_textbox.on_k_return(lambda: ant_iv.set_image_id(id_textbox.get_value()))
                 else:
-                    id_textbox.__update_value__(event.key)
+                    id_textbox.update_value(event.key)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 next_button.on_click(lambda: ant_iv.__increment_image__())
                 previous_button.on_click(lambda: ant_iv.__decrement_image__())
         ant_iv.__update_image__()
+        spec_pane.set_species_taxon(data.get_ant_info())
         ant_iv.__show__()
         previous_button.__show__()
         next_button.__show__()
-        id_textbox.__show__()
+        id_textbox.show()
+        spec_pane.show
         pygame.display.update()
     ant_iv.__delete_img_cache__()
 

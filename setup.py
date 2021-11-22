@@ -23,7 +23,7 @@ setup(
         "cuticle_analysis/antweb",
         "cuticle_analysis/core",
         "cuticle_analysis/datasets",
-        "cuticle_analysis/models",
+        "cuticle_analysis/models"
     ],
     entry_points='''
         [console_scripts]

@@ -29,7 +29,7 @@ class Textbox():
         self.keyboard_events = [pygame.K_0, pygame.K_1, pygame.K_2, pygame.K_3,
                                 pygame.K_4, pygame.K_5, pygame.K_6, pygame.K_7, pygame.K_8, pygame.K_9]
 
-    def __show__(self):
+    def show(self):
         """Sets textbox visible"""
         pygame.draw.rect(
             self.surface, const.TEXTBOX_BKG_COLOR, self.shape_object)
@@ -44,7 +44,7 @@ class Textbox():
         self.surface.blit(self.text_object, (self.position[0], (self.position[1] + int(
             list(self.size.values())[list(self.size.keys()).index("height")]/3))))
 
-    def __to_int__(self, KEY_EVENT, max_events):
+    def __to_int(self, KEY_EVENT, max_events):
         """Converts keyboard input into integers.
         Pre-condition: The input must be a number.
         Post-condition: The integer represenation of input is returned."""
@@ -53,9 +53,9 @@ class Textbox():
                 self.__k_input__ = max_events
                 return
             else:
-                self.__to_int__(KEY_EVENT, (max_events - 1))
+                self.__to_int(KEY_EVENT, (max_events - 1))
 
-    def __update_value__(self, KEY_EVENT):
+    def update_value(self, KEY_EVENT):
         """Updates the textbox on keyboard press.
         Pre-condition: The button must be a number, return key, or backspace key.
         Post-condition: The textbox is updated."""
@@ -68,7 +68,7 @@ class Textbox():
                 ASCII_0 = 48
                 ASCII_9 = 57
                 if (KEY_EVENT >= 48) and (KEY_EVENT <= 57):
-                    self.__to_int__(KEY_EVENT, 9)
+                    self.__to_int(KEY_EVENT, 9)
                     if self.value is None:
                         self.value = 0
                     self.value = self.value * 10 + self.__k_input__
