@@ -6,7 +6,7 @@ import cv2
 import pygame  # GUI Framework
 from PIL import Image as im  # Import library that reads image array
 
-from cuticle_analysis import const
+import const
 
 
 class ImageViewer():

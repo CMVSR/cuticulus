@@ -1,5 +1,6 @@
 
 import pygame
+import os
 
 from pygame.locals import HIDDEN, DOUBLEBUF
 
@@ -37,6 +38,7 @@ def start():
     The function opens the main window and adds the imageviewer navigation buttons with their corresponding
     event listeners, image id, image, ant's species classification, and the ant's texture classification.
     """
+
     data = DatasetHelper()
     # Initializes GUI objects and launches window.
     window = pygame.display.set_mode(
