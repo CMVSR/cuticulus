@@ -1,15 +1,21 @@
 
 import pygame
 import os
+import sys
+import os
+
+cwd = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.dirname(cwd)
+sys.path.append(parent)
 
 from pygame.locals import HIDDEN, DOUBLEBUF
 
 from cuticle_analysis.datasets import DatasetHelper
-from gui.objects.image_viewer import ImageViewer
-from gui.objects.buttons.buttons import Buttons
-from gui.objects.textbox import Textbox
-from gui import const
-from gui.objects.panes import SpeciesPane
+from objects.image_viewer import ImageViewer
+from objects.buttons.buttons import Buttons
+from objects.textbox import Textbox
+import const
+from objects.panes.species_pane import SpeciesPane
 
 class Gui:
     # Object constructor
@@ -76,7 +82,7 @@ def start():
     next_button.__show__()
     id_textbox.show()
     main.get_surface().blit(id_text, [id_text_pos[0], id_text_pos[1]])
-    spec_pane = SpeciesPane(main.get_surface(), [const.SP_POS[0], const.SP_POS[1]], "Ant info", None, [200, 200], data.get_ant_info())
+    spec_pane = SpeciesPane(main.get_surface(), [const.SP_POS[0], const.SP_POS[1]], "Ant info", {"width": 200, "height": 200}, data.get_ant_info(ant_iv.get_image_id()))
     spec_pane.show()
     pygame.display.update()
     # Launch event listener
@@ -100,12 +106,12 @@ def start():
                 next_button.on_click(lambda: ant_iv.__increment_image__())
                 previous_button.on_click(lambda: ant_iv.__decrement_image__())
         ant_iv.__update_image__()
-        spec_pane.set_species_taxon(data.get_ant_info())
+        spec_pane.set_species_taxon(data.get_ant_info(ant_iv.get_image_id()))
         ant_iv.__show__()
         previous_button.__show__()
         next_button.__show__()
         id_textbox.show()
-        spec_pane.show
+        spec_pane.show()
         pygame.display.update()
     ant_iv.__delete_img_cache__()
 
