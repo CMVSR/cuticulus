@@ -3,6 +3,7 @@ import pygame
 import os
 import sys
 import os
+import const
 
 cwd = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(cwd)
@@ -11,11 +12,13 @@ sys.path.append(parent)
 from pygame.locals import HIDDEN, DOUBLEBUF
 
 from cuticle_analysis.datasets import DatasetHelper
+
 from objects.image_viewer import ImageViewer
 from objects.buttons.buttons import Buttons
 from objects.textbox import Textbox
-import const
 from objects.panes.species_pane import SpeciesPane
+from objects.panes.file_browser.main import FileBrowser
+
 
 class Gui:
     # Object constructor
@@ -63,16 +66,13 @@ def start():
     pygame.display.set_mode(
         (const.WINDOW_SIZE[0], const.WINDOW_SIZE[1]), DOUBLEBUF)
     pygame.display.update()
-    prev_bttn_pos = (225, 475)
-    next_bttn_pos = (525, 475)
     id_text_pos = ((width/3) + 25, 50)
-    id_txtbox_pos = (300, 475)
     id_textbox = Textbox(main.get_surface(), 16, "Enter ID to view image...", None, {
-                         "width": 200, "height": 50}, [id_txtbox_pos[0], id_txtbox_pos[1], 50])
+                         "width": 200, "height": 50}, [const.ID_TEXTBOX_POS[0], const.ID_TEXTBOX_POS[1], 50])
     previous_button = Buttons(main.get_surface(), "rectangle", "<", const.BUTTON_COLOR, {
-                              "width": 50, "height": 50}, [prev_bttn_pos[0], prev_bttn_pos[1], 50])
+                              "width": 50, "height": 50}, [const.PREV_BTTN_POS[0], const.PREV_BTTN_POS[1], 50])
     next_button = Buttons(main.get_surface(), "rectangle", ">", const.BUTTON_COLOR, {
-                          "width": 50, "height": 50}, [next_bttn_pos[0], next_bttn_pos[1], 50])
+                          "width": 50, "height": 50}, [const.NEXT_BTTN_POS[0], const.NEXT_BTTN_POS[1], 50])
     ant_iv = ImageViewer(main.get_surface(), data,
                          (225, 100), (350, 350))
     id_text = body_font.render(str(ant_iv.get_image_id()), True, (0, 0, 0))
@@ -83,7 +83,9 @@ def start():
     id_textbox.show()
     main.get_surface().blit(id_text, [id_text_pos[0], id_text_pos[1]])
     spec_pane = SpeciesPane(main.get_surface(), [const.SP_POS[0], const.SP_POS[1]], "Ant info", {"width": 200, "height": 200}, data.get_ant_info(ant_iv.get_image_id()))
+    taxon_fb = FileBrowser(main.get_surface(), const.TAXON_PANE_POS, const.TAXON_PANE_SIZE, data, "Dataset file browser")
     spec_pane.show()
+    taxon_fb.show()
     pygame.display.update()
     # Launch event listener
     is_running = True

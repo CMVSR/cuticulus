@@ -10,8 +10,7 @@ class Buttons():
     def __init__(self, surface, shape_name, text_string, color, size, position):
         self.surface = surface
         self.text_string = text_string
-        self.font = pygame.font.SysFont('Arial', int(
-            list(size.values())[list(size.keys()).index("width")]))
+        self.font = pygame.font.SysFont('Arial', size[0])
         self.text_object = self.font.render(self.text_string, True, (0, 0, 0))
         self.color = color
         self.size = size
