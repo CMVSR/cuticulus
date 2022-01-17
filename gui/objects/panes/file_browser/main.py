@@ -9,19 +9,43 @@ import pygame
 from gui.objects.panes.pane import Pane
 from gui.objects.buttons.file_browser.main import FBButton
 from cuticle_analysis.datasets.data_FS.helper import Helper as FSHelper
+from gui import const
 
 class FileBrowser(Pane):
-    _cur_dir = None
-    _cd_list = []
-    _FS_helper = None
 
+    def get_parent_dir(self, cd=None):
+        parent_dir = None
+        try:
+            if cd is None:
+                cd = self._cur_dir
+            cd_arr = cd.split('/')
+            for dir in range(len(cd_arr)-1):
+                if parent_dir is None:
+                    parent_dir = cd_arr[dir]
+                else:
+                    parent_dir += cd_arr[dir]
+                if dir < len(cd_arr)-2:
+                    parent_dir += '/'
+            return parent_dir
+        except Exception:
+            return None
+    
+    
     def append_root_btn(self, position):
-        cd_arr = self._cur_dir.split("/")
-        parent_dir = ""
+        if self._cur_dir is not None:
+            cd_arr = self._cur_dir.split("/")
+        else:
+            cd_arr = [""]
+        parent_dir = None
         for dir in range(len(cd_arr)-1):
-            parent_dir += dir + "/"
-        parent_node = self._FS_helper.get_node(parent_dir)
-        root_btn = FBButton(self, self.surface, (self.pane_size[0], 20), position, parent_node, True)
+            if parent_dir is None:
+                parent_dir = cd_arr[dir]
+            else:
+                parent_dir += cd_arr[dir]
+            if dir < len(cd_arr)-2:
+                parent_dir += '/'
+        parent_node = self._FS_helper.get_node(parent_dir, self._FS_helper.root_taxon)
+        root_btn = FBButton(self.surface, {'width': self.pane_size['width'], 'height': 20}, position, parent_node, True)
         self._cd_list.append(root_btn)
 
 
@@ -30,35 +54,64 @@ class FileBrowser(Pane):
         if root_item is not None:
             append_cnt = cur_ind - start_ind
             if (append_cnt >= 0) & ((20 * append_cnt) <= self.pane_size['height']):
-                position = (self.position[0], (self.position[1] + (20 * append_cnt)))
+                position = (self.position[0], self.position[1] + (20 * append_cnt))
+                if self.title is not None:
+                    position = (position[0], position[1] + const.PANE_HEADER_HEIGHT)
                 if (start_ind == 0) & (cur_ind == 0) & (self._cur_dir is not None):
                     self.append_root_btn(position)
+                    self._update_cd_ls(root_item, start_ind, cur_ind+1)
                 else:
-                    self._cd_list.append(FBButton(self.surface, (self.pane_size['width'], 20), position, root_item))
-            self._update_cd_ls(root_item.next, start_ind, cur_ind+1)
+                    self._cd_list.append(FBButton(self.surface, {'width': self.pane_size['width'], 'height': 20}, position, root_item))
+                    self._update_cd_ls(root_item.next, start_ind, cur_ind+1)
         else:
-            self.append_root_btn(self.position)
+            if (self._cur_dir is not None) and (cur_ind == 0):
+                self.append_root_btn(self.position)
 
 
     def update_browser(self, index, new_cd = None):
         ### updates the browser
-        #if self._cur_dir != new_cd:
+        if new_cd is not None:
+            cd_ls = new_cd.split('/')
+            parent_dir = self.get_parent_dir()
+            parent_node = self._FS_helper.get_node(parent_dir, self._FS_helper.root_taxon)
+            if (len(cd_ls) > 1) and (cd_ls[len(cd_ls)-1] == parent_node.name):
+                self._cur_dir = parent_dir
+                root_item = parent_node
+                self._cd_list = []
+                self._update_cd_ls(root_item, index)
+                return
         self._cur_dir = new_cd
         self._cd_list = []
         root_item = self._FS_helper.get_node(self._cur_dir, self._FS_helper.root_taxon)
         self._update_cd_ls(root_item, index)
 
     def show(self):
+        super().show()
         for button in self._cd_list:
             button.show()
 
     def on_click_recur(self, click_pos, index):
         name = self._cd_list[index].data.name
-        result = self._cd_list[index].on_click(lambda: self.update_browser(0, (self._cur_dir + "/" + name)))
+
+        # REFACTOR LINES 97 TO 108 WHICH WILL
+        # DETERMINE WHETHER TO UPDATE BROWSER OR SET IMAGE
+        if isinstance(name, str):
+            if self._cur_dir is None:
+                func = lambda: self.update_browser(0, (name))
+            else:
+                func = lambda: self.update_browser(0, (self._cur_dir + "/" + name))
+        else:
+            if isinstance(name, int):
+                print("""Opening images from file browser is not implemented. You may need to restart program to return to parent dir. See the issue page on GitHub for more info.""")
+                return
+            else:
+                raise TypeError("Node type \"" + str(type(name)) + "\" must either be int or str.")
+        result = self._cd_list[index].on_click(func)
         if result == 1:
             self.index = 0
         else:
-            self.on_click_recur(self, click_pos, index-1)
+            if index > 0:
+                self.on_click_recur(click_pos, index-1)
 
     def on_click(self):
         mouse_pos = pygame.mouse.get_pos()

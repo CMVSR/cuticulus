@@ -1,5 +1,6 @@
 
 import pygame
+import time
 import os
 import sys
 import os
@@ -12,12 +13,14 @@ sys.path.append(parent)
 from pygame.locals import HIDDEN, DOUBLEBUF
 
 from cuticle_analysis.datasets import DatasetHelper
+#from cuticle_analysis.datasets.data_FS import DataNode
 
 from objects.image_viewer import ImageViewer
 from objects.buttons.buttons import Buttons
 from objects.textbox import Textbox
 from objects.panes.species_pane import SpeciesPane
 from objects.panes.file_browser.main import FileBrowser
+
 
 
 class Gui:
@@ -51,7 +54,7 @@ def start():
     data = DatasetHelper()
     # Initializes GUI objects and launches window.
     window = pygame.display.set_mode(
-        (const.WINDOW_SIZE[0], const.WINDOW_SIZE[1]), HIDDEN)
+        (const.WINDOW_SIZE[0], const.WINDOW_SIZE[1]), DOUBLEBUF)
     main = Gui(window)
     white = (255, 255, 255)
     main.get_surface().fill(white)
@@ -59,13 +62,14 @@ def start():
     body_font = pygame.font.SysFont('Arial', const.BODY_FONT_SIZE)
     width = main.get_surface().get_width()
     height = main.get_surface().get_height()
-    standby_text_pos = (width/2, height/2)
-    standby_text = body_font.render("Loading program...", True, (0, 0, 0))
+    standby_text_pos = (width/4, height/3)
+    standby_text = body_font.render("Loading program, please wait...", True, (0, 0, 0))
     main.get_surface().blit(
         standby_text, (standby_text_pos[0], standby_text_pos[1]))
-    pygame.display.set_mode(
-        (const.WINDOW_SIZE[0], const.WINDOW_SIZE[1]), DOUBLEBUF)
+    main.set_caption("Loading")
     pygame.display.update()
+
+    taxon_fb = FileBrowser(main.get_surface(), const.TAXON_PANE_POS, const.TAXON_PANE_SIZE, data, "Dataset browser")
     id_text_pos = ((width/3) + 25, 50)
     id_textbox = Textbox(main.get_surface(), 16, "Enter ID to view image...", None, {
                          "width": 200, "height": 50}, [const.ID_TEXTBOX_POS[0], const.ID_TEXTBOX_POS[1], 50])
@@ -83,7 +87,6 @@ def start():
     id_textbox.show()
     main.get_surface().blit(id_text, [id_text_pos[0], id_text_pos[1]])
     spec_pane = SpeciesPane(main.get_surface(), [const.SP_POS[0], const.SP_POS[1]], "Ant info", {"width": 200, "height": 200}, data.get_ant_info(ant_iv.get_image_id()))
-    taxon_fb = FileBrowser(main.get_surface(), const.TAXON_PANE_POS, const.TAXON_PANE_SIZE, data, "Dataset file browser")
     spec_pane.show()
     taxon_fb.show()
     pygame.display.update()
@@ -107,6 +110,7 @@ def start():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 next_button.on_click(lambda: ant_iv.__increment_image__())
                 previous_button.on_click(lambda: ant_iv.__decrement_image__())
+                taxon_fb.on_click()
         ant_iv.__update_image__()
         spec_pane.set_species_taxon(data.get_ant_info(ant_iv.get_image_id()))
         ant_iv.__show__()
@@ -114,6 +118,7 @@ def start():
         next_button.__show__()
         id_textbox.show()
         spec_pane.show()
+        taxon_fb.show()
         pygame.display.update()
     ant_iv.__delete_img_cache__()
 

@@ -9,11 +9,11 @@ class Buttons():
     # Pre-condition: surface must be a pygame.Surface object.
     def __init__(self, surface, shape_name, text_string, color, size, position):
         self.surface = surface
-        self.text_string = text_string
-        self.font = pygame.font.SysFont('Arial', size[0])
+        self.text_string = str(text_string)
+        self.size = size
+        self.font = pygame.font.SysFont('Arial', self.get_width())
         self.text_object = self.font.render(self.text_string, True, (0, 0, 0))
         self.color = color
-        self.size = size
         self.position = position
         self.shape_name = shape_name
         self.shape_object = None
@@ -55,6 +55,8 @@ class Buttons():
                 and self.position[1] <= self.mouse_pos[1] <= self.position[1]+self.get_height()):
             func()
             self.__show__()
+            return 1
+        return 0
         
 
 

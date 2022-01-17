@@ -35,6 +35,6 @@ SP_POS = (15, 50)
 
 # Taxon pane
 TAXON_BTTN_CLR = (0,0,0)
-TAXON_PANE_POS = (15, 200)
+TAXON_PANE_POS = (15, 300)
 TAXON_PANE_SIZE = {"width": 200, "height": 200}
 

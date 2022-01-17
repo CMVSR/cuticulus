@@ -14,8 +14,6 @@ from cv2 import NORMCONV_FILTER
 from cuticle_analysis.datasets.data_FS.node import Node
 
 class Helper():
-    root_taxon = None
-    
     def sort_dict(self, original_dict):
         sorted_dict = {'subfamily': None, 'genus': None, 'subgenus': None, 'species': None, 'subspecies': None}
         dict_list = list(sorted_dict.keys())
@@ -49,16 +47,41 @@ class Helper():
             while key is None:
                 dict_ind += 1
                 key = list(dict.keys())[dict_ind]
-            if node is None:
-                node = Node(None, None, dict[key])
-                node.data = self._add_node_rec(node.data, dict, dict_ind+1, img_id)
+            if dict[key] is None:
+                taxon_name = "[unclassified " + key + "]"
             else:
-                if node.name == dict[key]:
+                taxon_name = dict[key]
+            if node is None:
+                node = Node(None, None, taxon_name)
+                node.data = self._add_node_rec(node.data, dict, dict_ind+1, img_id)
+                node.data.set_type()
+            else:
+                prev_node = None
+                root_node = node
+                while (node is not None) and (node.name <= taxon_name):
+                    if node.name == taxon_name:
+                        node.data = self._add_node_rec(node.data, dict, dict_ind+1, img_id)
+                        node.data.set_type()
+                        break
+                    else:
+                        prev_node = node
+                        node = node.next
+                if (node is None) or (node.name > taxon_name):
+                    node = Node(None, None, taxon_name)
                     node.data = self._add_node_rec(node.data, dict, dict_ind+1, img_id)
-                else:
-                    node.next = self._add_node_rec(node.next, dict, dict_ind, img_id)
+                    node.data.set_type()
+                    if prev_node is not None:
+                        node.next = prev_node.next
+                        prev_node.next = node
+                    else:
+                        node.next = root_node
+                    node.set_type()
+                    if prev_node is not None:
+                        node = prev_node
+                
         else:
             node = Node(img_id, None, img_id)
+            node.set_type()
         return node
 
     def _add_node(self, dict, img_id):
@@ -66,23 +89,26 @@ class Helper():
 
 
     def get_node(self, node_path, node):
+        if node is None:
+            node = self.root_taxon
         try:
             n_pth_arr = node_path.split("/")
-            if (node.name != n_pth_arr[0]):
-                if node.next is not None:
-                    return self.get_node(node_path, node.next)
-                else:
-                    return None
-            else:
-                if len(n_pth_arr) == 1:
+            while (node.name != n_pth_arr[0]) and (node is not None):
+                node = node.next
+            if node is not None:
+                if len(n_pth_arr) <= 1:
                     return node.data
                 else:
-                    index = 1
                     subnode_path = ""
-                    for i in range(len(node_path)-1):
-                        subnode_path += n_pth_arr[index] + "/"
+                    index = 1
+                    for i in range(len(n_pth_arr)-1):
+                        subnode_path += n_pth_arr[index]
+                        if i < (len(n_pth_arr)-2):
+                            subnode_path+= '/'
                         index += 1
                     return self.get_node(subnode_path, node.data)
+            else:
+                return None
         except Exception:
             return node
                         
