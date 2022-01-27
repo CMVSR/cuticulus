@@ -69,7 +69,8 @@ class FullDataset(DatasetSplitter):
         labels = []
         ids = []
         for fin in glob(str(self.base_path / 'data' / '*.jpg')):
-            iid = int(re.findall(r'\d+', fin)[0])
+            filename = re.search(r'[\d]+\.jpg', fin).group()
+            iid = int(filename.split('.')[0])
 
             try:
                 label = self.get_label(iid)
