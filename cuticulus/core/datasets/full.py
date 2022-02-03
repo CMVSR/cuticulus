@@ -6,6 +6,7 @@ from glob import glob
 
 import numpy as np
 from beartype import beartype
+from PIL import Image
 
 from cuticulus.core.datasets.splitter import DatasetSplitter
 from cuticulus.messages import not_considered
@@ -44,16 +45,13 @@ class FullDataset(DatasetSplitter):
     def preprocess(self, img: np.ndarray) -> np.ndarray:
         """Preprocess the image.
 
-        Resizes the image and calls the super method.
-
         Args:
             img (np.ndarray): The image to preprocess.
 
         Returns:
             np.ndarray: The preprocessed image.
         """
-        img = super().preprocess(img)
-        return np.resize(img, self.size)
+        return super().preprocess(img)
 
     @beartype
     def build_dataset(self) -> tuple:

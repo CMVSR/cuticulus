@@ -1,9 +1,8 @@
 """Use transfer learning to train a model on ant image dataset."""
 
+import numpy as np
 import torch
 from torch.utils.data import Dataset
-import torch.nn as nn
-import numpy as np
 
 from cuticulus.datasets import RoughSmoothFull
 
@@ -48,6 +47,8 @@ ds.split_validation()
 train_x, train_y = ds.train()
 test_x, test_y = ds.test()
 valid_x, valid_y = ds.validate()
+train_x = np.expand_dims(train_x, axis=1)
+test_x = np.expand_dims(test_x, axis=1)
 
 train_loader = torch.utils.data.DataLoader(
     dataset=TorchDS(train_x, train_y),
@@ -67,11 +68,9 @@ model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet18', pretrained=True)
 for param in model.parameters():
     param.requires_grad = False
 
-model.fc = nn.Sequential(
-    nn.AdaptiveAvgPool2d(1),
-    nn.Linear(512, 2)
-)
-criterion = nn.CrossEntropyLoss()
+num_ftrs = model.fc.in_features
+model.fc = torch.nn.Linear(num_ftrs, 2)
+criterion = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.fc.parameters(), lr=learning_rate)
 model.to(device)
 
