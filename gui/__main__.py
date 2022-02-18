@@ -110,7 +110,7 @@ def start():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 next_button.on_click(lambda: ant_iv.__increment_image__())
                 previous_button.on_click(lambda: ant_iv.__decrement_image__())
-                taxon_fb.on_click()
+                taxon_fb.on_click(ant_iv)
         ant_iv.__update_image__()
         spec_pane.set_species_taxon(data.get_ant_info(ant_iv.get_image_id()))
         ant_iv.__show__()

@@ -90,11 +90,8 @@ class FileBrowser(Pane):
         for button in self._cd_list:
             button.show()
 
-    def on_click_recur(self, click_pos, index):
+    def on_click_recur(self, click_pos, index, ant_iv=None):
         name = self._cd_list[index].data.name
-
-        # REFACTOR LINES 97 TO 108 WHICH WILL
-        # DETERMINE WHETHER TO UPDATE BROWSER OR SET IMAGE
         if isinstance(name, str):
             if self._cur_dir is None:
                 func = lambda: self.update_browser(0, (name))
@@ -102,8 +99,7 @@ class FileBrowser(Pane):
                 func = lambda: self.update_browser(0, (self._cur_dir + "/" + name))
         else:
             if isinstance(name, int):
-                print("""Opening images from file browser is not implemented. You may need to restart program to return to parent dir. See the issue page on GitHub for more info.""")
-                return
+                func = lambda: ant_iv.set_image_id(name)
             else:
                 raise TypeError("Node type \"" + str(type(name)) + "\" must either be int or str.")
         result = self._cd_list[index].on_click(func)
@@ -111,14 +107,14 @@ class FileBrowser(Pane):
             self.index = 0
         else:
             if index > 0:
-                self.on_click_recur(click_pos, index-1)
+                self.on_click_recur(click_pos, index-1, ant_iv)
 
-    def on_click(self):
+    def on_click(self, ant_iv=None):
         mouse_pos = pygame.mouse.get_pos()
         max_ind = self.index + 20
         if len(self._cd_list) < max_ind:
             max_ind = len(self._cd_list)-1
-        self.on_click_recur(mouse_pos, max_ind)
+        self.on_click_recur(mouse_pos, max_ind, ant_iv)
         
 
     def __init__(self, surface, position, pane_size, data_helper, title=None):

@@ -17,11 +17,11 @@ class FBButton(buttons.Buttons):
         type1 = self.data
         type = self.data.get_type()
         if type == "directory":
-            print()
+            print("\r")
             # self.type_icon_dir = dir icon
         else:
             if type == "image":
-                print()
+                print("\r")
             else:
                 raise TypeError("Node " + self.data.get_name() + " is an invalid type " + str(type(self.data.data)) + """.
                  The node must either be an image link or a directory.""")
