@@ -5,7 +5,7 @@ import pandas as pd
 from beartype import beartype
 from PIL import Image
 
-from cuticulus.core.datasets.download import Download
+from cuticulus.core.datasets.downloader import Downloader
 
 
 @beartype
@@ -22,7 +22,7 @@ def get_str_df(row: pd.Series, col: str) -> str:
     return str(row[col].values[0]).lower()
 
 
-class DatasetHelper(Download):
+class DatasetHelper(Downloader):
     """A helper class for functions relating to basic dataset access."""
 
     @beartype

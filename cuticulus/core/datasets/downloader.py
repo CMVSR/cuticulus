@@ -13,7 +13,7 @@ from cuticulus.console import console
 log = logging.getLogger('rich')
 
 
-class Download(object):
+class Downloader(object):
     """Download raw dataset."""
 
     def __init__(self):

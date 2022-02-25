@@ -4,7 +4,6 @@ import logging
 
 import numpy as np
 from beartype import beartype
-from PIL import Image
 
 from cuticulus import const
 from cuticulus.console import console
@@ -67,16 +66,13 @@ class DatasetBuilder(DatasetLoader):
     def preprocess(self, img: np.ndarray) -> np.ndarray:
         """Preprocess an image.
 
-        By default, converts the image to grayscale.
-
         Args:
             img (np.ndarray): The image.
 
         Returns:
             np.ndarray: The preprocessed image.
         """
-        img = Image.fromarray(img).convert('L')
-        return np.array(img)
+        return img
 
     def load_labels(self):
         """Load metadata file for labels."""
@@ -112,9 +108,9 @@ class DatasetBuilder(DatasetLoader):
                 np.save(self.labels_path, self.labels)
                 np.save(self.ids_path, self.ids)
         else:
-            self.images = np.load(self.images_path)
-            self.labels = np.load(self.labels_path)
-            self.ids = np.load(self.ids_path)
+            self.images = np.load(self.images_path, allow_pickle=True)
+            self.labels = np.load(self.labels_path, allow_pickle=True)
+            self.ids = np.load(self.ids_path, allow_pickle=True)
             console.log('Loaded dataset.')
 
     def load(self):
@@ -146,7 +142,7 @@ class DatasetBuilder(DatasetLoader):
             np.array: The labels.
         """
         df = convert_labels(
-            self.raw_meta[const.LABEL_COLS].mode(axis=1)[0],
+            self.raw_meta[list(const.LABEL_COLS)].mode(axis=1)[0],
         )
 
         # clip by max values

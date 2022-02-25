@@ -8,13 +8,33 @@ import numpy as np
 from beartype import beartype
 from PIL import Image
 
-from cuticulus.core.datasets.splitter import DatasetSplitter
+from cuticulus.core.datasets.builder import DatasetBuilder
 from cuticulus.messages import not_considered
 
 log = logging.getLogger('rich')
 
 
-class FullDataset(DatasetSplitter):
+@beartype
+def autocrop(image: np.ndarray) -> np.ndarray:
+    """Automatically crop image to square based on the middle of the image.
+
+    Args:
+        image (np.ndarray): The image to crop.
+
+    Returns:
+        np.ndarray: The cropped image.
+    """
+    rows, cols = image.shape[0], image.shape[1]
+    center = (rows // 2, cols // 2)
+    length = min(rows, cols) // 2 - 1
+    return image[
+        center[0] - length:center[0] + length,
+        center[1] - length:center[1] + length,
+        :,
+    ]
+
+
+class FullDataset(DatasetBuilder):
     """Full size image dataset."""
 
     @beartype
@@ -45,13 +65,21 @@ class FullDataset(DatasetSplitter):
     def preprocess(self, img: np.ndarray) -> np.ndarray:
         """Preprocess the image.
 
+        Automatically crop the images to squares centered on the middle of the
+        image, where the ant head is typically located. Since this process is
+        automatic, some images may not be cropped correctly.
+
         Args:
             img (np.ndarray): The image to preprocess.
 
         Returns:
             np.ndarray: The preprocessed image.
         """
-        return super().preprocess(img)
+        arr = autocrop(img)
+        img = Image.fromarray(arr)
+        img = img.resize(self.size, Image.ANTIALIAS)
+
+        return super().preprocess(np.array(img))
 
     @beartype
     def build_dataset(self) -> tuple:
@@ -84,4 +112,8 @@ class FullDataset(DatasetSplitter):
         if len(images) != len(labels) != len(ids):
             raise ValueError('Number of images and labels do not match.')
 
-        return (np.array(images), np.array(labels), np.array(ids))
+        return (
+            np.array(images),
+            np.array(labels),
+            np.array(ids),
+        )

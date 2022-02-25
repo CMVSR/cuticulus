@@ -5,7 +5,7 @@ import platform
 
 class Icons(object):
     """Class for storing icons."""
-    
+
     ismac = platform.system() == 'Darwin'
     islinux = platform.system() == 'Linux'
     iswindows = platform.system() == 'Windows'

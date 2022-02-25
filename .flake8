@@ -1,7 +1,7 @@
 [flake8]
 max_arguments = 6
 max_attributes = 8
-max_local_variables = 7
+max_local_variables = 8
 max_methods = 9
 ignore = [
     # naming
