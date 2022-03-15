@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 from rich.console import Console
 from rich.logging import RichHandler
 
-from cuticulus.assets.icons import Icons
 
 load_dotenv('.env')
 
@@ -19,8 +18,7 @@ def log_level(console: Console, level: str):
         console (Console): Console object.
         level (str): Log level.
     """
-    text = '{0} '.format(Icons.sound)
-    text += 'LOG LEVEL: "{0}"'.format(level)
+    text = 'LOG LEVEL: "{0}"'.format(level)
     console.log(text)
 
 

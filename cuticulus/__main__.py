@@ -1,14 +1,16 @@
 """Main entrypoint."""
 
-from rich import inspect
-
-from cuticulus.datasets import RoughSmoothFull
+from cuticulus.datasets import AllFull, RoughSmoothFull
 
 
 def main():
     """Run main function."""
-    ds = RoughSmoothFull((512, 512), rebuild=True)
-    inspect(ds)
+    size = (256, 256)
+    ds = AllFull(size)
+
+    ds = RoughSmoothFull(size)
+    ds.stratified_split(n_samples=800)
+    ds.split_validation()
 
 
 if __name__ == '__main__':

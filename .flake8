@@ -12,4 +12,6 @@ ignore = [
     WPS400,
     # const
     WPS410,
+    # protected access
+    WPS437,
 ]

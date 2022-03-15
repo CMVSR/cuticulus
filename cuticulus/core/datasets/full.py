@@ -8,7 +8,7 @@ import numpy as np
 from beartype import beartype
 from PIL import Image
 
-from cuticulus.core.datasets.builder import DatasetBuilder
+from cuticulus.core.datasets.splitter import DatasetSplitter
 from cuticulus.messages import not_considered
 
 log = logging.getLogger('rich')
@@ -34,7 +34,7 @@ def autocrop(image: np.ndarray) -> np.ndarray:
     ]
 
 
-class FullDataset(DatasetBuilder):
+class FullDataset(DatasetSplitter):
     """Full size image dataset."""
 
     @beartype

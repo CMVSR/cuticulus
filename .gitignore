@@ -7,6 +7,8 @@ dataset/**/*
 dataset.zip
 input
 input/**/*
+output
+output/**/*
 
 # nix
 result
