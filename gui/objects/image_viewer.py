@@ -1,12 +1,8 @@
 
 import os
-import numpy as np
+
 import cv2
-
-import pygame  # GUI Framework
-from PIL import Image as im  # Import library that reads image array
-
-import const
+import pygame
 
 
 class ImageViewer():
@@ -14,7 +10,7 @@ class ImageViewer():
         self.surface = surface
         self.id = 1
         self.image_list = image_list
-        self.image_arr = self.image_list.get_image(self.id, False)
+        self.image_arr = self.image_list.get_image(self.id)
         self.cache_path = f'./dataset/.iv_cache.jpg'
         cv2.imwrite(self.cache_path, self.image_arr)
         self.image = pygame.image.load(self.cache_path)
@@ -78,7 +74,7 @@ class ImageViewer():
 
     def __correct_color__(self):
         """Corrects the color of the image by swapping blue and red color values."""
-        #self.image_arr = cv2.imwrite()
+        self.image_arr = cv2.cvtColor(self.image_arr, cv2.COLOR_BGR2RGB)
 
     def __update_image__(self, id=None):
         """
@@ -86,14 +82,14 @@ class ImageViewer():
             Post-condition: Ant image is shown in image viewer. If file not found,
             The cache image is deleted and the image viewer shows error.
         """
-        #IMPLEMENT FUNCTION THAT OBTAINS THE MAXIMUM IMAGE ID.
+        # IMPLEMENT FUNCTION THAT OBTAINS THE MAXIMUM IMAGE ID.
         if id is None or id >= 1:
             if id is not None:
                 self.id = id
             try:
-                self.image_arr = self.image_list.get_image(self.id, False)
-                #self.__correct_color__()
-                #self.image_im.save(self.cache_path)
+                self.image_arr = self.image_list.get_image(self.id)
+                self.__correct_color__()
+                # self.image_im.save(self.cache_path)
                 cv2.imwrite(self.cache_path, self.image_arr)
                 self.image = pygame.image.load(self.cache_path)
                 return 0
@@ -112,7 +108,6 @@ class ImageViewer():
             print("Cache deleted.")
         self.image = None
 
-    
     def get_image_id(self):
         """Returns the image id."""
         return self.id

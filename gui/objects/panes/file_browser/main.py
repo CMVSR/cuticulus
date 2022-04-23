@@ -1,15 +1,14 @@
 ###
-### Creates the file browser for the ant image id.
-### Sorted by taxonomy hierarchy. See dataset file system helper for info.
+# Creates the file browser for the ant image id.
+# Sorted by taxonomy hierarchy. See dataset file system helper for info.
 ###
 
-#from _typeshed import NoneType
 import pygame
-#from gui.__main__ import start
 from gui.objects.panes.pane import Pane
 from gui.objects.buttons.file_browser.main import FBButton
-from cuticle_analysis.datasets.data_FS.helper import Helper as FSHelper
+from cuticulus.core.datasets.browser.helper import Helper as FSHelper
 from gui import const
+
 
 class FileBrowser(Pane):
 
@@ -29,8 +28,7 @@ class FileBrowser(Pane):
             return parent_dir
         except Exception:
             return None
-    
-    
+
     def append_root_btn(self, position):
         if self._cur_dir is not None:
             cd_arr = self._cur_dir.split("/")
@@ -44,36 +42,49 @@ class FileBrowser(Pane):
                 parent_dir += cd_arr[dir]
             if dir < len(cd_arr)-2:
                 parent_dir += '/'
-        parent_node = self._FS_helper.get_node(parent_dir, self._FS_helper.root_taxon)
-        root_btn = FBButton(self.surface, {'width': self.pane_size['width'], 'height': 20}, position, parent_node, True)
+        parent_node = self._FS_helper.get_node(
+            parent_dir, self._FS_helper.root_taxon)
+        root_btn = FBButton(
+            self.surface,
+            {
+                'width': self.pane_size['width'],
+                'height': 20
+            },
+            position,
+            parent_node,
+            True,
+        )
         self._cd_list.append(root_btn)
 
-
     # def update_cd_ls(self, root_item=helper.get_dir(self._cur_dir), start_ind, cur_ind):
-    def _update_cd_ls(self, root_item, start_ind, cur_ind = 0):
+
+    def _update_cd_ls(self, root_item, start_ind, cur_ind=0):
         if root_item is not None:
             append_cnt = cur_ind - start_ind
             if (append_cnt >= 0) & ((20 * append_cnt) <= self.pane_size['height']):
-                position = (self.position[0], self.position[1] + (20 * append_cnt))
+                position = (self.position[0],
+                            self.position[1] + (20 * append_cnt))
                 if self.title is not None:
-                    position = (position[0], position[1] + const.PANE_HEADER_HEIGHT)
+                    position = (position[0], position[1] +
+                                const.PANE_HEADER_HEIGHT)
                 if (start_ind == 0) & (cur_ind == 0) & (self._cur_dir is not None):
                     self.append_root_btn(position)
                     self._update_cd_ls(root_item, start_ind, cur_ind+1)
                 else:
-                    self._cd_list.append(FBButton(self.surface, {'width': self.pane_size['width'], 'height': 20}, position, root_item))
+                    self._cd_list.append(FBButton(self.surface, {
+                                         'width': self.pane_size['width'], 'height': 20}, position, root_item))
                     self._update_cd_ls(root_item.next, start_ind, cur_ind+1)
         else:
             if (self._cur_dir is not None) and (cur_ind == 0):
                 self.append_root_btn(self.position)
 
-
-    def update_browser(self, index, new_cd = None):
-        ### updates the browser
+    def update_browser(self, index, new_cd=None):
+        # updates the browser
         if new_cd is not None:
             cd_ls = new_cd.split('/')
             parent_dir = self.get_parent_dir()
-            parent_node = self._FS_helper.get_node(parent_dir, self._FS_helper.root_taxon)
+            parent_node = self._FS_helper.get_node(
+                parent_dir, self._FS_helper.root_taxon)
             if (len(cd_ls) > 1) and (cd_ls[len(cd_ls)-1] == parent_node.name):
                 self._cur_dir = parent_dir
                 root_item = parent_node
@@ -82,7 +93,8 @@ class FileBrowser(Pane):
                 return
         self._cur_dir = new_cd
         self._cd_list = []
-        root_item = self._FS_helper.get_node(self._cur_dir, self._FS_helper.root_taxon)
+        root_item = self._FS_helper.get_node(
+            self._cur_dir, self._FS_helper.root_taxon)
         self._update_cd_ls(root_item, index)
 
     def show(self):
@@ -94,14 +106,15 @@ class FileBrowser(Pane):
         name = self._cd_list[index].data.name
         if isinstance(name, str):
             if self._cur_dir is None:
-                func = lambda: self.update_browser(0, (name))
+                def func(): return self.update_browser(0, (name))
             else:
-                func = lambda: self.update_browser(0, (self._cur_dir + "/" + name))
+                def func(): return self.update_browser(0, (self._cur_dir + "/" + name))
         else:
             if isinstance(name, int):
-                func = lambda: ant_iv.set_image_id(name)
+                def func(): return ant_iv.set_image_id(name)
             else:
-                raise TypeError("Node type \"" + str(type(name)) + "\" must either be int or str.")
+                raise TypeError("Node type \"" + str(type(name)
+                                                     ) + "\" must either be int or str.")
         result = self._cd_list[index].on_click(func)
         if result == 1:
             self.index = 0
@@ -115,7 +128,6 @@ class FileBrowser(Pane):
         if len(self._cd_list) < max_ind:
             max_ind = len(self._cd_list)-1
         self.on_click_recur(mouse_pos, max_ind, ant_iv)
-        
 
     def __init__(self, surface, position, pane_size, data_helper, title=None):
         super().__init__(surface, position, title, pane_size)
@@ -124,4 +136,3 @@ class FileBrowser(Pane):
         self._FS_helper = FSHelper(data_helper)
         self.index = 0
         self.update_browser(self.index)
-

@@ -76,10 +76,9 @@ class Textbox():
             self.value = None
 
     def on_k_return(self, func):
-        ##Function that executes another function when keyboard is returned
+        # Function that executes another function when keyboard is returned
         func()
         self.value = None
 
     def get_value(self):
-        return self.value   
-
+        return self.value

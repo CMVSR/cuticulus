@@ -1,0 +1,17 @@
+[flake8]
+max_arguments = 6
+max_attributes = 8
+max_local_variables = 8
+max_methods = 9
+ignore = [
+    # naming
+    N813,
+    # strings
+    WPS323,
+    # noqa
+    WPS400,
+    # const
+    WPS410,
+    # protected access
+    WPS437,
+]

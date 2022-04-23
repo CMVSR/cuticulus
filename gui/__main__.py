@@ -1,26 +1,22 @@
 
 import pygame
-import time
 import os
 import sys
-import os
-import const
+
+from pygame.locals import DOUBLEBUF
+
+
+from gui import const
+from gui.objects.panes.file_browser.main import FileBrowser
+from gui.objects.panes.species_pane import SpeciesPane
+from gui.objects.textbox import Textbox
+from gui.objects.buttons.buttons import Buttons
+from gui.objects.image_viewer import ImageViewer
+from cuticulus.core.datasets.helper import DatasetHelper
 
 cwd = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(cwd)
 sys.path.append(parent)
-
-from pygame.locals import HIDDEN, DOUBLEBUF
-
-from cuticle_analysis.datasets import DatasetHelper
-#from cuticle_analysis.datasets.data_FS import DataNode
-
-from objects.image_viewer import ImageViewer
-from objects.buttons.buttons import Buttons
-from objects.textbox import Textbox
-from objects.panes.species_pane import SpeciesPane
-from objects.panes.file_browser.main import FileBrowser
-
 
 
 class Gui:
@@ -44,6 +40,7 @@ class Gui:
     def set_surface(self, surface):
         self.surface = surface
 
+
 def start():
     """
     This file contains the gui functions for the main window.
@@ -51,7 +48,7 @@ def start():
     event listeners, image id, image, ant's species classification, and the ant's texture classification.
     """
 
-    data = DatasetHelper()
+    data = DatasetHelper(name='')
     # Initializes GUI objects and launches window.
     window = pygame.display.set_mode(
         (const.WINDOW_SIZE[0], const.WINDOW_SIZE[1]), DOUBLEBUF)
@@ -63,13 +60,15 @@ def start():
     width = main.get_surface().get_width()
     height = main.get_surface().get_height()
     standby_text_pos = (width/4, height/3)
-    standby_text = body_font.render("Loading program, please wait...", True, (0, 0, 0))
+    standby_text = body_font.render(
+        "Loading program, please wait...", True, (0, 0, 0))
     main.get_surface().blit(
         standby_text, (standby_text_pos[0], standby_text_pos[1]))
     main.set_caption("Loading")
     pygame.display.update()
 
-    taxon_fb = FileBrowser(main.get_surface(), const.TAXON_PANE_POS, const.TAXON_PANE_SIZE, data, "Dataset browser")
+    taxon_fb = FileBrowser(main.get_surface(
+    ), const.TAXON_PANE_POS, const.TAXON_PANE_SIZE, data, "Dataset browser")
     id_text_pos = ((width/3) + 25, 50)
     id_textbox = Textbox(main.get_surface(), 16, "Enter ID to view image...", None, {
                          "width": 200, "height": 50}, [const.ID_TEXTBOX_POS[0], const.ID_TEXTBOX_POS[1], 50])
@@ -86,7 +85,8 @@ def start():
     next_button.__show__()
     id_textbox.show()
     main.get_surface().blit(id_text, [id_text_pos[0], id_text_pos[1]])
-    spec_pane = SpeciesPane(main.get_surface(), [const.SP_POS[0], const.SP_POS[1]], "Ant info", {"width": 200, "height": 200}, data.get_ant_info(ant_iv.get_image_id()))
+    spec_pane = SpeciesPane(main.get_surface(), [const.SP_POS[0], const.SP_POS[1]], "Ant info", {
+                            "width": 200, "height": 200}, data.get_binomial(ant_iv.get_image_id()))
     spec_pane.show()
     taxon_fb.show()
     pygame.display.update()
@@ -95,7 +95,7 @@ def start():
     while is_running == True:
         main.set_caption(str(ant_iv.get_image_id()) + ".jpg")
         main.get_surface().fill(white)
-        #print(str(ant_iv.get_image_id()))
+        # print(str(ant_iv.get_image_id()))
         id_text = body_font.render(
             "Image ID: " + str(ant_iv.get_image_id()), True, (0, 0, 0))
         main.get_surface().blit(id_text, [id_text_pos[0], id_text_pos[1]])
@@ -104,7 +104,8 @@ def start():
                 is_running = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    id_textbox.on_k_return(lambda: ant_iv.set_image_id(id_textbox.get_value()))
+                    id_textbox.on_k_return(
+                        lambda: ant_iv.set_image_id(id_textbox.get_value()))
                 else:
                     id_textbox.update_value(event.key)
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -112,7 +113,7 @@ def start():
                 previous_button.on_click(lambda: ant_iv.__decrement_image__())
                 taxon_fb.on_click(ant_iv)
         ant_iv.__update_image__()
-        spec_pane.set_species_taxon(data.get_ant_info(ant_iv.get_image_id()))
+        spec_pane.set_species_taxon(data.get_binomial(ant_iv.get_image_id()))
         ant_iv.__show__()
         previous_button.__show__()
         next_button.__show__()
@@ -124,5 +125,10 @@ def start():
 
 
 # Temporary check verifying that the window staus is open until user quits.
-pygame.init()
-start()
+def main():
+    pygame.init()
+    start()
+
+
+if __name__ == '__main__':
+    main()

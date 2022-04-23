@@ -1,3 +1,18 @@
+# custom
+.env
+.vscode
+.direnv
+dataset
+dataset/**/*
+dataset.zip
+input
+input/**/*
+output
+output/**/*
+
+# nix
+result
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -127,36 +142,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
-##########
-# custom #
-##########
-
-# python
-build
-dist
-cuticle_analysis.egg-info
-
-# hidden
-.vscode
-.env
-.snakemake
-.direnv
-*.zip
-temp.py
-
-# generated
-logs
-test.jpg
-*.test.jpg
-output
-*iv_cache.jpg
-result
-
-# Data folders/files
-Data
-data
-dataset
-bg_dataset
-rs_dataset
-dataset.zip
