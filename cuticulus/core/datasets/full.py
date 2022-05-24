@@ -8,30 +8,11 @@ import numpy as np
 from beartype import beartype
 from PIL import Image
 
+from cuticulus.core.datasets.imutils import autocrop
 from cuticulus.core.datasets.splitter import DatasetSplitter
 from cuticulus.messages import not_considered
 
 log = logging.getLogger('rich')
-
-
-@beartype
-def autocrop(image: np.ndarray) -> np.ndarray:
-    """Automatically crop image to square based on the middle of the image.
-
-    Args:
-        image (np.ndarray): The image to crop.
-
-    Returns:
-        np.ndarray: The cropped image.
-    """
-    rows, cols = image.shape[0], image.shape[1]
-    center = (rows // 2, cols // 2)
-    length = min(rows, cols) // 2 - 1
-    return image[
-        center[0] - length:center[0] + length,
-        center[1] - length:center[1] + length,
-        :,
-    ]
 
 
 class FullDataset(DatasetSplitter):
@@ -85,11 +66,11 @@ class FullDataset(DatasetSplitter):
     def build_dataset(self) -> tuple:
         """Process images.
 
-        Returns:
-            tuple: Tuple of (images, labels, ids).
+         Returns:
+            tuple: The ids and images.
 
         Raises:
-            ValueError: If the dataset does not have the right lengths.
+            ValueError: Failed to create dataset.
         """
         images = []
         labels = []

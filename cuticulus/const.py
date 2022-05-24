@@ -5,3 +5,6 @@ DATASET_URL = '{0}/uc?id=1xABlWE790uWmT0mMxbDjn9KZlNUB6Y57'.format(GDRIVE_URL)
 
 # dataset
 LABEL_COLS = ('Jp', 'Becca', 'Katy')
+
+# ignore resize
+NO_RESIZE = (0, 0)

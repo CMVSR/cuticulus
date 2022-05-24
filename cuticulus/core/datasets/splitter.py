@@ -36,11 +36,17 @@ class DatasetSplitter(DatasetBuilder):
         self.split_val = False
 
     @beartype
-    def stratified_split(self, n_samples: int):
+    def stratified_split(
+        self,
+        n_samples: int,
+        clamp: bool = False,
+    ) -> None:
         """Stratified split with n_samples per class for training.
 
         Args:
             n_samples (int): Number of samples per class.
+            clamp (bool): Whether to clamp the number of test samples to the
+                minimum number of samples per class.
         """
         uniques = np.unique(self.labels)
 
@@ -56,6 +62,28 @@ class DatasetSplitter(DatasetBuilder):
         self.train_idxs = train_idxs
         self.test_idxs = test_idxs
         self.split = True
+
+        if clamp:
+            # get number to clamp test samples to
+            n_test = len(self.test_idxs)
+            for unique in uniques:
+                n_test_unique = len(
+                    np.where(self.labels == unique)[0],
+                ) - n_samples
+                if n_test_unique < n_test:
+                    n_test = n_test_unique
+
+            # stratify test samples
+            test_idxs = []
+            for _, unique in enumerate(uniques):
+                idxs = np.where(self.labels == unique)[0]
+                idxs = np.intersect1d(idxs, self.test_idxs)
+                np.random.shuffle(idxs)
+                test_idxs.append(idxs[:n_test])
+
+            self.test_idxs = np.concatenate(test_idxs).astype(int)
+
+        assert not np.intersect1d(self.test_idxs, self.train_idxs).any()
 
         console.log('After splitting train and test:')
         self.print_split()
