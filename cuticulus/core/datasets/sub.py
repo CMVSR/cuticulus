@@ -110,7 +110,8 @@ class SubDataset(DatasetSplitter):
         img = Image.fromarray(arr)
 
         if self.source_size != const.NO_RESIZE:
-            img = img.resize(self.source_size, Image.ANTIALIAS)
+            raise NotImplementedError
+            # img = img.resize(self.source_size, Image.ANTIALIAS)
 
         return super().preprocess(np.array(img))
 
@@ -163,9 +164,11 @@ class SubDataset(DatasetSplitter):
         labels = []
         ids = []
 
-        rs_files = glob(str(self.base_path / 'rs' / '*.json'))
-        bg_files = glob(str(self.base_path / 'bg' / '*.json'))
-        files = rs_files + bg_files
+        files = None
+        if self.ds_type == 'rs':
+            files = glob(str(self.base_path / 'rs' / '*.json'))
+        elif self.ds_type == 'bg':
+            files = glob(str(self.base_path / 'bg' / '*.json'))
 
         for pfile in files:
             # load image data based on avaiable jsons
@@ -209,13 +212,14 @@ class SubDataset(DatasetSplitter):
 
                     # rough-smooth dataset only considers cuticle segments
                     if self.ds_type == 'rs':
-                        if label_names[sub_label] == 'cuticle':
-                            images.append(sub_image)
-                            labels.append(label)
-                            ids.append(iid)
+                        if label_names[sub_label] == '_background_':
+                            continue
+                        images.append(sub_image)
+                        labels.append(label)
+                        ids.append(iid)
 
                     # background dataset
-                    else:
+                    elif self.ds_type == 'bg':
                         if label_names[sub_label] == 'cuticle':
                             # not background
                             labels.append(1)

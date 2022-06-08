@@ -27,11 +27,22 @@ def autocrop(image: np.ndarray) -> np.ndarray:
     ]
 
 
+@beartype
 def shape_to_mask(
-    img_shape,
-    points,
-    shape_type=None,
-):
+    img_shape: tuple,
+    points: list,
+    shape_type: str = None,
+) -> np.ndarray:
+    """Create a mask from a set of points.
+
+    Args:
+        img_shape (tuple): The shape of the image.
+        points (list): The points to create the mask from.
+        shape_type (str): The type of shape to create (polygon).
+
+    Returns:
+        np.ndarray: The mask.
+    """
     mask = np.zeros(img_shape[:2], dtype=np.uint8)
     mask = Image.fromarray(mask)
     draw = ImageDraw.Draw(mask)
@@ -47,7 +58,22 @@ def shape_to_mask(
     return np.array(mask, dtype=bool)
 
 
-def shapes_to_label(img_shape, shapes, label_map):
+@beartype
+def shapes_to_label(
+    img_shape: tuple,
+    shapes: list,
+    label_map: dict,
+) -> tuple:
+    """Create a label mask array from a list of shapes.
+
+    Args:
+        img_shape (tuple): The shape of the image.
+        shapes (list): The shapes to create the label mask from.
+        label_map (dict): The label map to use.
+
+    Returns:
+        tuple: The label mask array and the label map.
+    """
     arr = np.zeros(img_shape[:2], dtype=np.int32)
     ins = np.zeros_like(arr)
     instances = []
