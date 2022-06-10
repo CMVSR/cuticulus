@@ -15,7 +15,7 @@ def main():
     build_collage(
         ds.labels,
         ds.images,
-        name='bg',
+        name='rs',
         rows=10,
         cols=10,
     )

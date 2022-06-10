@@ -6,6 +6,7 @@
 \usepackage{longtable}
 \usepackage{lipsum}
 \usepackage{hyperref}
+\usepackage{xcolor}
 \hypersetup{colorlinks=true}
 \usepackage{subcaption}
 \usepackage{placeins}
@@ -42,7 +43,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
-\title{Ant Cuticle Texture Classification Algorithm for Ecological Anaylsis}
+\title{Ant cuticle image classification using texture analysis: a comparative study}
 
 \author{%
     Noah Gardner\affil{1},
@@ -50,6 +51,8 @@
     Anthony Phan\affil{1},
     Evan Zhu\affil{1},
     Zhiling Long\affil{3},
+    Min Wang\affil{2},
+    Clint Penick\affil{2},
     and Chih-Cheng Hung\affil{1}\corrauth
 }%
 
@@ -63,11 +66,11 @@
     \addr{\affilnum{2}}{College of Science and Mathematics, Kennesaw State
         University, Kennesaw, GA, USA}%
     \addr{\affilnum{3}}{Department of Mathematics, Science, and Informatics,
-        Mercer University, Macon, GA, USA}%
+        Mercer University, Atlanta, GA, USA}%
 }
 \corraddr{chung1@kennesaw.edu}
 
-\editor{First-name Last-name}
+\editor{Pasi Fr\"{a}nti}
 
 \begin{abstract}
     There is a large variety of ant species, and most species are diverse in
@@ -75,16 +78,25 @@
     the significance of ant cuticle texture is not widely researched. Ant
     cuticle texture presumably provides some type of function, and therefore is
     useful to research for ecological applications and bioinspired designs. This
-    research employs modern machine learning methods such as texture analysis
-    and deep machine learning to automatically group similar ant species based
-    on morphological traits. We provide a comparative study of the performance
-    of modern texture analysis methods on ant head images. We evaluate the
-    results of the classification methods with modern visualization techniques.
+    research employs image texture analysis and deep machine learning to
+    automatically group similar ant species based on morphological traits. We
+    provide a comparative study of the performance of texture analysis methods
+    on ant images. We evaluate the results of the classification methods with
+    modern visualization techniques.
+    \colorbox{green}{TODO: what is the result? experiments? data?}
 \end{abstract}
-\keywords{texture analysis; image processing; clustering; machine learning; ecology}
+\keywords{texture analysis; image processing; classification; machine learning;
+    ant cuticle images; ecology}
 \maketitle
 
 \section{Introduction}
+\colorbox{green}{TODO: refer to ant head images in a consistent way}
+
+\colorbox{green}{TODO: refer to traditional/classical in a consistent way}
+
+\colorbox{green}{TODO: change ideal and non-ideal to features identified by
+    the biologist and to invalid features (background, etc.)}
+
 Insects compose half of biodiversity and rank among the most dominant organisms
 in terrestrial ecosystems \cite{sheikh_diverse_2017}. A key factor for the
 ecological success of insects is their exoskeleton, also known as cuticle. The
@@ -103,7 +115,7 @@ computer scientists and is expected to be a major contribution to the future of
 insect-based research \cite{martineau_survey_2017}. One of the most commonly
 used data types for insect analysis is image data. To develop an image-based
 system for insect analysis, we can take advantage of existing work in general
-image processing and texture analysis methods.
+image analysis methods.
 
 We examine ants (\textit{Formicidae}) as they display an extreme diversity of
 cuticle micro sculpturing across all subfamilies. Sculpturing ranges from
@@ -114,19 +126,43 @@ on ants may help increase strength and rigidness, resist abrasion, increase
 internal and external surface area, resist microbial growth, and rear beneficial
 anti-biotic producing bacteria \cite{johnson_effect_2011,
     bruckner_relationship_2017, currie_coevolved_2006}. These specific functions may
-be associated with certain sculpturing types and the purpose of classification
-is to group similar textures based on proposed function.
+be associated with certain sculpturing types. In order to analyze those
+functions, it is necessary to segment the image and group similar textures for
+further analysis.
 
-In many texture analysis methods, the general goal is to automatically
+In image texture analysis methods, the general goal is to automatically
 categorize an object into a set of objects with similar texture-based features.
-The approach of texture analysis to categorize similarly texture-based objects
-corresponds well to the demands of ant identification. Texture analysis has
-shown promising results in related fields, such as plant identification
-\cite{boudra_plant_2018}. With modern texture analysis methods, the
-categorization of ants can be automated and the results can be used to study the
-influence of cuticle texture on ant ecology.
+Texture analysis has shown promising results in related fields, such as plant
+identification \cite{boudra_plant_2018} \colorbox{green}{TODO: more references
+    and examples}. With modern texture analysis methods, the categorization of ants
+can be automated and the results can be used to study the influence of cuticle
+texture on ant ecology.
+
+Image texture analysis heavily depends on the spatial relationships among gray
+levels of pixels \cite{hung_image_2019}. Hence, feature extraction method is
+usually applied to the spatial relationship. The gray-level co-occurrence matrix
+(GLCM) and local binary patterns (LBP) are two of methods which are based on the
+spatial relationships to extracting features for this purpose
+\cite{haralick_textural_1973, goos_gray_2000}. Traditional image texture
+analysis can be divided into four categories: statistical, structural,
+model-based, and transform-based methods \colorbox{green}{[references]}. In the
+past decade, the deep learning network becomes the mainstream in image
+classification and segmentation \cite{liu_bow_2019}. Compared with the
+traditional method in which a kernel must be designed for extracting features,
+the deep learning network can automatically extract the features by itself.
+
+In this study, we used some of both approaches for our work on the ant images.
+
+\colorbox{green}{TODO: Specifically, what approaches used? Why do we use image
+    texture for ant images? What are the contributions?}
+
+
+\colorbox{green}{TODO: briefly discuss results from the research}
 
 \section{Related Work}
+
+\colorbox{green}{TODO: introduce the section}
+
 \subsection{Sculpturing Identification}
 Taxonomists have developed extensive terminology describing ant cuticle
 sculpturing as it is often a useful diagnostic trait to distinguish between
@@ -142,8 +178,8 @@ board, either in sculpturing or in color.”
 
 Cuticle sculpturing in ants has been explored thoroughly from a taxonomic
 perspective; however, the function of nano and microstructures on insect
-exoskeletons is a developing topic in entomology. Watson et al. reviews the
-literature of cuticle nano and microstructure function and proposes 21 possible
+exoskeletons is a developing topic in entomology. Watson et al. review the
+literature of cuticle nano and microstructure function and propose 21 possible
 functions associated with these structures \cite{watson_diversity_2017}. Many of
 these functions are related to structures not found in ants such as scales and
 nanostructures. The review does include functions that may relate to ants such
@@ -152,15 +188,21 @@ al. also describe seven types of cuticle structures ranging from hairs and
 scales to nano and micro structures \cite{watson_diversity_2017}. The cuticle
 sculpturing of ants seems to fall within one type - complex microstructures.
 
-The five broad functional groupings developed that describes the complex
+The five broad functional groupings developed that describe the complex
 microstructures found on ants were derived from reviewing the variation of
 cuticle sculpturing across ants. These functional groupings were also reflected
 in Harris as many terms could be grouped together based on similar definitions
-and comparing the SEM photographs provided in the publication
-\cite{harris_glossary_1979}.
+and comparing the scanning electron microscope photographs provided in the
+publication \cite{harris_glossary_1979}.
+
+\colorbox{green}{TODO: how do we connect this section to image texture analysis?
+    (why do we research this and why image texture) }
+
+\subsection{Texture Analysis}
+\colorbox{green}{TODO: A brief survey on image texture and cite Liu's
+    IJCV2019 survey paper}
 
 \subsection{Insect Classification}
-
 In this section, we provide an overview of some insect classification methods.
 Proposed insect classification methods seek to classify insects at different
 hierarchical levels, such as species, genus, family, and order. Additionally,
@@ -174,12 +216,11 @@ pesticides and help prevent crop loss \cite{liu_pestnet_2019,
 Feng et al. \cite{feng_automated_2013} apply an automated system to classify
 moth images based on semantic related visual attributes, which are defined as a
 pattern on the moth wings. Feng et al. \cite{feng_automated_2013} use a custom
-texture descriptor based on the combination of Grey Level Co-occurence Matrtix
-and \textit{Scale-Invariant Feature Transform} (SIFT) features
-\cite{gotlieb_texture_1990, lowe_distinctive_2004}. The method proposed by Feng
-et al. \cite{feng_automated_2013} is used to classify 50 different moth species
-across 8 families and is based on standard texture analysis features
-\cite{feng_automated_2013}. The results from Feng et al.
+texture descriptor based on the combination of GLCM and \textit{scale-invariant
+    feature transform} (SIFT) features \cite{gotlieb_texture_1990,
+    lowe_distinctive_2004}. The method proposed by Feng et al.
+\cite{feng_automated_2013} is used to classify 50 different moth species across
+8 families \cite{feng_automated_2013}. The results from Feng et al.
 \cite{feng_automated_2013} suggest that traditional feature extraction
 techniques for the semantic visual attributes of the moth wings are sufficient
 for training a classifier to classify an image between 10 randomly selected moth
@@ -198,10 +239,6 @@ Neural Network, Regression Tree, and Random Forest classifiers
 \cite{urteaga_scorpions_2016} show that after background removal,
 characteristics from the entire body of the scorpion can be used to create a
 binary classifier that can classify the image as one of the two species.
-Therefore, we may consider an experiment on the presence of the background from
-the ant head image in order to improve classification accuracy. However, the
-features extracted from \cite{urteaga_scorpions_2016} do not make use of any
-deep learning methods and are not compatible with our texture-based dataset.
 
 Lim et al. \cite{lim_performance_2017} apply a CNN-based algorithm for insect
 classification. Lim et al. \cite{lim_performance_2017} classify a subset of
@@ -216,49 +253,49 @@ family level, \textit{e.g.} \textit{ant}, \textit{fly}, and \textit{bee}
 AlexNet architecture and experiment with different numbers of kernels and their
 effect the performance of the model. Glick et al. \cite{glick_insect_2016}
 employ a similar approach by classifying 277 insect classes from ImageNet using
-a hierarchical contains. The results from Lim et al. \cite{lim_performance_2017}
-and Glick et al. \cite{glick_insect_2016} suggest that a CNN is capable of
-differentiating between different hierarchical classes of insects. In our
-research, we are interested in the classification of ant images of a
-hierarchical level between species and family.
+a hierarchical convolutional neural network. The results from Lim et al.
+\cite{lim_performance_2017} and Glick et al. \cite{glick_insect_2016} suggest
+that a CNN is capable of differentiating between different hierarchical classes
+of insects.
 
 \section{Methodology}
 
-\subsection{Dataset}
+\colorbox{green}{TODO: do not jump into subsection directly without any context}
+
+\subsection{Dataset preparation} % preparation generation
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.7\textwidth]{thesis_assets/images/rough_collage.png}
     \caption{Examples of rough cuticle texture ant images in the dataset after
-        center cropping.}
+        center cropping, from AntWeb \cite{perrichot_antweb_2012}.}
     \label{fig:rough-cuticle-texture}
 \end{figure}
 
 In this section, we describe the creation of the custom dataset used in this
-research. In our dataset, we classify ant head images from AntWeb
-\cite{perrichot_antweb_2012} into two categories: \textit{rough} and
-\textit{smooth}. Some randomly selected images from each category are shown in
-Figures \ref{fig:rough-cuticle-texture} and \ref{fig:smooth-cuticle-texture}.
+research. In our dataset, we use ant head images from AntWeb
+\cite{perrichot_antweb_2012} and define two categories for them based on the
+appearance of the cuticle texture: \textit{rough} and \textit{smooth}. Some
+randomly selected images from each category are shown in Figures
+\ref{fig:rough-cuticle-texture} and \ref{fig:smooth-cuticle-texture}.
 
 \begin{figure}
     \centering
     \includegraphics[width=0.7\textwidth]{thesis_assets/images/smooth_collage.png}
     \caption{Examples of smooth cuticle texture ant images in the dataset after
-        center cropping.}
+        center cropping, from AntWeb \cite{perrichot_antweb_2012}.}
     \label{fig:smooth-cuticle-texture}
 \end{figure}
 
-\subsubsection{Sculpture Identification Protocol}
+% \subsubsection{Sculpture identification protocol}
 
 To begin, a master spreadsheet was created with the 2,499 different ant species
-to be identified for the primary dataset. A team of three assistants were in
-charge of the manual identification process. The team was trained to identify
+to be identified for the primary dataset. The team was trained to identify
 cuticle sculpturing through a process which consisted of one 45-minute
-introductory lesson explaining the project and texture categories and then given
-a training set of photos to identify from the genus \textit{Polyrhachis}, whose
-members display among the highest diversity of cuticle patterns all categories.
-The sculpture identification protocol describes the two primary categories:
-\textit{rough} and \textit{smooth}.
+introductory lesson explaining the project and texture categories. Then, the
+team was given a training set of photos to identify from the genus
+\textit{Polyrhachis}. The sculpture identification protocol describes the two
+primary categories: \textit{rough} and \textit{smooth}.
 
 Initially, the sculpture identification protocol had 8 subcategories of cuticle
 texture, including dimpled, ridged, and differing levels of smooth texture. For
@@ -270,20 +307,21 @@ identifications and assign new ones. These identifications were collected in the
 master spreadsheet and the identifications were assigned to individual ant
 species on a majority basis.
 
-\subsubsection{Data Collection}
+% \subsubsection{Data collection}
 
 To collect the images, the assistants followed the taxonomy information
-available in the master spreadsheet to the appropriate AntWeb page. In many
-cases, there are multiple ant head images of the same species, and occasionally
-there are multiple image resolution available from a single image. To simplify
-the data collection process, the assistants were instructed to download the
-first ant head image of the species being identified in the highest resolution
-possible. Each image was named with an identifier that corresponds with the row
-number in the master spreadsheet. The same ant head images that were downloaded
-in the data collection phase were the same ones used in the sculpture
-identification protocol. Ant species which did not have any images of the head
-were excluded from the dataset. Additionally, ant species which only had a head
-image of a queen ant were excluded from the dataset.
+available in the master spreadsheet to the appropriate AntWeb page
+\cite{perrichot_antweb_2012}. In many cases, there are multiple ant head images
+of the same species, and occasionally there are multiple image resolution
+available from a single image. To simplify the data collection process, the
+assistants were instructed to download the first ant head image of the species
+being identified in the highest resolution possible. Each image was named with
+an identifier that corresponds with the row number in the master spreadsheet.
+The same ant head images that were downloaded in the data collection phase were
+the same ones used in the sculpture identification protocol. Ant species which
+did not have any images of the head were excluded from the dataset.
+Additionally, ant species which only had a head image of a queen ant were
+excluded from the dataset.
 
 Ant specimen images taken from AntWeb \cite{perrichot_antweb_2012} are created
 by different photographers and therefore have different attributes, such as
@@ -293,11 +331,11 @@ focus of the ant head image is centered on the head, with the background and
 image artifacts from the ant body typically blurred. In most ant head images,
 there is a bar which indicates the scale of the image due to the variety in the
 sizes of different ant species. In a few ant head images, there exists some text
-denoting the specimen identifier and other info. In terms of texture, some ant
-specimens are very old, so their head images have other abnormalities such as
-cracks in the cuticle and the presence of dust.
+denoting the specimen identifier and other information. In terms of texture,
+some ant specimens are very old, so their head images have other abnormalities
+such as cracks in the cuticle and the presence of dust.
 
-\subsubsection{Data Preprocessing}
+% \subsubsection{Data preprocessing}
 
 Due to the variety of the ant head image attributes, we apply simple
 preprocessing before the images are used in our model. We want the images to
@@ -321,7 +359,11 @@ samples are split with code by 50\% there will be some rounding variance and
 therefore the test dataset built at run-time will not always have exactly the
 same number of samples.
 
-\subsection{Models}
+\subsection{Classical texture analysis methods}
+
+\colorbox{green}{TODO: kviews, gabor, etc. will go here}
+
+\subsection{Deep learning models used for the experiments}
 
 Our first model is \textit{visual geometry group} (VGG), a convolutional neural
 network that takes advantage of very small convolutional filters in a deep
@@ -345,14 +387,20 @@ models to have an output layer of size 2. Each model is trained over 100 epochs,
 using stochastic gradient descent with momentum. The batch size is set to 16
 images. We apply a learning rate of 0.001 and momentum parameter of 0.9.
 
-\subsubsection{Evaluation}
+\colorbox{green}{\parbox{\dimexpr\textwidth-2\fboxsep}{TODO: I suggest that
+        at least one deep learning based texture classification algorithm be applied
+        to the dataset for the comparative study. When this is the case, one more
+        subsection should be included here to describe that/those algorithm(s).}}
+
+\subsection{Evaluation}
 
 We evaluate the performance of the models according to standard evaluation
 methods. Since we are working with a binary classification problem, we use a
-standard confusion matrix to evaluate the accuracy, precision, and F1 score. We
-also apply Grad-CAM with manual inspection to visualize the activation weights
-for incorrectly classified images to determine which features are interfering
-with the classification. Finally, we apply t-SNE to visualize the separation
+standard confusion matrix to evaluate the accuracy, precision, and F1 score.
+\colorbox{green}{(TODO: AUC and ROC can also be used as additional evaluation
+    methods.)} We also apply Grad-CAM with manual inspection to visualize the
+activation weights for classified images to visualize which features lead to the
+classification result. Finally, we apply t-SNE to visualize the separation
 learned for the model to further analyze the classifications made by the model.
 
 \section{Results}
@@ -369,67 +417,56 @@ frequency of 3.000 GHz, and has 256GB of RAM.
 To begin, we share the results on the VGG model architectures on our custom
 dataset. The classification results are summarized in a confusion matrix for
 each model. Then, the statistics for each VGG architecture are shared in Table
-\ref{tab:vgg_results} and Figure \ref{fig:vgg_results}. The results are
-collected on 8 iterations of training and averaged. The results are
-rounded to 2 decimal places where appropriate.
+\ref{tab:vgg_results}. The results are collected on 8 runs of training and
+averaged. The results are rounded to 2 decimal places where appropriate.
 
-\vspace{0.5in}
+% \begin{table}[h]
+%     \centering
+%     \caption{VGG11 confusion matrix on ant head image dataset.}
+%     \begin{tabular}{r|ll}
+%                          & True Rough & True Smooth \\
+%         \hline
+%         Predicted Rough  & 101.75     & 53          \\
+%         Predicted Smooth & 37.375     & 257.875     \\
+%     \end{tabular}
+%     \label{tab:vgg11_confusion_matrix}
+% \end{table}
 
-\begin{table}[h]
-    \centering
-    \caption{VGG11 confusion matrix on ant head image dataset.}
-    \begin{tabular}{r|ll}
-                         & True Rough & True Smooth \\
-        \hline
-        Predicted Rough  & 101.75     & 53          \\
-        Predicted Smooth & 37.375     & 257.875     \\
-    \end{tabular}
-    \label{tab:vgg11_confusion_matrix}
-\end{table}
+% \begin{table}[h]
+%     \centering
+%     \caption{VGG13 confusion matrix on ant head image dataset.}
+%     \begin{tabular}{r|ll}
+%                          & True Rough & True Smooth \\
+%         \hline
+%         Predicted Rough  & 95.25      & 39.375      \\
+%         Predicted Smooth & 43.25      & 272.25      \\
+%     \end{tabular}
+%     \label{tab:vgg13_confusion_matrix}
+% \end{table}
 
-\vspace{0.5in}
+% \begin{table}[h]
+%     \centering
+%     \caption{VGG16 confusion matrix on ant head image dataset.}
+%     \begin{tabular}{r|ll}
+%                          & True Rough & True Smooth \\
+%         \hline
+%         Predicted Rough  & 87.5       & 42.625      \\
+%         Predicted Smooth & 47.375     & 272.5       \\
+%     \end{tabular}
+%     \label{tab:vgg16_confusion_matrix}
+% \end{table}
 
-\begin{table}[h]
-    \centering
-    \caption{VGG13 confusion matrix on ant head image dataset.}
-    \begin{tabular}{r|ll}
-                         & True Rough & True Smooth \\
-        \hline
-        Predicted Rough  & 95.25      & 39.375      \\
-        Predicted Smooth & 43.25      & 272.25      \\
-    \end{tabular}
-    \label{tab:vgg13_confusion_matrix}
-\end{table}
-
-\vspace{0.5in}
-
-\begin{table}[h]
-    \centering
-    \caption{VGG16 confusion matrix on ant head image dataset.}
-    \begin{tabular}{r|ll}
-                         & True Rough & True Smooth \\
-        \hline
-        Predicted Rough  & 87.5       & 42.625      \\
-        Predicted Smooth & 47.375     & 272.5       \\
-    \end{tabular}
-    \label{tab:vgg16_confusion_matrix}
-\end{table}
-
-\vspace{0.5in}
-
-\begin{table}[h]
-    \centering
-    \caption{VGG19 confusion matrix on ant head image dataset.}
-    \begin{tabular}{r|ll}
-                         & True Rough & True Smooth \\
-        \hline
-        Predicted Rough  & 91.25      & 42.125      \\
-        Predicted Smooth & 43.25      & 273.375     \\
-    \end{tabular}
-    \label{tab:vgg19_confusion_matrix}
-\end{table}
-
-\vspace{0.5in}
+% \begin{table}[h]
+%     \centering
+%     \caption{VGG19 confusion matrix on ant head image dataset.}
+%     \begin{tabular}{r|ll}
+%                          & True Rough & True Smooth \\
+%         \hline
+%         Predicted Rough  & 91.25      & 42.125      \\
+%         Predicted Smooth & 43.25      & 273.375     \\
+%     \end{tabular}
+%     \label{tab:vgg19_confusion_matrix}
+% \end{table}
 
 \begin{table}[h]
     \centering
@@ -445,59 +482,57 @@ rounded to 2 decimal places where appropriate.
     \label{tab:vgg_results}
 \end{table}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.6\textwidth]{thesis_assets/plots/vgg_average.png}
-    \caption{Average accuracy for VGG architectures on ant head image dataset.}
-    \label{fig:vgg_results}
-\end{figure}
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.6\textwidth]{thesis_assets/plots/vgg_average.png}
+%     \caption{Average accuracy for VGG architectures on ant head image dataset.}
+%     \label{fig:vgg_results}
+% \end{figure}
 
 \subsection{ResNet Models}
 
 Next, we share the results on the ResNet model architectures on our custom
 dataset with random weight initialization. The classification results are
 summarized in a confusion matrix for each model. Then, the statistics for each
-ResNet architecture are shared in Table \ref{tab:resnet_results} and Figure
-\ref{fig:resnet_results}. The results are collected on 8 iterations of training and
-averaged. The results are rounded to 2 decimal places where appropriate.
+ResNet architecture are shared in Table \ref{tab:resnet_results}. The results
+are collected on 8 runs of training and averaged. The results are rounded
+to 2 decimal places where appropriate.
 
-\begin{table}[h]
-    \centering
-    \caption{ResNet18 confusion matrix on ant head image dataset.}
-    \begin{tabular}{r|ll}
-                         & True Rough & True Smooth \\
-        \hline
-        Predicted Rough  & 98.75      & 48.75       \\
-        Predicted Smooth & 39.25      & 262         \\
-    \end{tabular}
-    \label{tab:resnet18_confusion_matrix}
-\end{table}
+% \begin{table}[h]
+%     \centering
+%     \caption{ResNet18 confusion matrix on ant head image dataset.}
+%     \begin{tabular}{r|ll}
+%                          & True Rough & True Smooth \\
+%         \hline
+%         Predicted Rough  & 98.75      & 48.75       \\
+%         Predicted Smooth & 39.25      & 262         \\
+%     \end{tabular}
+%     \label{tab:resnet18_confusion_matrix}
+% \end{table}
 
-\vspace{0.5in}
+% \begin{table}[h]
+%     \centering
+%     \caption{ResNet50 confusion matrix on ant head image dataset.}
+%     \begin{tabular}{r|ll}
+%                          & True Rough & True Smooth \\
+%         \hline
+%         Predicted Rough  & 81.375     & 43.625      \\
+%         Predicted Smooth & 55.875     & 269.125     \\
+%     \end{tabular}
+%     \label{tab:resnet50_confusion_matrix}
+% \end{table}
 
-\begin{table}[h]
-    \centering
-    \caption{ResNet50 confusion matrix on ant head image dataset.}
-    \begin{tabular}{r|ll}
-                         & True Rough & True Smooth \\
-        \hline
-        Predicted Rough  & 81.375     & 43.625      \\
-        Predicted Smooth & 55.875     & 269.125     \\
-    \end{tabular}
-    \label{tab:resnet50_confusion_matrix}
-\end{table}
-
-\begin{table}[h]
-    \centering
-    \caption{ResNet101 confusion matrix on ant head image dataset.}
-    \begin{tabular}{r|ll}
-                         & True Rough & True Smooth \\
-        \hline
-        Predicted Rough  & 85.75      & 53.875      \\
-        Predicted Smooth & 50.125     & 260.25      \\
-    \end{tabular}
-    \label{tab:resnet101_confusion_matrix}
-\end{table}
+% \begin{table}[h]
+%     \centering
+%     \caption{ResNet101 confusion matrix on ant head image dataset.}
+%     \begin{tabular}{r|ll}
+%                          & True Rough & True Smooth \\
+%         \hline
+%         Predicted Rough  & 85.75      & 53.875      \\
+%         Predicted Smooth & 50.125     & 260.25      \\
+%     \end{tabular}
+%     \label{tab:resnet101_confusion_matrix}
+% \end{table}
 
 \begin{table}[h]
     \centering
@@ -512,12 +547,12 @@ averaged. The results are rounded to 2 decimal places where appropriate.
     \label{tab:resnet_results}
 \end{table}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.6\textwidth]{thesis_assets/plots/resnet_average.png}
-    \caption{Average accuracy for ResNet architectures on ant head image dataset.}
-    \label{fig:resnet_results}
-\end{figure}
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.6\textwidth]{thesis_assets/plots/resnet_average.png}
+%     \caption{Average accuracy for ResNet architectures on ant head image dataset.}
+%     \label{fig:resnet_results}
+% \end{figure}
 
 \clearpage
 \subsection{Fine-tuned ResNet Models}
@@ -525,51 +560,45 @@ averaged. The results are rounded to 2 decimal places where appropriate.
 Next, we share the results on the fine-tuned ResNet model architectures on our
 custom dataset with pretrained weights. The classification results are
 summarized in a confusion matrix for each model. Then, the statistics for each
-ResNet architecture are shared in Table \ref{tab:fresnet_results} and Figure
-\ref{fig:fresnet_results}. The results are collected on 8 iterations of training
-and averaged. The results are rounded to 2 decimal places where appropriate.
+ResNet architecture are shared in Table \ref{tab:fresnet_results}. The results
+are collected on 8 runs of training and averaged. The results are rounded
+to 2 decimal places where appropriate.
 
-\begin{table}[h]
-    \centering
-    \caption{Fine-tuned ResNet18 confusion matrix on ant head image dataset.}
-    \begin{tabular}{r|ll}
-                         & True Rough & True Smooth \\
-        \hline
-        Predicted Rough  & 117.375    & 35.125      \\
-        Predicted Smooth & 17.875     & 279.625     \\
-    \end{tabular}
-    \label{tab:fresnet18_confusion_matrix}
-\end{table}
+% \begin{table}[h]
+%     \centering
+%     \caption{Fine-tuned ResNet18 confusion matrix on ant head image dataset.}
+%     \begin{tabular}{r|ll}
+%                          & True Rough & True Smooth \\
+%         \hline
+%         Predicted Rough  & 117.375    & 35.125      \\
+%         Predicted Smooth & 17.875     & 279.625     \\
+%     \end{tabular}
+%     \label{tab:fresnet18_confusion_matrix}
+% \end{table}
 
-\vspace{0.5in}
+% \begin{table}[h]
+%     \centering
+%     \caption{Fine-tuned ResNet50 confusion matrix on ant head image dataset.}
+%     \begin{tabular}{r|ll}
+%                          & True Rough & True Smooth \\
+%         \hline
+%         Predicted Rough  & 114.5      & 33.25       \\
+%         Predicted Smooth & 24.125     & 278.125     \\
+%     \end{tabular}
+%     \label{tab:fresnet50_confusion_matrix}
+% \end{table}
 
-\begin{table}[h]
-    \centering
-    \caption{Fine-tuned ResNet50 confusion matrix on ant head image dataset.}
-    \begin{tabular}{r|ll}
-                         & True Rough & True Smooth \\
-        \hline
-        Predicted Rough  & 114.5      & 33.25       \\
-        Predicted Smooth & 24.125     & 278.125     \\
-    \end{tabular}
-    \label{tab:fresnet50_confusion_matrix}
-\end{table}
-
-\vspace{0.5in}
-
-\begin{table}[h]
-    \centering
-    \caption{Fine-tuned ResNet101 confusion matrix on ant head image dataset.}
-    \begin{tabular}{r|ll}
-                         & True Rough & True Smooth \\
-        \hline
-        Predicted Rough  & 117.25     & 33.25       \\
-        Predicted Smooth & 18.375     & 281.125     \\
-    \end{tabular}
-    \label{tab:fresnet101_confusion_matrix}
-\end{table}
-
-\vspace{0.5in}
+% \begin{table}[h]
+%     \centering
+%     \caption{Fine-tuned ResNet101 confusion matrix on ant head image dataset.}
+%     \begin{tabular}{r|ll}
+%                          & True Rough & True Smooth \\
+%         \hline
+%         Predicted Rough  & 117.25     & 33.25       \\
+%         Predicted Smooth & 18.375     & 281.125     \\
+%     \end{tabular}
+%     \label{tab:fresnet101_confusion_matrix}
+% \end{table}
 
 \begin{table}[h]
     \centering
@@ -584,16 +613,14 @@ and averaged. The results are rounded to 2 decimal places where appropriate.
     \label{tab:fresnet_results}
 \end{table}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.6\textwidth]{thesis_assets/plots/resnet_finetuned_average.png}
-    \caption{Average accuracy for fine-tuned ResNet architectures on ant head image dataset.}
-    \label{fig:fresnet_results}
-\end{figure}
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.6\textwidth]{thesis_assets/plots/resnet_finetuned_average.png}
+%     \caption{Average accuracy for fine-tuned ResNet architectures on ant head image dataset.}
+%     \label{fig:fresnet_results}
+% \end{figure}
 
-\clearpage
-
-\section{Analysis}
+\section{The analysis with visualization}
 
 The results in the previous sections show that the fine-tuned ResNet models
 outperform the VGG and randomly initialized ResNet models on the task of ant
@@ -658,7 +685,7 @@ accuracy.
 In this section, we provide some visual analysis of some correctly and
 incorrectly classified images using GradCAM. We provide two categories and two
 subcategories in our analysis. The two categories are correct and incorrect
-classification. Regardles of the feature activation map, the correctly
+classification. Regardless of the feature activation map, the correctly
 classified images have the same predicted label as the ground truth, and
 incorrectly classified images have different predicted labels. The two
 subcategories are ideal and non-ideal feature activation. In the ideal case, the
@@ -798,19 +825,20 @@ introduce some parameter such as model confidence to examine further.
     \label{fig:incorrect_nonideal}
 \end{figure}
 
-\clearpage
+\FloatBarrier
+% \clearpage
 \section{Conclusion}
 Ant cuticle texture presumably has some function, but without the proper tools,
 evaluating the function based on thousands of species is infeasible. We have
-shown in this work that a deep learning approach can be used to automatically
-categorize ants based on their cuticle texture, therefore supporting research on
-the evaluation of the function in future work. Our categorization system is
-novel in the field of automated insect indentification due to the broad number
-of species captured by it. Additionally, a model that is pre-trained on a
-diverse image task such as ResNet can be transferred to our domain of texture
-analysis. All code is publicly available on GitHub
-(https://github.com/ngngardner/cuticulus).
+shown in this work that a deep learning approach and classical image texture
+analysis methods can be used to automatically categorize ants based on their
+cuticle texture, therefore supporting research on the evaluation of the function
+in future work. Our categorization system is novel in the field of automated
+insect identification due to the broad number of species captured by it.
+Additionally, a model that is pre-trained on a diverse image task such as ResNet
+can be transferred to our domain of texture analysis. All code is publicly
+available on GitHub (https://github.com/ngngardner/cuticulus).
 
 \bibliographystyle{AIMS}
-\bibliography{main.bib}
+\bibliography{main.bib,article.bib}
 \end{document}

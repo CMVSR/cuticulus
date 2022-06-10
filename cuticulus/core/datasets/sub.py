@@ -137,17 +137,16 @@ class SubDataset(DatasetSplitter):
         length = min(rows, cols) // 2 - 1
 
         for point in points:
-            # clip points outside of the new squared image
-            if point[0] > length:
-                point[0] = length
-            if point[1] > length:
-                point[1] = length
-
             if self.source_size != const.NO_RESIZE:
                 # scale the points to the new scale
                 point[0] = point[0] * self.source_size[0] / length
                 point[1] = point[1] * self.source_size[1] / length
 
+            # clip points outside of the new squared image
+            if point[0] > length:
+                point[0] = length
+            if point[1] > length:
+                point[1] = length
         return points
 
     @beartype
