@@ -420,54 +420,6 @@ each model. Then, the statistics for each VGG architecture are shared in Table
 \ref{tab:vgg_results}. The results are collected on 8 runs of training and
 averaged. The results are rounded to 2 decimal places where appropriate.
 
-% \begin{table}[h]
-%     \centering
-%     \caption{VGG11 confusion matrix on ant head image dataset.}
-%     \begin{tabular}{r|ll}
-%                          & True Rough & True Smooth \\
-%         \hline
-%         Predicted Rough  & 101.75     & 53          \\
-%         Predicted Smooth & 37.375     & 257.875     \\
-%     \end{tabular}
-%     \label{tab:vgg11_confusion_matrix}
-% \end{table}
-
-% \begin{table}[h]
-%     \centering
-%     \caption{VGG13 confusion matrix on ant head image dataset.}
-%     \begin{tabular}{r|ll}
-%                          & True Rough & True Smooth \\
-%         \hline
-%         Predicted Rough  & 95.25      & 39.375      \\
-%         Predicted Smooth & 43.25      & 272.25      \\
-%     \end{tabular}
-%     \label{tab:vgg13_confusion_matrix}
-% \end{table}
-
-% \begin{table}[h]
-%     \centering
-%     \caption{VGG16 confusion matrix on ant head image dataset.}
-%     \begin{tabular}{r|ll}
-%                          & True Rough & True Smooth \\
-%         \hline
-%         Predicted Rough  & 87.5       & 42.625      \\
-%         Predicted Smooth & 47.375     & 272.5       \\
-%     \end{tabular}
-%     \label{tab:vgg16_confusion_matrix}
-% \end{table}
-
-% \begin{table}[h]
-%     \centering
-%     \caption{VGG19 confusion matrix on ant head image dataset.}
-%     \begin{tabular}{r|ll}
-%                          & True Rough & True Smooth \\
-%         \hline
-%         Predicted Rough  & 91.25      & 42.125      \\
-%         Predicted Smooth & 43.25      & 273.375     \\
-%     \end{tabular}
-%     \label{tab:vgg19_confusion_matrix}
-% \end{table}
-
 \begin{table}[h]
     \centering
     \caption{Average results for VGG architectures on ant head image dataset.}
@@ -482,13 +434,6 @@ averaged. The results are rounded to 2 decimal places where appropriate.
     \label{tab:vgg_results}
 \end{table}
 
-% \begin{figure}[h]
-%     \centering
-%     \includegraphics[width=0.6\textwidth]{thesis_assets/plots/vgg_average.png}
-%     \caption{Average accuracy for VGG architectures on ant head image dataset.}
-%     \label{fig:vgg_results}
-% \end{figure}
-
 \subsection{ResNet Models}
 
 Next, we share the results on the ResNet model architectures on our custom
@@ -497,42 +442,6 @@ summarized in a confusion matrix for each model. Then, the statistics for each
 ResNet architecture are shared in Table \ref{tab:resnet_results}. The results
 are collected on 8 runs of training and averaged. The results are rounded
 to 2 decimal places where appropriate.
-
-% \begin{table}[h]
-%     \centering
-%     \caption{ResNet18 confusion matrix on ant head image dataset.}
-%     \begin{tabular}{r|ll}
-%                          & True Rough & True Smooth \\
-%         \hline
-%         Predicted Rough  & 98.75      & 48.75       \\
-%         Predicted Smooth & 39.25      & 262         \\
-%     \end{tabular}
-%     \label{tab:resnet18_confusion_matrix}
-% \end{table}
-
-% \begin{table}[h]
-%     \centering
-%     \caption{ResNet50 confusion matrix on ant head image dataset.}
-%     \begin{tabular}{r|ll}
-%                          & True Rough & True Smooth \\
-%         \hline
-%         Predicted Rough  & 81.375     & 43.625      \\
-%         Predicted Smooth & 55.875     & 269.125     \\
-%     \end{tabular}
-%     \label{tab:resnet50_confusion_matrix}
-% \end{table}
-
-% \begin{table}[h]
-%     \centering
-%     \caption{ResNet101 confusion matrix on ant head image dataset.}
-%     \begin{tabular}{r|ll}
-%                          & True Rough & True Smooth \\
-%         \hline
-%         Predicted Rough  & 85.75      & 53.875      \\
-%         Predicted Smooth & 50.125     & 260.25      \\
-%     \end{tabular}
-%     \label{tab:resnet101_confusion_matrix}
-% \end{table}
 
 \begin{table}[h]
     \centering
@@ -547,13 +456,6 @@ to 2 decimal places where appropriate.
     \label{tab:resnet_results}
 \end{table}
 
-% \begin{figure}[h]
-%     \centering
-%     \includegraphics[width=0.6\textwidth]{thesis_assets/plots/resnet_average.png}
-%     \caption{Average accuracy for ResNet architectures on ant head image dataset.}
-%     \label{fig:resnet_results}
-% \end{figure}
-
 \clearpage
 \subsection{Fine-tuned ResNet Models}
 
@@ -563,42 +465,6 @@ summarized in a confusion matrix for each model. Then, the statistics for each
 ResNet architecture are shared in Table \ref{tab:fresnet_results}. The results
 are collected on 8 runs of training and averaged. The results are rounded
 to 2 decimal places where appropriate.
-
-% \begin{table}[h]
-%     \centering
-%     \caption{Fine-tuned ResNet18 confusion matrix on ant head image dataset.}
-%     \begin{tabular}{r|ll}
-%                          & True Rough & True Smooth \\
-%         \hline
-%         Predicted Rough  & 117.375    & 35.125      \\
-%         Predicted Smooth & 17.875     & 279.625     \\
-%     \end{tabular}
-%     \label{tab:fresnet18_confusion_matrix}
-% \end{table}
-
-% \begin{table}[h]
-%     \centering
-%     \caption{Fine-tuned ResNet50 confusion matrix on ant head image dataset.}
-%     \begin{tabular}{r|ll}
-%                          & True Rough & True Smooth \\
-%         \hline
-%         Predicted Rough  & 114.5      & 33.25       \\
-%         Predicted Smooth & 24.125     & 278.125     \\
-%     \end{tabular}
-%     \label{tab:fresnet50_confusion_matrix}
-% \end{table}
-
-% \begin{table}[h]
-%     \centering
-%     \caption{Fine-tuned ResNet101 confusion matrix on ant head image dataset.}
-%     \begin{tabular}{r|ll}
-%                          & True Rough & True Smooth \\
-%         \hline
-%         Predicted Rough  & 117.25     & 33.25       \\
-%         Predicted Smooth & 18.375     & 281.125     \\
-%     \end{tabular}
-%     \label{tab:fresnet101_confusion_matrix}
-% \end{table}
 
 \begin{table}[h]
     \centering
@@ -612,13 +478,6 @@ to 2 decimal places where appropriate.
     \end{tabular}
     \label{tab:fresnet_results}
 \end{table}
-
-% \begin{figure}[h]
-%     \centering
-%     \includegraphics[width=0.6\textwidth]{thesis_assets/plots/resnet_finetuned_average.png}
-%     \caption{Average accuracy for fine-tuned ResNet architectures on ant head image dataset.}
-%     \label{fig:fresnet_results}
-% \end{figure}
 
 \section{The analysis with visualization}
 
