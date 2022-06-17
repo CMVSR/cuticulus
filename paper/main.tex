@@ -197,16 +197,66 @@ in Harris as many terms could be grouped together based on similar definitions
 and comparing the scanning electron microscope photographs provided in the
 publication \cite{harris_glossary_1979}.
 
-\colorbox{green}{TODO: how do we connect this section to image texture analysis?
-    (why do we research this and why image texture) }
+\colorbox{green}{\parbox{\dimexpr\textwidth-2\fboxsep}{TODO: how do we connect
+    this section to image texture analysis? (why do we research this and why
+    image texture) }}
 
 \subsection{Texture Analysis}
-\colorbox{green}{TODO: A brief survey on image texture and cite Liu's
-    IJCV2019 survey paper}
+Image texture analysis is an important part of image interpretation as many
+objects appearing in the textural patterns either partially or completely inside
+an image. This phenomenon appears frequently in many images we encountered in
+our environment as almost everybody is using the iPhone to capture the photos.
+Scientists are also studying their subjects depending on taking the images
+remotely such as remotely sensed satellite images. With an abundant number of
+textural images surrounding us, it is essential to have a reliable automatic
+tool for the textural image interpretation.
 
-\subsection{Deep Learning for Texture Analysis}
+Classical computer methods are developed for textural images based on the
+spatial relationship of gray levels of pixels encoded in the texture
+\colorbox{green}{[Haralick and Shapiro, Hung]}. Those methods by de-facto follow
+the steps used in the statistical pattern recognition
+\colorbox{green}{[Fukunaga]}. Therefore, textural features are extracted, and
+the classification and segmentation methods are used for the interpretation
+either using the supervised or unsupervised approaches. The interpretation
+method is usually taken and modified from the traditional pattern recognition
+methods. For example, the gray-level co-occurrence matrix (GLCM) and local
+binary patterns (LBP) are two of methods for extracting features
+\colorbox{green}{[references]}. Some other approaches also have been developed
+for the textural feature extraction \colorbox{green}{[references]}.
 
-In the past decade, deep learning using convolutional neural networks (CNNs)
+While most feature vectors are established based on a single pixel, Liu et al.
+gave a comprehensive survey on textural characterization in which they call this
+feature extraction as texture representation \colorbox{green}{[Liu]}. Their
+survey on Bag of Words and Convolutional Neural Networks are the spatial
+relationship concepts. The K-views was developed for taking the spatial
+information in the clustering approach \colorbox{green}{[Hung]}.  In the past
+decade, the deep learning network has become the mainstream in image
+classification and segmentation \colorbox{green}{[references]}. Compared with
+the traditional method in which a kernel must be designed by an engineer for
+extracting features, the deep learning network can automatically extract the
+features through the training. In addition, the deep learning networks achieve
+the higher accuracy than that of the classical approaches although the deep
+networks require much more data for training.
+
+Similar to the traditional pattern recognition, classical image texture analysis
+methods can be grouped into four categories: statistical, structural,
+model-based, and transform-based methods \colorbox{green}{[references]}. Among
+all of the categories, the statistical method is often used by employing the
+method from the pattern recognition principle.  In doing so, an image texture is
+represented as feature vectors and then fed into the algorithm. Markov random
+field models are also studied for textural image interpretation
+\colorbox{green}{[references]}. The transform-based methods use some functions
+to decompose an image texture into a set of basic feature images. Gabor filters
+and Wavelet expansions are two of the widely used approaches
+\colorbox{green}{[references]}.
+
+\colorbox{green}{TODO: add reference for sun phd thesis (Robust texture classification)}
+
+\colorbox{green}{TODO: cleanup transition}
+
+Recently, the deep learning network becomes the main stream in the
+interpretation of textural images [Sun and liu]. In the past decade, deep
+learning using convolutional neural networks (CNNs)
 \cite{krizhevsky_imagenet_2017} has emerged as the state-of-the-art technology
 for image analysis. Following this trend, various CNN-based network
 architectures have been designed to specifically characterize texture images.
@@ -405,7 +455,7 @@ same number of samples.
 
 \subsection{Classical texture analysis methods}
 
-\colorbox{green}{TODO: kviews, gabor, etc. will go here}
+\colorbox{green}{TODO: kviews, kmeans, etc. will go here}
 
 \subsection{Deep learning models used for the experiments}
 
@@ -521,6 +571,44 @@ to 2 decimal places where appropriate.
         ResNet101 & 0.89   & 0.94      & 0.92     & 0.88     \\
     \end{tabular}
     \label{tab:fresnet_results}
+\end{table}
+
+\colorbox{green}{TODO: Fix tables, decide on how to group models}
+
+\begin{table}[h]
+    \centering
+    \caption{Results}
+    \begin{tabular}{lllllll}
+        \toprule
+        {} & model                     & accuracy & precision & recall & f1   & roc\_auc \\
+        \midrule
+        0  & drp\_multi\_not\_pt       & 0.87     & 0.89      & 0.92   & 0.91 & 0.86     \\
+        1  & drp\_multi\_pt            & 0.88     & 0.89      & 0.93   & 0.91 & 0.87     \\
+        2  & drp\_single\_not\_pt      & 0.88     & 0.9       & 0.94   & 0.92 & 0.88     \\
+        3  & drp\_single\_pt           & 0.88     & 0.9       & 0.93   & 0.91 & 0.87     \\
+        4  & drp\_single\_aux\_not\_pt & 0.87     & 0.89      & 0.92   & 0.9  & 0.86     \\
+        5  & drp\_single\_aux\_pt      & 0.89     & 0.9       & 0.94   & 0.92 & 0.89     \\
+        6  & kviews\_17                & 0.62     & 0.79      & 0.59   & 0.68 & 0.62     \\
+        7  & kviews\_19                & 0.62     & 0.8       & 0.59   & 0.68 & 0.62     \\
+        8  & kviews\_25                & 0.52     & 0.71      & 0.51   & 0.59 & 0.52     \\
+        9  & kmeans                    & 0.47     & 0.07      & 0.35   & 0.11 & 0.47     \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \caption{Clustering Results}
+    \begin{tabular}{llll}
+        \toprule
+        {} & model      & rand\_score & adjusted\_rand\_score \\
+        \midrule
+        0  & kviews\_17 & 0.53        & 0.06                  \\
+        1  & kviews\_19 & 0.53        & 0.06                  \\
+        2  & kviews\_25 & 0.5         & -0.0                  \\
+        3  & kmeans     & 0.5         & 0.0                   \\
+        \bottomrule
+    \end{tabular}
 \end{table}
 
 \section{The analysis with visualization}
@@ -741,6 +829,8 @@ insect identification due to the broad number of species captured by it.
 Additionally, a model that is pre-trained on a diverse image task such as ResNet
 can be transferred to our domain of texture analysis. All code is publicly
 available on GitHub (https://github.com/ngngardner/cuticulus).
+
+\colorbox{green}{TODO: mention how future work may include extra classes}
 
 \bibliographystyle{AIMS}
 \bibliography{main.bib,article.bib}
