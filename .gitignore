@@ -10,6 +10,7 @@ input/**/*
 output
 output/**/*
 temp_*
+results
 
 # nix
 result

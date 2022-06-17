@@ -50,8 +50,8 @@
     John Paul Hellenbrand\affil{2},
     Anthony Phan\affil{1},
     Evan Zhu\affil{1},
-    Zhiling Long\affil{3},
-    Min Wang\affil{2},
+    Zhiling Long\affil{4},
+    Min Wang\affil{3},
     Clint Penick\affil{2},
     and Chih-Cheng Hung\affil{1}\corrauth
 }%
@@ -65,7 +65,9 @@
         University, Marietta GA, USA}%
     \addr{\affilnum{2}}{College of Science and Mathematics, Kennesaw State
         University, Kennesaw, GA, USA}%
-    \addr{\affilnum{3}}{Department of Mathematics, Science, and Informatics,
+    \addr{\affilnum{3}}{Department of Mathematics, Kennesaw State University,
+        Kennesaw, GA, USA}%
+    \addr{\affilnum{4}}{Department of Mathematics, Science, and Informatics,
         Mercer University, Atlanta, GA, USA}%
 }
 \corraddr{chung1@kennesaw.edu}
@@ -153,9 +155,9 @@ the deep learning network can automatically extract the features by itself.
 
 In this study, we used some of both approaches for our work on the ant images.
 
-\colorbox{green}{TODO: Specifically, what approaches used? Why do we use image
-    texture for ant images? What are the contributions?}
-
+\colorbox{green}{\parbox{\dimexpr\textwidth-2\fboxsep}{TODO:Specifically, what
+        approaches used? Why do we use image texture for ant images? What are
+        the contributions?}}
 
 \colorbox{green}{TODO: briefly discuss results from the research}
 
@@ -201,6 +203,48 @@ publication \cite{harris_glossary_1979}.
 \subsection{Texture Analysis}
 \colorbox{green}{TODO: A brief survey on image texture and cite Liu's
     IJCV2019 survey paper}
+
+\subsection{Deep Learning for Texture Analysis}
+
+In the past decade, deep learning using convolutional neural networks (CNNs)
+\cite{krizhevsky_imagenet_2017} has emerged as the state-of-the-art technology
+for image analysis. Following this trend, various CNN-based network
+architectures have been designed to specifically characterize texture images.
+Among these, the Fisher-vector CNN descriptor (FV-CNN) proposed by Cimpoi et al.
+\cite{cimpoi_describing_2014} is widely accepted as one of the most important
+pioneering works. It applies FV pooling to deep features obtained via a CNN
+pre-trained using the ImageNet \cite{krizhevsky_imagenet_2017} to obtain encoded
+features for texture classification. Although it is capable of achieving much
+improved classification accuracy comparing to traditional hand-crafted texture
+features, FV-CNN does not support an end-to-end learning, where feature
+extraction, encoding, and classification are separated from each other. To
+achieve an end-to-end learning, Zhang et al. \cite{zhang_visual_2018} proposed
+the deep texture encoding network (DeepTEN), in which a novel texture encoding
+layer is added to a standard CNN architecture. Then, Xue et al.
+\cite{xue_deep_2018} constructed the deep encoding pooling network (DEP), which
+improves over DeepTEN by integrating local spatial characteristics into the
+texture representation. Based on DeepTEN and DEP, Hu et al. \cite{hu_multi_2019}
+further developed the multi-level texture encoding and representation (MuLTER)
+network, which embeds a learnable encoding module at each convolutional layer so
+that encoding is performed for both low-level and high-level features, yielding
+a multi-level texture representation.
+
+Other network architectures for end-to-end texture learning are also available.
+For example, in the deep multiple-attribute-perceived network (MAP-Net)
+\cite{zhai_deep_2019}, multiple perceptual attributes are progressively learned
+in a mutually reinforced manner through multiple branches. In the deep
+structure-revealed network (DSR-Net)\cite{zhai_deep_2020}, inherent structural
+representation for a texture pattern is obtained by employing a primitive
+capturing module to learn spatial primitives and a dependency learning module to
+capture the dependency among the primitives. In \cite{mao_deep_2021}, a residual
+pooling layer consisting of a residual encoding module and an aggregation module
+is used to generate discriminative features of low dimensions. In
+\cite{peeples_histogram_2021}, a histogram layer is designed to compute local
+spatial distribution of CNN features. In \cite{chen_deep_2021}, an innovative
+aggregation module is presented to exploit statistical self-similarity across
+layers. All these architectures customize the standard CNN structure to
+accomplish the characterization of certain spatial, visual, or statistical
+nature unique to texture images.
 
 \subsection{Insect Classification}
 In this section, we provide an overview of some insect classification methods.
