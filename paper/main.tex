@@ -49,7 +49,7 @@
     Noah Gardner\affil{1},
     John Paul Hellenbrand\affil{2},
     Anthony Phan\affil{1},
-    Evan Zhu\affil{1},
+    Haige Zhu\affil{1},
     Zhiling Long\affil{4},
     Min Wang\affil{3},
     Clint Penick\affil{2},
@@ -82,22 +82,19 @@
     useful to research for ecological applications and bioinspired designs. This
     research employs image texture analysis and deep machine learning to
     automatically group similar ant species based on morphological traits. We
-    provide a comparative study of the performance of texture analysis methods
-    on ant images. We evaluate the results of the classification methods with
-    modern visualization techniques.
-    \colorbox{green}{TODO: what is the result? experiments? data?}
+    provide a comparative study of the performance of general image
+    classification and texture analysis methods on ant head images. We evaluate
+    the results of the classification methods with modern visualization
+    techniques. Our results show that deep learning methods are applicable for
+    classifying ant cuticle textures. We also show that the performance of the
+    deep texture analysis methods performs better than the deep classification
+    methods.
 \end{abstract}
 \keywords{texture analysis; image processing; classification; machine learning;
     ant cuticle images; ecology}
 \maketitle
 
 \section{Introduction}
-\colorbox{green}{TODO: refer to ant head images in a consistent way}
-
-\colorbox{green}{TODO: refer to traditional/classical in a consistent way}
-
-\colorbox{green}{TODO: change ideal and non-ideal to features identified by
-    the biologist and to invalid features (background, etc.)}
 
 Insects compose half of biodiversity and rank among the most dominant organisms
 in terrestrial ecosystems \cite{sheikh_diverse_2017}. A key factor for the
@@ -132,51 +129,24 @@ be associated with certain sculpturing types. In order to analyze those
 functions, it is necessary to segment the image and group similar textures for
 further analysis.
 
-In image texture analysis methods, the general goal is to automatically
-categorize an object into a set of objects with similar texture-based features.
-Texture analysis has shown promising results in related fields, such as plant
-identification \cite{boudra_plant_2018} \colorbox{green}{TODO: more references
-    and examples}. With modern texture analysis methods, the categorization of ants
-can be automated and the results can be used to study the influence of cuticle
-texture on ant ecology.
+Our primary contribution is the custom dataset used to explore the relationship
+between ant cuticle texture and automated texture analysis methods. We compare
+classical and modern image classification methods and texture analysis methods
+by evaluating their performance on our dataset.
 
-Image texture analysis heavily depends on the spatial relationships among gray
-levels of pixels \cite{hung_image_2019}. Hence, feature extraction method is
-usually applied to the spatial relationship. The gray-level co-occurrence matrix
-(GLCM) and local binary patterns (LBP) are two of methods which are based on the
-spatial relationships to extracting features for this purpose
-\cite{haralick_textural_1973, goos_gray_2000}. Traditional image texture
-analysis can be divided into four categories: statistical, structural,
-model-based, and transform-based methods \colorbox{green}{[references]}. In the
-past decade, the deep learning network becomes the mainstream in image
-classification and segmentation \cite{liu_bow_2019}. Compared with the
-traditional method in which a kernel must be designed for extracting features,
-the deep learning network can automatically extract the features by itself.
+\section{Related work and literature review}
 
-In this study, we used some of both approaches for our work on the ant images.
+In this section we will review the literature for ant sculpturing identification
+and texture analysis. Additionally, we discuss the work related to automated
+insect identification.
 
-\colorbox{green}{\parbox{\dimexpr\textwidth-2\fboxsep}{TODO:Specifically, what
-        approaches used? Why do we use image texture for ant images? What are
-        the contributions?}}
-
-\colorbox{green}{TODO: briefly discuss results from the research}
-
-\section{Related Work}
-
-\colorbox{green}{TODO: introduce the section}
-
-\subsection{Sculpturing Identification}
+\subsection{Sculpturing identification}
 Taxonomists have developed extensive terminology describing ant cuticle
 sculpturing as it is often a useful diagnostic trait to distinguish between
 closely related ant species \cite{blaimer_taxonomy_2019,fisher_ants_2007}. The
 definitive text on ant cuticle terminology — \textit{The Glossary of Surface
     Sculpturing} — contains over 100 terms to describe the cuticle sculpturing
-patterns of ants \cite{harris_glossary_1979}. There is often substantial overlap
-among terms, and closely related cuticle patterns are likely to be functionally
-similar. For example, the definition for “imbricate” is, “partly overlapping and
-appearing like shingles on a roof or scales on a fish,” which is difficult to
-distinguish from the definition of tesselate, “made up of squares like a chess
-board, either in sculpturing or in color.”
+patterns of ants \cite{harris_glossary_1979}.
 
 Cuticle sculpturing in ants has been explored thoroughly from a taxonomic
 perspective; however, the function of nano and microstructures on insect
@@ -185,7 +155,7 @@ literature of cuticle nano and microstructure function and propose 21 possible
 functions associated with these structures \cite{watson_diversity_2017}. Many of
 these functions are related to structures not found in ants such as scales and
 nanostructures. The review does include functions that may relate to ants such
-as friction control, enhanced surface area, and increased hardness.  Watson et
+as friction control, enhanced surface area, and increased hardness. Watson et
 al. also describe seven types of cuticle structures ranging from hairs and
 scales to nano and micro structures \cite{watson_diversity_2017}. The cuticle
 sculpturing of ants seems to fall within one type - complex microstructures.
@@ -197,11 +167,17 @@ in Harris as many terms could be grouped together based on similar definitions
 and comparing the scanning electron microscope photographs provided in the
 publication \cite{harris_glossary_1979}.
 
-\colorbox{green}{\parbox{\dimexpr\textwidth-2\fboxsep}{TODO: how do we connect
-    this section to image texture analysis? (why do we research this and why
-    image texture) }}
+There is often substantial overlap among terms, and closely related cuticle
+patterns are likely to be functionally similar. For example, the definition for
+“imbricate” is, “partly overlapping and appearing like shingles on a roof or
+scales on a fish,” which is difficult to distinguish from the definition of
+tesselate, “made up of squares like a chess board, either in sculpturing or in
+color.” However, we note that the terms used to describe the cuticle patterns
+are similar to the terms used to describe textural patterns in texture analysis.
+In the next subsection, we review some literature of image texture analysis.
 
-\subsection{Texture Analysis}
+\subsection{Texture analysis}
+
 Image texture analysis is an important part of image interpretation as many
 objects appearing in the textural patterns either partially or completely inside
 an image. This phenomenon appears frequently in many images we encountered in
@@ -213,77 +189,63 @@ tool for the textural image interpretation.
 
 Classical computer methods are developed for textural images based on the
 spatial relationship of gray levels of pixels encoded in the texture
-\colorbox{green}{[Haralick and Shapiro, Hung]}. Those methods by de-facto follow
-the steps used in the statistical pattern recognition
-\colorbox{green}{[Fukunaga]}. Therefore, textural features are extracted, and
-the classification and segmentation methods are used for the interpretation
+\cite{haralick_image_1985,hung_image_2019}. Those methods by de-facto follow the
+steps used in the statistical pattern recognition
+\cite{fukunaga_introduction_2013}. Therefore, textural features are extracted,
+and the classification and segmentation methods are used for the interpretation
 either using the supervised or unsupervised approaches. The interpretation
 method is usually taken and modified from the traditional pattern recognition
 methods. For example, the gray-level co-occurrence matrix (GLCM) and local
 binary patterns (LBP) are two of methods for extracting features
-\colorbox{green}{[references]}. Some other approaches also have been developed
-for the textural feature extraction \colorbox{green}{[references]}.
-
-While most feature vectors are established based on a single pixel, Liu et al.
-gave a comprehensive survey on textural characterization in which they call this
-feature extraction as texture representation \colorbox{green}{[Liu]}. Their
-survey on Bag of Words and Convolutional Neural Networks are the spatial
-relationship concepts. The K-views was developed for taking the spatial
-information in the clustering approach \colorbox{green}{[Hung]}.  In the past
-decade, the deep learning network has become the mainstream in image
-classification and segmentation \colorbox{green}{[references]}. Compared with
-the traditional method in which a kernel must be designed by an engineer for
-extracting features, the deep learning network can automatically extract the
-features through the training. In addition, the deep learning networks achieve
-the higher accuracy than that of the classical approaches although the deep
-networks require much more data for training.
+\cite{haralick_textural_1973, goos_gray_2000}.
 
 Similar to the traditional pattern recognition, classical image texture analysis
 methods can be grouped into four categories: statistical, structural,
-model-based, and transform-based methods \colorbox{green}{[references]}. Among
-all of the categories, the statistical method is often used by employing the
-method from the pattern recognition principle.  In doing so, an image texture is
+model-based, and transform-based methods \cite{bharati_image_2004}. Among all of
+the categories, the statistical method is often used by employing the method
+from the pattern recognition principle.  In doing so, an image texture is
 represented as feature vectors and then fed into the algorithm. Markov random
 field models are also studied for textural image interpretation
-\colorbox{green}{[references]}. The transform-based methods use some functions
-to decompose an image texture into a set of basic feature images. Gabor filters
-and Wavelet expansions are two of the widely used approaches
-\colorbox{green}{[references]}.
+\cite{hassner_use_1981, cross_markov_1983}. The transform-based methods use some functions to
+decompose an image texture into a set of basic feature images. Gabor filters and
+Wavelet expansions are two of the widely used approaches
+\cite{bovik_multichannel_1990}.
 
-\colorbox{green}{TODO: add reference for sun phd thesis (Robust texture classification)}
+While most feature vectors are established based on a single pixel, Liu et al.
+gave a comprehensive survey on textural characterization in which they call this
+feature extraction as texture representation \cite{liu_bow_2019}. Their survey
+on Bag of Words and Convolutional Neural Networks (CNNs)
+\cite{krizhevsky_imagenet_2017} are the spatial relationship concepts. The
+K-views was developed for taking the spatial information in the clustering
+approach \cite{hung_image_2019}.
 
-\colorbox{green}{TODO: cleanup transition}
-
-Recently, the deep learning network becomes the main stream in the
-interpretation of textural images [Sun and liu]. In the past decade, deep
-learning using convolutional neural networks (CNNs)
-\cite{krizhevsky_imagenet_2017} has emerged as the state-of-the-art technology
-for image analysis. Following this trend, various CNN-based network
-architectures have been designed to specifically characterize texture images.
-Among these, the Fisher-vector CNN descriptor (FV-CNN) proposed by Cimpoi et al.
-\cite{cimpoi_describing_2014} is widely accepted as one of the most important
+In the past decade, deep learning using CNNs has emerged as the mainstream
+technology for image analysis. Following this trend, various CNN-based network
+architectures have been designed to specifically characterize textural images.
+Among these, the Fisher-vector CNN descriptor (FV-CNN) proposed by Cimpoi et
+al. \cite{cimpoi_deep_2015} is widely accepted as one of the most important
 pioneering works. It applies FV pooling to deep features obtained via a CNN
-pre-trained using the ImageNet \cite{krizhevsky_imagenet_2017} to obtain encoded
-features for texture classification. Although it is capable of achieving much
-improved classification accuracy comparing to traditional hand-crafted texture
-features, FV-CNN does not support an end-to-end learning, where feature
-extraction, encoding, and classification are separated from each other. To
-achieve an end-to-end learning, Zhang et al. \cite{zhang_visual_2018} proposed
-the deep texture encoding network (DeepTEN), in which a novel texture encoding
-layer is added to a standard CNN architecture. Then, Xue et al.
-\cite{xue_deep_2018} constructed the deep encoding pooling network (DEP), which
-improves over DeepTEN by integrating local spatial characteristics into the
-texture representation. Based on DeepTEN and DEP, Hu et al. \cite{hu_multi_2019}
-further developed the multi-level texture encoding and representation (MuLTER)
-network, which embeds a learnable encoding module at each convolutional layer so
-that encoding is performed for both low-level and high-level features, yielding
-a multi-level texture representation.
+pre-trained using the ImageNet \cite{krizhevsky_imagenet_2017} to obtain encoded features
+for texture classification. Although it is capable of achieving much improved
+classification accuracy comparing to traditional hand-crafted texture features,
+FV-CNN does not support an end-to-end learning, where feature extraction,
+encoding, and classification are separated from each other. To achieve an
+end-to-end learning, Zhang et al. \cite{zhang_deep_2017} proposed the deep texture
+encoding network (DeepTEN), in which a novel texture encoding layer is added to
+a standard CNN architecture. Then, Xue et al. \cite{xue_deep_2018} constructed the
+deep encoding pooling network (DEP), which improves over DeepTEN by integrating
+local spatial characteristics into the texture representation. Based on DeepTEN
+and DEP, Hu et al. \cite{hu_multi_2019} further developed the multi-level texture
+encoding and representation (MuLTER) network, which embeds a learnable encoding
+module at each convolutional layer so that encoding is performed for both
+low-level and high-level features, yielding a multi-level texture
+representation.
 
 Other network architectures for end-to-end texture learning are also available.
 For example, in the deep multiple-attribute-perceived network (MAP-Net)
 \cite{zhai_deep_2019}, multiple perceptual attributes are progressively learned
 in a mutually reinforced manner through multiple branches. In the deep
-structure-revealed network (DSR-Net)\cite{zhai_deep_2020}, inherent structural
+structure-revealed network (DSR-Net) \cite{zhai_deep_2020}, inherent structural
 representation for a texture pattern is obtained by employing a primitive
 capturing module to learn spatial primitives and a dependency learning module to
 capture the dependency among the primitives. In \cite{mao_deep_2021}, a residual
@@ -294,9 +256,15 @@ spatial distribution of CNN features. In \cite{chen_deep_2021}, an innovative
 aggregation module is presented to exploit statistical self-similarity across
 layers. All these architectures customize the standard CNN structure to
 accomplish the characterization of certain spatial, visual, or statistical
-nature unique to texture images.
+nature unique to textural images.
 
-\subsection{Insect Classification}
+Compared with the traditional method in which a kernel must be designed by an
+engineer for extracting features, the deep learning networks can automatically
+extract the features through the training. In addition, the deep learning
+networks achieve the higher accuracy than that of the classical approaches,
+although the deep networks require much more data for training.
+
+\subsection{Insect classification}
 In this section, we provide an overview of some insect classification methods.
 Proposed insect classification methods seek to classify insects at different
 hierarchical levels, such as species, genus, family, and order. Additionally,
@@ -343,7 +311,7 @@ ImageNet dataset, there are some categories that specify the class of the insect
 on a species level, \textit{e.g.} \textit{monarch butterfly} and \textit{ringlet
     butterfly} as well as some categories that specify the class of the insect on a
 family level, \textit{e.g.} \textit{ant}, \textit{fly}, and \textit{bee}
-\cite{imagenet_labels}. Lim et al. \cite{lim_performance_2017} use a modified
+\cite{deng_imagenet_2009}. Lim et al. \cite{lim_performance_2017} use a modified
 AlexNet architecture and experiment with different numbers of kernels and their
 effect the performance of the model. Glick et al. \cite{glick_insect_2016}
 employ a similar approach by classifying 277 insect classes from ImageNet using
@@ -354,7 +322,9 @@ of insects.
 
 \section{Methodology}
 
-\colorbox{green}{TODO: do not jump into subsection directly without any context}
+In this section, we provide an overview of the methodology used in this paper.
+We describe the steps used to prepare the custom dataset. Finally, we describe
+the algorithms applied and experimental setup to obtain the results.
 
 \subsection{Dataset preparation} % preparation generation
 
@@ -369,7 +339,9 @@ of insects.
 In this section, we describe the creation of the custom dataset used in this
 research. In our dataset, we use ant head images from AntWeb
 \cite{perrichot_antweb_2012} and define two categories for them based on the
-appearance of the cuticle texture: \textit{rough} and \textit{smooth}. Some
+appearance of the cuticle texture: \textit{rough} and \textit{smooth}. We also
+refer to these ant head images, which describe the pose of the ant, as ant
+cuticule images, due to the clear cuticle texture present on the head. Some
 randomly selected images from each category are shown in Figures
 \ref{fig:rough-cuticle-texture} and \ref{fig:smooth-cuticle-texture}.
 
@@ -380,8 +352,6 @@ randomly selected images from each category are shown in Figures
         center cropping, from AntWeb \cite{perrichot_antweb_2012}.}
     \label{fig:smooth-cuticle-texture}
 \end{figure}
-
-% \subsubsection{Sculpture identification protocol}
 
 To begin, a master spreadsheet was created with the 2,499 different ant species
 to be identified for the primary dataset. The team was trained to identify
@@ -400,8 +370,6 @@ identify independently each week. A weekly meeting was held to discuss
 identifications and assign new ones. These identifications were collected in the
 master spreadsheet and the identifications were assigned to individual ant
 species on a majority basis.
-
-% \subsubsection{Data collection}
 
 To collect the images, the assistants followed the taxonomy information
 available in the master spreadsheet to the appropriate AntWeb page
@@ -429,8 +397,6 @@ denoting the specimen identifier and other information. In terms of texture,
 some ant specimens are very old, so their head images have other abnormalities
 such as cracks in the cuticle and the presence of dust.
 
-% \subsubsection{Data preprocessing}
-
 Due to the variety of the ant head image attributes, we apply simple
 preprocessing before the images are used in our model. We want the images to
 have a uniform size for simplicity in our classification process. Since the ant
@@ -455,7 +421,26 @@ same number of samples.
 
 \subsection{Classical texture analysis methods}
 
-\colorbox{green}{TODO: kviews, kmeans, etc. will go here}
+The K-means algorithm is one of widely used clustering algorithms in the pattern
+recognition \cite{lloyd_least_1982}. It is a single pixel based classification
+algorithm for images. The K-views is an algorithm that uses several
+characteristic views for the classification of images \cite{hung_use_2002}. The
+K-views algorithm is suitable for classifying image textures that have basic
+local patterns repeated in a periodic manner. In contrast to the K-means,
+K-views looks at the neighboring pixels for providing the spatial relationship
+for classification.  Several variations of the basic K-views model have been
+proposed \cite{yang_image_2003, lan_improved_2010}.
+
+For the feasibility study in this ant image datasets, we use both K-means and
+K-views in our experiments as both are statistical clustering methods. The
+experiments may indicate how well the statistical approach will do in this type
+of textural images. In pre-processing the dataset, we apply the Gabor filter to
+transform the gray-scale ant image into four Gabor-filtered channels, subtract
+the gray-scale image from each channel, take the absolute value of the resulting
+images, and then normalize them. This pre-processing will highlight some of
+characteristics features such as edge-like in the image. This step is very
+useful in feeding the datasets to the K-views algorithms. A 10-channel Gabor
+filter is applied in the pre-processing step for the K-means algorithm.
 
 \subsection{Deep learning models used for the experiments}
 
@@ -481,21 +466,21 @@ models to have an output layer of size 2. Each model is trained over 100 epochs,
 using stochastic gradient descent with momentum. The batch size is set to 16
 images. We apply a learning rate of 0.001 and momentum parameter of 0.9.
 
-\colorbox{green}{\parbox{\dimexpr\textwidth-2\fboxsep}{TODO: I suggest that
-        at least one deep learning based texture classification algorithm be applied
-        to the dataset for the comparative study. When this is the case, one more
-        subsection should be included here to describe that/those algorithm(s).}}
+% \colorbox{green}{\parbox{\dimexpr\textwidth-2\fboxsep}{TODO: I suggest that at
+%         least one deep learning based texture classification algorithm be
+%         applied to the dataset for the comparative study. When this is the
+%         case, one more subsection should be included here to describe
+%         that/those algorithm(s).}}
 
 \subsection{Evaluation}
 
 We evaluate the performance of the models according to standard evaluation
 methods. Since we are working with a binary classification problem, we use a
-standard confusion matrix to evaluate the accuracy, precision, and F1 score.
-\colorbox{green}{(TODO: AUC and ROC can also be used as additional evaluation
-    methods.)} We also apply Grad-CAM with manual inspection to visualize the
-activation weights for classified images to visualize which features lead to the
-classification result. Finally, we apply t-SNE to visualize the separation
-learned for the model to further analyze the classifications made by the model.
+standard confusion matrix to evaluate the accuracy, precision, and F1 score. We
+also apply Grad-CAM with manual inspection to visualize the activation weights
+for classified images to visualize which features lead to the classification
+result. Finally, we apply t-SNE to visualize the separation learned for the
+model to further analyze the classifications made by the model.
 
 \section{Results}
 \subsection{Environment}
@@ -505,121 +490,33 @@ contains 8 NVIDIA GeForce RTX 2080 Ti graphics cards with 12GB of memory each.
 The server uses an Intel Xeon Silver 4116 with 48 total threads and maximum
 frequency of 3.000 GHz, and has 256GB of RAM.
 
-% vgg results
-\subsection{VGG Models}
+\subsection{Evaluation results}
 
-To begin, we share the results on the VGG model architectures on our custom
-dataset. The classification results are summarized in a confusion matrix for
-each model. Then, the statistics for each VGG architecture are shared in Table
-\ref{tab:vgg_results}. The results are collected on 8 runs of training and
-averaged. The results are rounded to 2 decimal places where appropriate.
-
-\begin{table}[h]
-    \centering
-    \caption{Average results for VGG architectures on ant head image dataset.}
-    \begin{tabular}{r|llll}
-              & Recall & Precision & F1 Score & Accuracy \\
-        \hline
-        VGG11 & 0.83   & 0.88      & 0.85     & 0.80     \\
-        VGG13 & 0.87   & 0.87      & 0.87     & 0.82     \\
-        VGG16 & 0.86   & 0.86      & 0.86     & 0.80     \\
-        VGG19 & 0.87   & 0.87      & 0.87     & 0.81     \\
-    \end{tabular}
-    \label{tab:vgg_results}
-\end{table}
-
-\subsection{ResNet Models}
-
-Next, we share the results on the ResNet model architectures on our custom
-dataset with random weight initialization. The classification results are
-summarized in a confusion matrix for each model. Then, the statistics for each
-ResNet architecture are shared in Table \ref{tab:resnet_results}. The results
-are collected on 8 runs of training and averaged. The results are rounded
-to 2 decimal places where appropriate.
-
-\begin{table}[h]
-    \centering
-    \caption{Average results for ResNet architectures on ant head image dataset.}
-    \begin{tabular}{r|llll}
-                  & Recall & Precision & F1 Score & Accuracy \\
-        \hline
-        ResNet18  & 0.84   & 0.87      & 0.85     & 0.80     \\
-        ResNet50  & 0.86   & 0.83      & 0.84     & 0.77     \\
-        ResNet101 & 0.83   & 0.84      & 0.83     & 0.76     \\
-    \end{tabular}
-    \label{tab:resnet_results}
-\end{table}
-
-\clearpage
-\subsection{Fine-tuned ResNet Models}
-
-Next, we share the results on the fine-tuned ResNet model architectures on our
-custom dataset with pretrained weights. The classification results are
-summarized in a confusion matrix for each model. Then, the statistics for each
-ResNet architecture are shared in Table \ref{tab:fresnet_results}. The results
-are collected on 8 runs of training and averaged. The results are rounded
-to 2 decimal places where appropriate.
-
-\begin{table}[h]
-    \centering
-    \caption{Average results for Fine-tuned ResNet architectures on ant head image dataset.}
-    \begin{tabular}{r|llll}
-                  & Recall & Precision & F1 Score & Accuracy \\
-        \hline
-        ResNet18  & 0.89   & 0.94      & 0.91     & 0.88     \\
-        ResNet50  & 0.89   & 0.92      & 0.91     & 0.87     \\
-        ResNet101 & 0.89   & 0.94      & 0.92     & 0.88     \\
-    \end{tabular}
-    \label{tab:fresnet_results}
-\end{table}
-
-\colorbox{green}{TODO: Fix tables, decide on how to group models}
+To begin, we share the results on the each algorithm specified in the
+methodology section using the evaluation metrics described. The results are
+shown in Table \ref{tab:results}. It should be noted that due to the class
+imbalance in the dataset, the F1 score is the preferable metric to the accuracy.
+Therefore, the results have been sorted by F1 score in descending order.
 
 \begin{table}[h]
     \centering
     \caption{Results}
-    \begin{tabular}{lllllll}
-        \toprule
-        {} & model                     & accuracy & precision & recall & f1   & roc\_auc \\
-        \midrule
-        0  & drp\_multi\_not\_pt       & 0.87     & 0.89      & 0.92   & 0.91 & 0.86     \\
-        1  & drp\_multi\_pt            & 0.88     & 0.89      & 0.93   & 0.91 & 0.87     \\
-        2  & drp\_single\_not\_pt      & 0.88     & 0.9       & 0.94   & 0.92 & 0.88     \\
-        3  & drp\_single\_pt           & 0.88     & 0.9       & 0.93   & 0.91 & 0.87     \\
-        4  & drp\_single\_aux\_not\_pt & 0.87     & 0.89      & 0.92   & 0.9  & 0.86     \\
-        5  & drp\_single\_aux\_pt      & 0.89     & 0.9       & 0.94   & 0.92 & 0.89     \\
-        6  & kviews\_17                & 0.62     & 0.79      & 0.59   & 0.68 & 0.62     \\
-        7  & kviews\_19                & 0.62     & 0.8       & 0.59   & 0.68 & 0.62     \\
-        8  & kviews\_25                & 0.52     & 0.71      & 0.51   & 0.59 & 0.52     \\
-        9  & kmeans                    & 0.47     & 0.07      & 0.35   & 0.11 & 0.47     \\
-        \bottomrule
-    \end{tabular}
-\end{table}
-
-\begin{table}[h]
-    \centering
-    \caption{Clustering Results}
-    \begin{tabular}{llll}
-        \toprule
-        {} & model      & rand\_score & adjusted\_rand\_score \\
-        \midrule
-        0  & kviews\_17 & 0.53        & 0.06                  \\
-        1  & kviews\_19 & 0.53        & 0.06                  \\
-        2  & kviews\_25 & 0.5         & -0.0                  \\
-        3  & kmeans     & 0.5         & 0.0                   \\
-        \bottomrule
-    \end{tabular}
+    \input{assets/results.tex}
+    \label{tab:results}
 \end{table}
 
 \section{The analysis with visualization}
 
 The results in the previous sections show that the fine-tuned ResNet models
 outperform the VGG and randomly initialized ResNet models on the task of ant
-head image classification. It should be noted that due to the class imbalance in
-the dataset, the F1 score is the preferable metric to the accuracy. On average,
-the fine-tuned ResNet101 model performed the best with an average F1 score of
-0.92. We further analyze the separation learned by both ResNet101 models in the
-following section.
+head image classification. Additionally, the DRP models perform better than the
+the general deep learning models VGG and ResNet on the task of ant head image
+classification.The fine-tuned DRP single-layer model with auxiliary classifier
+performed the best with an average F1 score of 0.92. We further analyze the
+separation learned by both ResNet101 models in the following section.
+
+% \colorbox{green}{(TODO: DRP is best performing model, it should be included in
+%     visualization.)}
 
 \subsection{t-SNE Visualization}
 
@@ -671,7 +568,7 @@ fine-tuned model learned a stronger separation of the two classes, which
 reinforces the results that the fine-tuned model received a higher average
 accuracy.
 
-\subsection{GradCAM Visualization}
+\subsection{GradCAM visualization}
 
 In this section, we provide some visual analysis of some correctly and
 incorrectly classified images using GradCAM. We provide two categories and two
@@ -679,11 +576,11 @@ subcategories in our analysis. The two categories are correct and incorrect
 classification. Regardless of the feature activation map, the correctly
 classified images have the same predicted label as the ground truth, and
 incorrectly classified images have different predicted labels. The two
-subcategories are ideal and non-ideal feature activation. In the ideal case, the
-features that are used to compute the classification are the same as the
-features used by the assistants in the sculpture identification process. In
+subcategories are expected and non-expected feature activation. In the expected
+case, the features that are used to compute the classification are the same as
+the features used by the assistants in the sculpture identification process. In
 general, the features used by the assistants are the textures of the cuticle on
-the ant head. In the non-ideal case, the features used to compute the
+the ant head. In the non-expected case, the features used to compute the
 classification are not from the head, for example, from the background,
 extraneous text, or the body of the ant. We used randomly selected images from
 the dataset and the fine-tuned ResNet101 model to perform the analysis. We show
@@ -694,22 +591,23 @@ to the model. The right image shows the GradCAM output based on the
 classification. Four specimens were selected randomly from each category and
 subcategory.
 
-Correctly classified images which use ideal features show the ideal performance
-of the model. Incorrectly classified images which use ideal features should be
-further analyzed. In essence, the model in this situation knows \textit{where}
-to look, but not \textit{what} to look for. In Figure
+Correctly classified images which use the expected features show the ideal
+performance of the model. Incorrectly classified images which use the expected
+features should be further analyzed. In essence, the model in this situation
+knows \textit{where} to look, but not \textit{what} to look for. In Figure
 \ref{fig:incorrect_ideal_84}, the features activated are mostly in the correct
 location on the ant head, and the rough texture is clearly visible, yet the
 model predicts the incorrect class \textit{smooth}. Similarly in Figure
 \ref{fig:incorrect_ideal_177}, the features activated are also mostly in the
 correct location, yet the model predicts the incorrect class \textit{smooth}. In
 this case, it may be due to the pose of the ant being slightly different from
-the average pose. In the incorrectly classified images with non-ideal features,
-analysis shows that the model is unable to find \textit{where} to look, and
-obtains feature information from other parts of the ant or the background. Cases
-where the image was correctly classified using the non-ideal features can
-basically be seen as noise. In order to further analyze this class, we should
-introduce some parameter such as model confidence to examine further.
+the average pose. In the incorrectly classified images with non-expected
+features, analysis shows that the model is unable to find \textit{where} to
+look, and obtains feature information from other parts of the ant or the
+background. Cases where the image was correctly classified using the
+non-expected features can basically be seen as noise. In order to further
+analyze this class, we should introduce some parameter such as model confidence
+to examine further.
 
 \newcommand{\subwidth}{0.35\textwidth}
 \begin{figure}
@@ -734,7 +632,7 @@ introduce some parameter such as model confidence to examine further.
         \caption{Ground truth: rough}
         \label{fig:correct_ideal_1091}
     \end{subfigure}
-    \caption{Correctly classified images using ideal features.}
+    \caption{Correctly classified images using expected features.}
     \label{fig:correct_ideal}
 \end{figure}
 
@@ -760,7 +658,7 @@ introduce some parameter such as model confidence to examine further.
         \caption{Ground truth: smooth}
         \label{fig:correct_nonideal_388}
     \end{subfigure}
-    \caption{Correctly classified images using non-ideal features.}
+    \caption{Correctly classified images using non-expected features.}
     \label{fig:correct_nonideal}
 \end{figure}
 
@@ -786,7 +684,7 @@ introduce some parameter such as model confidence to examine further.
         \caption{Ground truth: smooth}
         \label{fig:incorrect_ideal_197}
     \end{subfigure}
-    \caption{Incorrectly classified images using ideal features.}
+    \caption{Incorrectly classified images using expected features.}
     \label{fig:incorrect_ideal}
 \end{figure}
 
@@ -812,12 +710,11 @@ introduce some parameter such as model confidence to examine further.
         \caption{Ground truth: rough}
         \label{fig:incorrect_nonideal_204}
     \end{subfigure}
-    \caption{Incorrectly classified images using non-ideal features.}
+    \caption{Incorrectly classified images using non-expected features.}
     \label{fig:incorrect_nonideal}
 \end{figure}
 
 \FloatBarrier
-% \clearpage
 \section{Conclusion}
 Ant cuticle texture presumably has some function, but without the proper tools,
 evaluating the function based on thousands of species is infeasible. We have
@@ -827,10 +724,12 @@ cuticle texture, therefore supporting research on the evaluation of the function
 in future work. Our categorization system is novel in the field of automated
 insect identification due to the broad number of species captured by it.
 Additionally, a model that is pre-trained on a diverse image task such as ResNet
-can be transferred to our domain of texture analysis. All code is publicly
-available on GitHub (https://github.com/ngngardner/cuticulus).
-
-\colorbox{green}{TODO: mention how future work may include extra classes}
+can be transferred to our domain of texture analysis. However, a deep learning
+algorithm created specifically for the domain of texture analysis had the best
+results in our experiments. In future work, we will continue to explore texture
+classes present in the dataset which are not captured by the binary class
+system. All code is publicly available on GitHub
+(https://github.com/ngngardner/cuticulus).
 
 \bibliographystyle{AIMS}
 \bibliography{main.bib,article.bib}
