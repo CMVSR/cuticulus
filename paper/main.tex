@@ -405,19 +405,7 @@ image to create a square image of the same size. Once the image is square, we
 resize each image to a fixed size of 256x256 pixels. We leave other
 discrepancies in the images untouched.
 
-Our custom dataset of ant head images contains 2,499 images. 1072 samples of
-rough textured ant cuticle textures comprise 43\% of the dataset. The remaining
-1427 samples of smooth textured ant cuticle textures comprise 57\% of the
-dataset. To handle the imbalance of the dataset, we apply undersampling for each
-class for the training dataset. By using random stratified sampling, we
-construct a training set with 800 images per class. The remaining images are
-randomly split between test and validation, which turns out to roughly a
-60\%/20\%/20\% train, test, and validation data split. With 272 rough samples
-and 627 smooth samples left over after the stratified split, the test dataset
-has roughly 136 rough samples and 313 smooth samples. Since these leftover
-samples are split with code by 50\% there will be some rounding variance and
-therefore the test dataset built at run-time will not always have exactly the
-same number of samples.
+
 
 \subsection{Classical texture analysis methods}
 
@@ -455,22 +443,35 @@ We compare three architectures of ResNet: ResNet18, ResNet50, and ResNet101.
 Again, the primary difference between the architectures is the number of layers
 in each model.
 
-For our ResNet models, we have two versions: randomized and pretrained. The
-randomized version is the same architecture, but the weights are randomly
-initialized. The pretrained version has weights from training on the CIFAR
-dataset, an image dataset with 1000 classes. In this case, we are fine-tuning
-the pretrained model. For VGG, we are only using the randomized version. The
-base VGG architecture also has an output layer of size 1000. Since we are
-working with a binary classification problem, we modify the architecture for all
-models to have an output layer of size 2. Each model is trained over 100 epochs,
-using stochastic gradient descent with momentum. The batch size is set to 16
-images. We apply a learning rate of 0.001 and momentum parameter of 0.9.
+\subsection{Deep texture analysis method used for the experiments}
 
-% \colorbox{green}{\parbox{\dimexpr\textwidth-2\fboxsep}{TODO: I suggest that at
-%         least one deep learning based texture classification algorithm be
-%         applied to the dataset for the comparative study. When this is the
-%         case, one more subsection should be included here to describe
-%         that/those algorithm(s).}}
+In addition to the classical texture analysis methods and the deep learning
+models for general image analysis, we also examine deep learning analysis
+methods specifically designed for textural images. For this examination, we
+adopt the deep residual pooling (DRP) network developed by Mao et al.
+\cite{mao_deep_2021}. The DRP framework consists of a unique residual pooling
+layer, which is formed by a residual encoding module followed by an aggregation
+module. The residual encoding module extracts relevant spatial information,
+while the aggregation module performs averaging to obtain orderless
+low-dimension features for classification.
+
+According to \cite{mao_deep_2021}, the DRP network can be used either with a
+single residual pooling layer, applied right before the classifier layer, or
+with multiple residual pooling layers, applied to the output of multiple
+convolutional layers before feeding the combined pooling results into the
+classifier layer. Additionally, an auxiliary classifier layer may also be used.
+In our experiments, we follow these strategies. For each scenario, we conduct
+two experiments. One experiment employs weights that are randomly initialized,
+and the other uses weights that are fine tuned over those from a pretrained
+model.
+
+\section{Results and analysis}
+\subsection{Environment}
+
+Experiments are run on an Ubuntu 18.04 LTS Lambda Labs GPU server. The server
+contains 8 NVIDIA GeForce RTX 2080 Ti graphics cards with 12GB of memory each.
+The server uses an Intel Xeon Silver 4116 with 48 total threads and maximum
+frequency of 3.000 GHz, and has 256GB of RAM.
 
 \subsection{Evaluation}
 
@@ -482,15 +483,33 @@ for classified images to visualize which features lead to the classification
 result. Finally, we apply t-SNE to visualize the separation learned for the
 model to further analyze the classifications made by the model.
 
-\section{Results}
-\subsection{Environment}
+\subsection{Experimental results}
 
-Experiments are run on an Ubuntu 18.04 LTS Lambda Labs GPU server. The server
-contains 8 NVIDIA GeForce RTX 2080 Ti graphics cards with 12GB of memory each.
-The server uses an Intel Xeon Silver 4116 with 48 total threads and maximum
-frequency of 3.000 GHz, and has 256GB of RAM.
+For our ResNet models, we have two versions: randomized and pretrained. The
+randomized version is the same architecture, but the weights are randomly
+initialized. The pretrained version has weights from training on the CIFAR
+dataset, an image dataset with 1000 classes. In this case, we are fine-tuning
+the pretrained model. For VGG, we are only using the randomized version. The
+base VGG architecture also has an output layer of size 1000. Since we are
+working with a binary classification problem, we modify the architecture for all
+models to have an output layer of size 2. Each model is trained over 100 epochs,
+using stochastic gradient descent with momentum. The batch size is set to 16
+images. We apply a learning rate of 0.001 and momentum parameter of 0.9.
 
-\subsection{Evaluation results}
+
+For the experiments using the deep learning algorithms, we use our custom
+dataset of ant head images which contains 2,499 images. 1072 samples of rough
+textured ant cuticle textures comprise 43\% of the dataset. The remaining 1427
+samples of smooth textured ant cuticle textures comprise 57\% of the dataset. To
+handle the imbalance of the dataset, we apply undersampling for each class for
+the training dataset. By using random stratified sampling, we construct a
+training set with 800 images per class. The remaining images are randomly split
+between test and validation, which turns out to roughly a 60\%/20\%/20\% train,
+test, and validation data split. With 272 rough samples and 627 smooth samples
+left over after the stratified split, the test dataset has roughly 136 rough
+samples and 313 smooth samples. Since these leftover samples are split with code
+by 50\% there will be some rounding variance and therefore the test dataset
+built at run-time will not always have exactly the same number of samples.
 
 To begin, we share the results on the each algorithm specified in the
 methodology section using the evaluation metrics described. The results are
@@ -505,8 +524,7 @@ Therefore, the results have been sorted by F1 score in descending order.
     \label{tab:results}
 \end{table}
 
-\section{The analysis with visualization}
-
+\FloatBarrier
 The results in the previous sections show that the fine-tuned ResNet models
 outperform the VGG and randomly initialized ResNet models on the task of ant
 head image classification. Additionally, the DRP models perform better than the
@@ -563,11 +581,13 @@ fine-tuned model.
     \label{fig:fresnet101_tsne}
 \end{figure}
 
+\FloatBarrier
 Based on the visual results of the t-SNE visualization, we can see that the
 fine-tuned model learned a stronger separation of the two classes, which
 reinforces the results that the fine-tuned model received a higher average
 accuracy.
 
+\FloatBarrier
 \subsection{GradCAM visualization}
 
 In this section, we provide some visual analysis of some correctly and
