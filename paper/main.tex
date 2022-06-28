@@ -428,7 +428,10 @@ the gray-scale image from each channel, take the absolute value of the resulting
 images, and then normalize them. This pre-processing will highlight some of
 characteristics features such as edge-like in the image. This step is very
 useful in feeding the datasets to the K-views algorithms. A 10-channel Gabor
-filter is applied in the pre-processing step for the K-means algorithm.
+filter is applied in the pre-processing step for the K-means algorithm. The
+theta $\theta$ parameters in the Gabor filters used are multiples of $\pi/10$
+radians starting from $0$ to $\pi$ radians. The Gabor filter lambda $\lambda$
+parameter is equal to $\pi$.
 
 \subsection{Deep learning models used for the experiments}
 
@@ -515,7 +518,7 @@ To begin, we share the results on the each algorithm specified in the
 methodology section using the evaluation metrics described. The results are
 shown in Table \ref{tab:results}. It should be noted that due to the class
 imbalance in the dataset, the F1 score is the preferable metric to the accuracy.
-Therefore, the results have been sorted by F1 score in descending order.
+% Therefore, the results have been sorted by F1 score in descending order.
 
 \begin{table}[h]
     \centering
@@ -535,6 +538,8 @@ separation learned by both ResNet101 models in the following section.
 
 % \colorbox{green}{(TODO: DRP is best performing model, it should be included in
 %     visualization.)}
+
+\subsection{Clustering segmentation}
 
 \subsection{t-SNE Visualization}
 
