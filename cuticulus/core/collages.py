@@ -42,11 +42,22 @@ def build_collage(
             replace=False,
         )
 
-        # create a collage of images
-        collage = Image.new('RGB', (size[1] * cols, size[0] * rows))
+        # create a collage of images, with padding between images
+        padding = 32
+        col_size = (size[1] + padding) * cols - padding
+        row_size = (size[0] + padding) * rows - padding
+        collage = Image.new('RGB', (col_size, row_size))
+
+        # set background color to white
+        collage.paste((255, 255, 255), (0, 0, col_size, row_size))
+
+        # paste images into collage
         for i, idx in enumerate(idx):
             image = Image.fromarray(images[idx])
-            collage.paste(image, (size[1] * (i % cols), size[0] * (i // cols)))
+            collage.paste(image, (
+                (i % cols) * (size[1] + padding),
+                (i // cols) * (size[0] + padding),
+            ))
 
         # scale down the collage
         collage = collage.resize((size[1] * cols // 2, size[0] * rows // 2))
