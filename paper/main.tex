@@ -162,28 +162,30 @@ Because ants lack bold coloration and complex wing venation patterns used to
 identify other insect species, microsculpturing has taken a prominent role in
 ant identification. To aid in species identification, ant taxonomists have
 developed nearly 100 terms to describe  fine differences in microsculpturing
-patterns \cite{harris_glossary_1979}. Despite the prominent role of
-microsculpturing in ant identification, however, almost nothing is known about
-how these patterns evolved or their function. Similar microsculpturing patterns
-in other organisms have been found to reduce abrasion, increase stiffness, and
-perform as structural antibiotics \cite{zhiwu_erosion_2012, han_efficient_2015,
-    rees_form_1975, chung_impact_2007,hasan_selective_2013}. Developing a better
-understanding of the function of microsculpturing in ants could provide insight
-into their evolution and biology as well as lead to the development of
-bio-inspired technologies \cite{penick_comparative_2022}.
+patterns \cite{harris_glossary_1979, bolton_identification_1994}. Despite the
+prominent role of microsculpturing in ant identification, however, almost
+nothing is known about how these patterns evolved or their function. Similar
+microsculpturing patterns in other organisms have been found to reduce abrasion,
+increase stiffness, and perform as structural antibiotics
+\cite{zhiwu_erosion_2012, han_efficient_2015, rees_form_1975,
+    chung_impact_2007,hasan_selective_2013}. Developing a better understanding of
+the function of microsculpturing in ants could provide insight into their
+evolution and biology as well as lead to the development of bio-inspired
+technologies \cite{penick_comparative_2022}.
 
 One challenge for functional investigations of cuticle microsculpturing is the
 complexity of terms used to describe these patterns. Complex terminology may be
 useful for describing fine differences between closely related species, but
 broader comparisons require a simplified classification scheme. We recently
 developed a classification system for microsculpturing that consists of only
-five categories: smooth, striate, punctate, reticulate, and tuberous. Using
-these categories to classify 11,722 ant species, we found that the earliest ants
-were likely smooth and that cuticle microsculpturing independently evolved later
-in multiple lineages. An even simpler classification scheme is to divide ants
-into only two categories: smooth and rough. Because microsculptuing has evolved
-numerous times in ants, this binary classification scheme is sufficient to
-detect conditions that select for any sculpturing at all compared to a smooth
+five categories: smooth, striate, punctate, reticulate, and tuberous
+\cite{hellenbrand_ant_2022}. Using these categories to classify 11,722 ant
+species, we found that the earliest ants were likely smooth and that cuticle
+microsculpturing independently evolved later in multiple lineages
+\cite{hellenbrand_ant_2022}. An even simpler classification scheme is to divide
+ants into only two categories: smooth and rough. Because microsculptuing has
+evolved numerous times in ants, this binary classification scheme is sufficient
+to detect conditions that select for any sculpturing at all compared to a smooth
 state.
 
 Using either a simplified or binary classification scheme, the next challenge is
@@ -466,9 +468,9 @@ transform the gray-scale ant image into four Gabor-filtered channels, subtract
 the gray-scale image from each channel, take the absolute value of the resulting
 images, and then normalize them. This pre-processing will highlight some of
 characteristics features such as edge-like in the image. This step is very
-useful in feeding the datasets to the K-views algorithms. A 10-channel Gabor
+useful in feeding the datasets to the K-views algorithms. A 4-channel Gabor
 filter is applied in the pre-processing step for the K-means algorithm. The
-theta $\theta$ parameters in the Gabor filters used are multiples of $\pi/10$
+theta $\theta$ parameters in the Gabor filters used are multiples of $\pi/4$
 radians starting from $0$ to $\pi$ radians. The Gabor filter lambda $\lambda$
 parameter is equal to $\pi$.
 
