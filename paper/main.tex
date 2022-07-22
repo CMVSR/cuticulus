@@ -43,8 +43,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
-\title{Ant cuticle image classification using texture analysis: a comparative
-    study}
+\title{Investigation of ant cuticle dataset using image texture
+    analysis methods}
 
 \author{%
     Noah Gardner\affil{1},
@@ -128,23 +128,24 @@ order to analyze those functions, it is necessary to segment the image and group
 similar textures for further analysis.
 
 There is a large variety of ant species and most species are diverse in terms of
-size, shape, behaviors, and cuticle textures \colorbox{green}{[references]}.
+size, shape, behaviors, and cuticle textures \cite{harris_glossary_1979}.
 Based on our initial observation of the cuticle sculpturing in ants, it appears
 that some type of textural structures can be identified in images. Therefore,
 this image dataset may be worth to be explored from the image texture analysis
 point of view for the further knowledge discovery. Image texture analysis has
-been used in image processing for many decades \colorbox{green}{[references]}. Due to its
+been used in image processing for many decades \cite{hung_image_2019}. Due to its
 diversity of images on scales, smoothness, coarseness, microtexture, and
 macrotexture occurring in images, it is a difficult problem for image textural
 interpreters. With a rapid development of deep machine learning, deep neural
-networks have been frequently used in image texture analysis \colorbox{green}{[references]}.
+networks have been frequently used in image texture analysis
+\cite{sun_robust_2014,liu_bow_2019,liu_pestnet_2019}.
 
 Our contribution is to establish an ant image dataset which can be used to
 explore the categorization of different ant cuticle textures using image texture
-analysis methods. \colorbox{green}{(comment: we may need to say how the dataset
-    is established)} Our experiment shows that the deep learning networks with image
-texture embedded in the design give a better accuracy than the K-views
-clustering method.
+analysis methods. We share how the dataset of ant cuticle images is established
+in Section 3. Our experiment shows that the deep learning networks designed for
+image texture analysis give a better accuracy than the K-views clustering
+method.
 
 This paper is organized as below:  Section 2 reviews the sculpturing
 identification in ants, and image texture analysis and insect classification.
@@ -157,44 +158,49 @@ of both raw and processed images and analysis. The conclusion then follows.
 
 % \subsection{Sculpturing identification}
 
-Taxonomists have developed extensive terminology describing ant cuticle
-microsculpture as it is often a useful diagnostic trait to distinguish between
-closely related ant species \cite{blaimer_taxonomy_2019,fisher_ants_2007}. The
-definitive text on ant cuticle terminology — \textit{The Glossary of Surface
-    Sculpturing} — contains over 100 terms to describe the cuticle sculpturing
-patterns of ants \cite{harris_glossary_1979}. Despite the numerous ways to
-describe microsculpture, in general, microsculpture diversity falls into two
-classes - smooth and rough. Smooth ants are free of any obvious microsculpture
-and may have small hairs that give the cuticle a dull appearance. Rough ants
-have a variety of raised lines or depressed textures on the cuticle. The
-entirety of ant microsculpture is represented within these two classes.
+Because ants lack bold coloration and complex wing venation patterns used to
+identify other insect species, microsculpturing has taken a prominent role in
+ant identification. To aid in species identification, ant taxonomists have
+developed nearly 100 terms to describe  fine differences in microsculpturing
+patterns \cite{harris_glossary_1979}. Despite the prominent role of
+microsculpturing in ant identification, however, almost nothing is known about
+how these patterns evolved or their function. Similar microsculpturing patterns
+in other organisms have been found to reduce abrasion, increase stiffness, and
+perform as structural antibiotics \cite{zhiwu_erosion_2012, han_efficient_2015,
+    rees_form_1975, chung_impact_2007,hasan_selective_2013}. Developing a better
+understanding of the function of microsculpturing in ants could provide insight
+into their evolution and biology as well as lead to the development of
+bio-inspired technologies \cite{penick_comparative_2022}.
 
-Cuticle sculpturing in ants has been explored thoroughly from a taxonomic
-perspective; however, the function of nano and microstructures on insect
-exoskeletons is a developing topic in entomology. Watson et al. review the
-literature of cuticle nano and microstructure function and propose 21 possible
-functions associated with these structures \cite{watson_diversity_2017}. Many of
-these functions are related to structures not found in ants such as scales and
-nanostructures. The review does include functions that may relate to ants such
-as friction control, enhanced surface area, and increased hardness. Watson et
-al. also describe seven types of cuticle structures ranging from hairs and
-scales to nano and micro structures \cite{watson_diversity_2017}. The cuticle
-sculpturing of ants seems to fall within one type - complex microstructures.
+One challenge for functional investigations of cuticle microsculpturing is the
+complexity of terms used to describe these patterns. Complex terminology may be
+useful for describing fine differences between closely related species, but
+broader comparisons require a simplified classification scheme. We recently
+developed a classification system for microsculpturing that consists of only
+five categories: smooth, striate, punctate, reticulate, and tuberous. Using
+these categories to classify 11,722 ant species, we found that the earliest ants
+were likely smooth and that cuticle microsculpturing independently evolved later
+in multiple lineages. An even simpler classification scheme is to divide ants
+into only two categories: smooth and rough. Because microsculptuing has evolved
+numerous times in ants, this binary classification scheme is sufficient to
+detect conditions that select for any sculpturing at all compared to a smooth
+state.
 
-The five broad functional groupings developed that describe the complex
-microstructures found on ants were derived from reviewing the variation of
-cuticle sculpturing across ants. These functional groupings were also reflected
-in Harris as many terms could be grouped together based on similar definitions
-and comparing the scanning electron microscope photographs provided in the
-publication \cite{harris_glossary_1979}.
+Using either a simplified or binary classification scheme, the next challenge is
+figuring out how to apply either of these schemes to large numbers of species.
+We live in an era of big data, and insect researchers have access to millions of
+images available through digital museum collections \cite{beaman_mass_2012}.
+Going through these digital collections manually is not feasible for large
+projects. Focusing only on ants, for example, there are over 14,000 described
+species, and each species has multiple worker and reproductive castes that may
+vary in their microsculpturing patterns. Even within an individual ant,
+microsculpturing typically varies among and within body segments, which
+exponentially increases the number of images that must be assessed. Applied
+computing offers a solution to this problem through developing tools that
+automate trait classification. Automated approaches would allow researchers to
+leverage existing image repositories to extract large trait datasets that can
+then be used to detect evolutionary patterns.
 
-There is often substantial overlap among terms, and closely related cuticle
-patterns are likely to be functionally similar. For example, the definition for
-“imbricate” is, “partly overlapping and appearing like shingles on a roof or
-scales on a fish,” which is difficult to distinguish from the definition of
-tesselate, “made up of squares like a chess board, either in sculpturing or in
-color.” However, we note that the terms used to describe the cuticle patterns
-are similar to the terms used to describe textural patterns in texture analysis.
 
 % \subsection{Texture analysis}
 
@@ -427,12 +433,13 @@ untouched. A summary of the resulting dataset is shared in Table
 \begin{table}[h]
     \centering
     \caption{Summary of the dataset.}
-    \begin{tabular}{lc}
+    \begin{tabular}{|l|c|}
         \toprule
         Total images  & 2499    \\
         Rough images  & 1072    \\
         Smooth images & 1427    \\
         Image size    & 256x256 \\
+        \bottomrule
     \end{tabular}
     \label{tab:dataset-summary}
 \end{table}
@@ -753,7 +760,7 @@ model confidence to examine further.
         \caption*{Smooth texture}
         \label{fig:correct_nonideal_388}
     \end{subfigure}
-    \caption{Correctly classified images.}
+    \caption{Correctly classified images from fine-tuned ResNet101.}
     \label{fig:correct_images}
 \end{figure}
 
@@ -851,9 +858,68 @@ model confidence to examine further.
         \caption*{Rough texture}
         \label{fig:incorrect_nonideal_204}
     \end{subfigure}
-    \caption{Incorrectly classified images.}
+    \caption{Incorrectly classified images from fine-tuned ResNet101.}
     \label{fig:incorrect_images}
 \end{figure}
+
+\newcommand{\segmentedsubwidth}{0.24\textwidth}
+\begin{figure}
+    \centering
+    \begin{subfigure}{\segmentedsubwidth}
+        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/r103.png}
+        \caption*{Rough texture}
+    \end{subfigure}
+    \begin{subfigure}{\segmentedsubwidth}
+        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/r111.png}
+        \caption*{Smooth texture}
+    \end{subfigure}
+    \begin{subfigure}{\segmentedsubwidth}
+        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/s105.png}
+        \caption*{Rough texture}
+    \end{subfigure}
+    \begin{subfigure}{\segmentedsubwidth}
+        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/s107.png}
+        \caption*{Smooth texture}
+    \end{subfigure}
+
+    \begin{subfigure}{\segmentedsubwidth}
+        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/sr103.png}
+    \end{subfigure}
+    \begin{subfigure}{\segmentedsubwidth}
+        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/sr111.png}
+    \end{subfigure}
+    \begin{subfigure}{\segmentedsubwidth}
+        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/ss105.png}
+    \end{subfigure}
+    \begin{subfigure}{\segmentedsubwidth}
+        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/ss107.png}
+    \end{subfigure}
+
+    \begin{subfigure}{\segmentedsubwidth}
+        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/heat103.png}
+    \end{subfigure}
+    \begin{subfigure}{\segmentedsubwidth}
+        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/heat111.png}
+    \end{subfigure}
+    \begin{subfigure}{\segmentedsubwidth}
+        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/heat105.png}
+    \end{subfigure}
+    \begin{subfigure}{\segmentedsubwidth}
+        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/heat107.png}
+    \end{subfigure}
+    \caption{Raw images are shown with corresponding segmented outputs from
+        K-views algorithm. The second row shows the results of using size of
+        15x15 patches. The third row shows the results of using size of 19x19
+        patches.}
+    \label{fig:kviews_segmented}
+\end{figure}
+
+\FloatBarrier Some classified results from the K-views are shown in Figure
+\ref{fig:kviews_segmented}. A training set of 500 patches for background, 500
+patches for rough, and 500 patches for smooth are applied with patch sizes of
+15x15 and 19x19. These patches are extracted from two rough and two smooth
+images. The K-views algorithm converges early although we set the maximum number
+of iterations to be 1000.
 
 \FloatBarrier
 \section{Conclusion}
