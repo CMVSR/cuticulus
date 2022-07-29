@@ -147,16 +147,18 @@ in Section 3. Our experiment shows that the deep learning networks designed for
 image texture analysis give a better accuracy than the K-views clustering
 method.
 
-This paper is organized as below:  Section 2 reviews the sculpturing
+This paper is organized as below:  Section 2 reviews the microsculpturing
 identification in ants, and image texture analysis and insect classification.
 Section 3 describes the dataset preparation and image texture analysis methods
 used in our experiments. Section 4 gives the experimental results, visualization
 of both raw and processed images and analysis. The conclusion then follows.
 
-\section{Related work on sculpturing identification in entomology, image texture
-  analysis, and insect classification}
+\section{Related work}
 
-% \subsection{Sculpturing identification}
+In this section we review related work on microsculpturing identification, image
+texture analysis, and insect classification.
+
+\subsection{Microsculpturing identification}
 
 Because ants lack bold coloration and complex wing venation patterns used to
 identify other insect species, microsculpturing has taken a prominent role in
@@ -204,7 +206,7 @@ leverage existing image repositories to extract large trait datasets that can
 then be used to detect evolutionary patterns.
 
 
-% \subsection{Texture analysis}
+\subsection{Image texture analysis}
 
 Image texture analysis is an important part of image interpretation as many
 objects appearing in the textural patterns either partially or completely inside
@@ -292,7 +294,7 @@ extract the features through the training. In addition, the deep learning
 networks achieve the higher accuracy than that of the classical approaches,
 although the deep networks require much more data for training.
 
-% \subsection{Insect classification}
+\subsection{Insect classification}
 
 Proposed insect classification methods seek to classify insects at different
 hierarchical levels, such as species, genus, family, and order. Additionally,
@@ -885,43 +887,47 @@ model confidence to examine further.
     \end{subfigure}
 
     \begin{subfigure}{\segmentedsubwidth}
-        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/sr103.png}
+        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/15/r103.png}
     \end{subfigure}
     \begin{subfigure}{\segmentedsubwidth}
-        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/sr111.png}
+        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/15/r111.png}
     \end{subfigure}
     \begin{subfigure}{\segmentedsubwidth}
-        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/ss105.png}
+        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/15/s105.png}
     \end{subfigure}
     \begin{subfigure}{\segmentedsubwidth}
-        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/ss107.png}
+        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/15/s107.png}
     \end{subfigure}
 
     \begin{subfigure}{\segmentedsubwidth}
-        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/heat103.png}
+        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/19/r103.png}
     \end{subfigure}
     \begin{subfigure}{\segmentedsubwidth}
-        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/heat111.png}
+        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/19/r111.png}
     \end{subfigure}
     \begin{subfigure}{\segmentedsubwidth}
-        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/heat105.png}
+        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/19/s105.png}
     \end{subfigure}
     \begin{subfigure}{\segmentedsubwidth}
-        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/heat107.png}
+        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/19/s107.png}
     \end{subfigure}
     \caption{Raw images are shown with corresponding segmented outputs from
         K-views algorithm. The second row shows the results of using size of
         15x15 patches. The third row shows the results of using size of 19x19
-        patches.}
+        patches. In the images, the color red represents the background class,
+        green represents the smooth class, and the blue represent the rough
+        class.}
     \label{fig:kviews_segmented}
 \end{figure}
 
 \FloatBarrier Some classified results from the K-views are shown in Figure
-\ref{fig:kviews_segmented}. A training set of 500 patches for background, 500
-patches for rough, and 500 patches for smooth are applied with patch sizes of
-15x15 and 19x19. These patches are extracted from two rough and two smooth
-images. The K-views algorithm converges early although we set the maximum number
-of iterations to be 1000.
+\ref{fig:kviews_segmented}. A training set of 550 patches for background, 455
+patches for rough, and 493 patches for smooth are used with patch sizes of 15x15
+and 19x19. These patches are extracted from two rough and two smooth images with
+sizes of 608x608. The K-views algorithm converges early although we set the
+maximum number of iterations to be 1000. These experimental results are
+preliminary due to the minimal number of source images used and future work will
+explore a more expansive approach to the problem.
 
 \FloatBarrier
 \section{Conclusion}
@@ -933,12 +939,13 @@ cuticle texture, therefore supporting research on the evaluation of the function
 in future work. Our categorization system is novel in the field of automated
 insect identification due to the broad number of species captured by it.
 Additionally, a model that is pre-trained on a diverse image task such as ResNet
-can be transferred to our domain of texture analysis. However, a deep learning
-algorithm created specifically for the domain of texture analysis had the best
-results in our experiments. In future work, we will continue to explore texture
-classes present in the dataset which are not captured by the binary class
-system. All code is publicly available on GitHub
-(https://github.com/ngngardner/cuticulus).
+can be transferred to our domain of texture analysis \footnote{All code is
+    publicly available on GitHub (https://github.com/ngngardner/cuticulus)}.
+However, a deep learning algorithm created specifically for the domain of
+texture analysis had the best results in our experiments. In future work, we
+will continue to explore texture classes present in the dataset which are not
+captured by the binary class system. We will also investigate application of
+texture-based deep maching learning in image texture analysis.
 
 \bibliographystyle{AIMS}
 \bibliography{main.bib,article.bib}
