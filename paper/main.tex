@@ -44,7 +44,7 @@
 \begin{document}
 
 \title{Investigation of ant cuticle dataset using image texture
-    analysis methods}
+    analysis}
 
 \author{%
     Noah Gardner\affil{1},
@@ -68,7 +68,7 @@
         University, Kennesaw, GA, USA}%
     \addr{\affilnum{3}}{Department of Mathematics, Kennesaw State University,
         Kennesaw, GA, USA}%
-    \addr{\affilnum{4}}{Department of Mathematics, Science, and Informatics,
+    \addr{\affilnum{4}}{Department of Informatics and Mathematics,
         Mercer University, Atlanta, GA, USA}%
 }
 \corraddr{chung1@kennesaw.edu}
@@ -79,14 +79,14 @@
     Ant cuticle texture presumably provides some type of function, and therefore
     is useful to research for ecological applications and bioinspired designs.
     In this study, we employ statistical image texture analysis and deep machine
-    learning methods to automatically group similar ant species based on
-    morphological features. We establish a public database of ant cuticle images
-    for research. We provide a comparative study of the performance of image
-    texture classification and deep machine learning methods on ant cuticle
-    images. Our results show that the deep learning methods are giving higher
-    accuracy in recognizing ant cuticle textures. Our experiments also reveal
-    that the deep learning networks designed for image texture performs better
-    than the general deep learning networks.
+    learning methods to classify similar ant species based on morphological
+    features. We establish a public database of ant cuticle images for research.
+    We provide a comparative study of the performance of image texture
+    classification and deep machine learning methods on an ant cuticle dataset.
+    Our results show that the deep learning methods give higher accuracy than
+    statistical methods in recognizing ant cuticle textures. Our experiments
+    also reveal that the deep learning networks designed for image texture
+    performs better than the general deep learning networks.
 \end{abstract}
 \keywords{texture analysis; image processing; classification; machine learning;
     ant cuticle images; ecology}
@@ -99,10 +99,10 @@ in terrestrial ecosystems \cite{sheikh_diverse_2017}. A key factor for the
 ecological success of insects is their exoskeleton, also known as cuticle. The
 cuticle protects insects from predation, provides structural support, prevents
 desiccation, and serves as a canvas for advertising visual and chemical signals
-\cite{gullan_insects_2009}. Research has focused on the macrostructures and
-internal chemical components that describe the functionality of the exoskeleton
-\cite{gunderson_insect_1989}. More recent work is being done to understand the
-functional aspects of external cuticle micro sculpturing
+\cite{gullan_insects_2009}. Earlier research has focused on the macrostructures
+and internal chemical components that describe the functionality of the
+exoskeleton \cite{gunderson_insect_1989}. More recent work is being done to
+understand the functional aspects of external cuticle micro sculpturing
 \cite{muthukrishnan_insect_2020, watson_diversity_2017}.
 
 Due to the extensive number of insect species, manual exploration of
@@ -111,47 +111,46 @@ Therefore, automated entomology has attracted biologists and computer
 scientists, and is expected to be a major contribution to the future of
 insect-based research \cite{martineau_survey_2017}. One of the most commonly
 used data types for insect analysis is image data. To develop an image-based
-system for insect analysis, we can take advantage of existing work in general
+system for insect analysis, we can utilize existing work in general
 image analysis methods.
 
-We examine ants (\textit{Formicidae}) as they display an extreme diversity of
+We study ants (\textit{Formicidae}) as they display an extreme diversity of
 cuticle micro sculpturing across all subfamilies. Microsculpture ranges from
 parallel longitudinal ridges to deep oval impressions to erratic protuberances.
 Microsculpture has arisen convergently and independently throughout ant's
 evolutionary history, which suggests  that these are complex traits undergoing
 selection. Cuticle microsculpture on ants may help increase strength and
 rigidness, resist abrasion, increase internal and external surface area, resist
-microbial growth, and rear beneficial anti-biotic producing bacteria
+microbial growth, and cultivate beneficial anti-biotic producing bacteria
 \cite{johnson_effect_2011, bruckner_relationship_2017, currie_coevolved_2006}.
-These specific functions may be associated with certain sculpturing types. In
-order to analyze those functions, it is necessary to segment the image and group
-similar textures for further analysis.
+These specific functions may be associated with certain sculpturing types. To
+analyze those functions, we first segment the image and group similar textures
+for further analysis.
 
 There is a large variety of ant species and most species are diverse in terms of
-size, shape, behaviors, and cuticle textures \cite{harris_glossary_1979}.
-Based on our initial observation of the cuticle sculpturing in ants, it appears
-that some type of textural structures can be identified in images. Therefore,
-this image dataset may be worth to be explored from the image texture analysis
-point of view for the further knowledge discovery. Image texture analysis has
-been used in image processing for many decades \cite{hung_image_2019}. Due to its
-diversity of images on scales, smoothness, coarseness, microtexture, and
-macrotexture occurring in images, it is a difficult problem for image textural
-interpreters. With a rapid development of deep machine learning, deep neural
-networks have been frequently used in image texture analysis
-\cite{sun_robust_2014,liu_bow_2019,liu_pestnet_2019}.
+size, shape, behaviors, and cuticle textures \cite{harris_glossary_1979}. Based
+on our initial observation of the cuticle sculpturing in ants, it appears that
+some type of textural structures can be identified in images. Therefore, it is
+worthwhile to explore image texture analysis for further knowledge discovery.
+Image texture analysis has been used in image processing for many decades
+\cite{hung_image_2019}. Due to the diversity of images on scales, smoothness,
+coarseness, microtexture, and macrotexture occurring in images, it is a
+difficult problem. With a rapid development of deep machine learning, deep
+neural networks have been frequently used in image texture analysis in other
+fields \cite{sun_robust_2014,liu_bow_2019,liu_pestnet_2019}.
 
 Our contribution is to establish an ant image dataset which can be used to
 explore the categorization of different ant cuticle textures using image texture
-analysis methods. We share how the dataset of ant cuticle images is established
-in Section 3. Our experiment shows that the deep learning networks designed for
-image texture analysis give a better accuracy than the K-views clustering
-method.
+analysis methods. We document how the dataset of ant cuticle images is
+established. Our experiment shows that the deep learning networks designed for
+image texture analysis give a better accuracy than classical K-views clustering.
 
 This paper is organized as below:  Section 2 reviews the microsculpturing
 identification in ants, and image texture analysis and insect classification.
 Section 3 describes the dataset preparation and image texture analysis methods
-used in our experiments. Section 4 gives the experimental results, visualization
-of both raw and processed images and analysis. The conclusion then follows.
+used in our experiments. Section 4 gives the experimental setup and methods
+used. Section 5 shares visualization of both raw and processed images, and
+analysis of experimental results. The conclusion then follows.
 
 \section{Related work}
 
@@ -181,95 +180,86 @@ useful for describing fine differences between closely related species, but
 broader comparisons require a simplified classification scheme. We recently
 developed a classification system for microsculpturing that consists of only
 five categories: smooth, striate, punctate, reticulate, and tuberous
-\cite{hellenbrand_ant_2022}. Using these categories to classify 11,722 ant
-species, we found that the earliest ants were likely smooth and that cuticle
+\cite{hellenbrand_ant_2022}. We used these categories to classify 11,722 ant
+species, and found that the earliest ants were smooth and that cuticle
 microsculpturing independently evolved later in multiple lineages
-\cite{hellenbrand_ant_2022}. An even simpler classification scheme is to divide
-ants into only two categories: smooth and rough. Because microsculptuing has
-evolved numerous times in ants, this binary classification scheme is sufficient
-to detect conditions that select for any sculpturing at all compared to a smooth
-state.
+\cite{hellenbrand_ant_2022}. A simple classification scheme divides ants into
+two categories: smooth and rough. Because microsculptuing has evolved numerous
+times in ants, this binary classification scheme is sufficient.
 
-Using either a simplified or binary classification scheme, the next challenge is
-figuring out how to apply either of these schemes to large numbers of species.
-We live in an era of big data, and insect researchers have access to millions of
-images available through digital museum collections \cite{beaman_mass_2012}.
-Going through these digital collections manually is not feasible for large
-projects. Focusing only on ants, for example, there are over 14,000 described
-species, and each species has multiple worker and reproductive castes that may
-vary in their microsculpturing patterns. Even within an individual ant,
-microsculpturing typically varies among and within body segments, which
-exponentially increases the number of images that must be assessed. Applied
-computing offers a solution to this problem through developing tools that
-automate trait classification. Automated approaches would allow researchers to
-leverage existing image repositories to extract large trait datasets that can
-then be used to detect evolutionary patterns.
+The next challenge is to find out how to apply these schemes to large numbers of
+species. Insect researchers have access to millions of images available through
+digital museum collections \cite{beaman_mass_2012}. Going through these digital
+collections manually is not feasible for large projects. There are over 14,000
+described species of ants, and each species has multiple worker and reproductive
+castes that may vary in their microsculpturing patterns. Even within an
+individual ant, microsculpturing typically varies among and within body
+segments. Machine learning offers a solution to this problem through developing
+tools that automate trait classification. Automated approaches would allow
+researchers to leverage existing image repositories to extract large trait
+datasets that can then be used to detect evolutionary patterns.
 
 
 \subsection{Image texture analysis}
 
-Image texture analysis is an important part of image interpretation as many
-objects appearing in the textural patterns either partially or completely inside
-an image. This phenomenon appears frequently in many images we encountered in
-our environment as almost everybody is using the iPhone to capture the photos.
-Scientists are also studying their subjects depending on taking the images
-remotely such as satellite images. With an abundant number of textural images
-surrounding us, it is essential to have a reliable automatic tool for the
-textural image interpretation.
+Pattern recognition methods have been developed for textural images based on the
+spatial relationship of gray levels of pixels encoded in the texture
+\cite{haralick_image_1985,hung_image_2019}. Those methods extract texture
+features and the classification and segmentation methods are used for the
+interpretation either using the supervised or unsupervised approaches
+\cite{fukunaga_introduction_2013}. The interpretation method is usually modified
+from the traditional pattern recognition methods. For example, the gray-level
+co-occurrence matrix (GLCM) and local binary patterns (LBP) are two common
+methods for extracting features \cite{haralick_textural_1973, goos_gray_2000}.
 
-Computer methods are developed for textural images based on the spatial
-relationship of gray levels of pixels encoded in the texture
-\cite{haralick_image_1985,hung_image_2019}. Those methods by de-facto follow the
-steps used in the statistical pattern recognition
-\cite{fukunaga_introduction_2013}. Therefore, textural features are extracted,
-and the classification and segmentation methods are used for the interpretation
-either using the supervised or unsupervised approaches. The interpretation
-method is usually taken and modified from the traditional pattern recognition
-methods. For example, the gray-level co-occurrence matrix (GLCM) and local
-binary patterns (LBP) are two of methods for extracting features
-\cite{haralick_textural_1973, goos_gray_2000}.
+Classical image texture analysis methods can be grouped into four categories:
+statistical, structural, model-based, and transform-based methods
+\cite{bharati_image_2004}. The statistical method is often used by feature
+extraction methods and then fed into the classification algorithm. Markov random
+field models have also been used for textural image interpretation
+\cite{hassner_use_1981, cross_markov_1983}. Transform-based methods use some
+functions to decompose an image texture into a set of basic feature images.
+Gabor filters and Wavelet expansions are two of the widely used approaches
+\cite{bovik_multichannel_1990}.
 
-Similar to the traditional pattern recognition, classical image texture analysis
-methods can be grouped into four categories: statistical, structural,
-model-based, and transform-based methods \cite{bharati_image_2004}. Among all of
-the categories, the statistical method is often used by employing the method
-from the pattern recognition principle.  In doing so, an image texture is
-represented as feature vector using feature extraction methods and then fed into
-the algorithm. Markov random field models are also studied for textural image
-interpretation \cite{hassner_use_1981, cross_markov_1983}. The transform-based
-methods use some functions to decompose an image texture into a set of basic
-feature images. Gabor filters and Wavelet expansions are two of the widely used
-approaches \cite{bovik_multichannel_1990}.
 
-While most feature vectors are established based on a single pixel, Liu et al.
-gave a comprehensive survey on textural characterization in which they call this
-feature extraction as texture representation \cite{liu_bow_2019}. Their survey
-on Bag of Words and Convolutional Neural Networks (CNNs)
-\cite{krizhevsky_imagenet_2017} are the spatial relationship concepts. The
-K-views was developed for taking the spatial information in the clustering
-approach \cite{hung_image_2019}.
+\subsection{Deep learning}
+
+Liu et al. gave a comprehensive survey on textural characterization in which
+they call this feature extraction as texture representation \cite{liu_bow_2019}.
+Their survey on bag of words and convolutional neural networks (CNNs)
+\cite{krizhevsky_imagenet_2017} provides information on spatial relationship
+concepts. The K-views was developed for taking the spatial information in the
+clustering approach \cite{hung_image_2019}.
 
 In the past decade, deep learning using CNNs has emerged as the mainstream
-technology for image analysis. Following this trend, various CNN-based network
+technology for image analysis. Following this trend, various related network
 architectures have been designed to specifically characterize textural images.
-Among these, the Fisher-vector CNN descriptor (FV-CNN) proposed by Cimpoi et
-al. \cite{cimpoi_deep_2015} is widely accepted as one of the most important
+Among these, the Fisher-vector CNN descriptor (FV-CNN) proposed by Cimpoi et al.
+\cite{cimpoi_deep_2015} is widely accepted as one of the most important
 pioneering works. It applies FV pooling to deep features obtained via a CNN
-pre-trained using the ImageNet \cite{krizhevsky_imagenet_2017} to obtain encoded features
-for texture classification. Although it is capable of achieving much improved
-classification accuracy comparing to traditional hand-crafted texture features,
-FV-CNN does not support an end-to-end learning, where feature extraction,
-encoding, and classification are separated from each other. To achieve an
-end-to-end learning, Zhang et al. \cite{zhang_deep_2017} proposed the deep texture
-encoding network (DeepTEN), in which a novel texture encoding layer is added to
-a standard CNN architecture. Then, Xue et al. \cite{xue_deep_2018} constructed the
-deep encoding pooling network (DEP), which improves over DeepTEN by integrating
-local spatial characteristics into the texture representation. Based on DeepTEN
-and DEP, Hu et al. \cite{hu_multi_2019} further developed the multi-level texture
-encoding and representation (MuLTER) network, which embeds a learnable encoding
-module at each convolutional layer so that encoding is performed for both
-low-level and high-level features, yielding a multi-level texture
-representation.
+pre-trained using the ImageNet \cite{krizhevsky_imagenet_2017} to obtain encoded
+features for texture classification. FV-CNN is capable of achieving much
+improved classification accuracy comparing to traditional hand-crafted texture
+features. However, CNN-based deep learning is only used in its feature
+extraction module. Its encoding and classification modules still use traditional
+learning methods, thus not supporting an end-to-end deep learning. In the
+context of texture image classification, an end-to-end deep learning model
+refers to a neural network architecture which consists of all the modules
+(feature extraction, encoding and classification) between the initial input data
+and the final output classification result, with all the modules being trained
+simultaneously.
+
+To achieve an end-to-end learning, Zhang et al. \cite{zhang_deep_2017} proposed
+the deep texture encoding network (DeepTEN), in which a novel texture encoding
+layer is added to a standard CNN architecture. Then, Xue et al.
+\cite{xue_deep_2018} constructed the deep encoding pooling network which
+improves over DeepTEN by integrating local spatial characteristics into the
+texture representation. Based on these two methods, Hu et al. \cite{hu_multi_2019}
+further developed the multi-level texture encoding and representation (MuLTER)
+network, which embeds a learnable encoding module at each convolutional layer so
+that encoding is performed for both low-level and high-level features, yielding
+a multi-level texture representation.
 
 Other network architectures for end-to-end texture learning are also available.
 For example, in the deep multiple-attribute-perceived network (MAP-Net)
@@ -294,7 +284,7 @@ extract the features through the training. In addition, the deep learning
 networks achieve the higher accuracy than that of the classical approaches,
 although the deep networks require much more data for training.
 
-\subsection{Insect classification}
+\subsection{Classification of insects}
 
 Proposed insect classification methods seek to classify insects at different
 hierarchical levels, such as species, genus, family, and order. Additionally,
@@ -310,9 +300,8 @@ moth images based on semantic related visual attributes, which are defined as a
 pattern on the moth wings. Feng et al. \cite{feng_automated_2013} use a custom
 texture descriptor based on the combination of GLCM and \textit{scale-invariant
     feature transform} (SIFT) features \cite{gotlieb_texture_1990,
-    lowe_distinctive_2004}. The method proposed by Feng et al.
-\cite{feng_automated_2013} is used to classify 50 different moth species across
-8 families \cite{feng_automated_2013}. The results from Feng et al.
+    lowe_distinctive_2004}. The method is used to classify 50 different moth species
+across 8 families \cite{feng_automated_2013}. Their results
 \cite{feng_automated_2013} suggest that traditional feature extraction
 techniques for the semantic visual attributes of the moth wings are sufficient
 for training a classifier to classify an image between 10 randomly selected moth
@@ -321,16 +310,14 @@ species.
 Urteaga et al. \cite{urteaga_scorpions_2016} use machine learning methods in
 order to classify images between two different scorpion species:
 \textit{Centruroides limpidus} and \textit{Centruroides noxius}. After applying
-background distinction based on dynamic color threshold, Urteaga et al.
-\cite{urteaga_scorpions_2016} apply feature extraction to extract features from
-the separated scorpion image such as aspect ratio, rectangularity, and
-compactness. Urteaga et al. \cite{urteaga_scorpions_2016} apply three different
-classification models to classify the image as one of the species: Artificial
-Neural Network, Regression Tree, and Random Forest classifiers
-\cite{urteaga_scorpions_2016}. The results from Urteaga et al.
-\cite{urteaga_scorpions_2016} show that after background removal,
-characteristics from the entire body of the scorpion can be used to create a
-binary classifier that can classify the image as one of the two species.
+background distinction based on dynamic color threshold, they extract features
+from the separated scorpion image such as aspect ratio, rectangularity, and
+compactness. They apply three different models to classify the image as one of
+the species: artificial neural network, regression tree, and random forest
+classifiers \cite{urteaga_scorpions_2016}. Their results show that after
+background removal, characteristics from the entire body of the scorpion can be
+used to create a binary classifier that can classify the image as one of the two
+species.
 
 Lim et al. \cite{lim_performance_2017} apply a CNN-based algorithm for insect
 classification. Lim et al. \cite{lim_performance_2017} classify a subset of
@@ -355,12 +342,12 @@ of insects.
 % \subsection{Dataset preparation} % preparation generation
 
 In this section, we describe the creation of the custom dataset used in this
-research. In our dataset, we use ant head images from AntWeb
-\cite{perrichot_antweb_2012} and define two categories for them based on the
-appearance of the cuticle texture: \textit{rough} and \textit{smooth}. We also
-refer to these ant head images, which describe the pose of the ant, as ant
-cuticule images, due to the clear cuticle texture present on the head. Some
-randomly selected images from each category are shown in Figures
+research. We use ant head images from AntWeb \cite{perrichot_antweb_2012} and
+define two categories for them based on the appearance of the cuticle texture:
+\textit{rough} and \textit{smooth}. For each species used, there exists only one
+ant head image. We also refer to these ant head images, which describe the pose
+of the ant, as ant cuticule images, due to the clear cuticle texture present on
+the head. Some randomly selected images from each category are shown in Figures
 \ref{fig:smooth-cuticle-texture} and \ref{fig:rough-cuticle-texture}.
 
 To begin, a master spreadsheet was created with the 2,499 different ant species
@@ -389,29 +376,30 @@ primary categories: rough and smooth.
 
 Initially, the sculpture identification protocol had 5 subcategories of cuticle
 texture: smooth, punctate, striate, reticulate, and tuberous. For simplicity, we
-work only with the two main categories. The training set identifications were
+worked only with the two main categories, and the other 4 categories were
+combined to the single rough category. The training set identifications were
 reviewed together as a group by the assistants. Once training was complete,
 assistants were assigned the same genera of ants to identify independently each
 week. A weekly meeting was held to discuss identifications and assign new ones.
 These identifications were collected in the master spreadsheet and the
 identifications were assigned to individual ant species on a majority basis.
 
-To collect the images, the assistants followed the taxonomy information
-available in the master spreadsheet to the appropriate
-AntWeb\footnote{\url{https://www.antweb.org/}} page. In many cases, there are
-multiple ant head images of the same species, and occasionally there are
-multiple image resolution available from a single image. To simplify the data
-collection process, the assistants were instructed to download the first ant
-head image of the species being identified in the highest resolution possible.
-Each image was named with an identifier that corresponds with the row number in
-the master spreadsheet. The same ant head images that were downloaded in the
-data collection phase were the same ones used in the sculpture identification
-protocol. Ant species which did not have any images of the head were excluded
-from the dataset. Additionally, ant species which only had a head image of a
-queen ant were excluded from the dataset.
+To collect the images from AntWeb\footnote{\url{https://www.antweb.org/}}, the
+assistants followed the taxonomy information available in the master spreadsheet
+to the appropriate AntWeb page. In many cases, there are multiple ant head
+images of the same species, and occasionally there are multiple image resolution
+available from a single image. To simplify the data collection process, the
+assistants were instructed to download the first ant head image of the species
+being identified in the highest resolution possible. Each image was named with
+an identifier that corresponds with the row number in the master spreadsheet.
+The same ant head images that were downloaded in the data collection phase were
+the same ones used in the sculpture identification protocol. Ant species which
+did not have any images of the head were excluded from the dataset.
+Additionally, ant species which only had a head image of a queen ant were
+excluded from the dataset.
 
-Ant specimen images taken from AntWeb \cite{perrichot_antweb_2012} are created
-by different photographers and therefore have different attributes, such as
+Ant specimen images in AntWeb \cite{perrichot_antweb_2012} are created by
+different photographers and therefore have different attributes, such as
 environment, resolution, and lighting. In the ant head images, the ant head is
 in the center of the image and the body is pointing away from the camera. The
 focus of the ant head image is centered on the head, with the background and
@@ -422,17 +410,20 @@ denoting the specimen identifier and other information. In terms of texture,
 some ant specimens are very old, so their head images have other abnormalities
 such as cracks in the cuticle and the presence of dust.
 
-The completed dataset of contains 2,499 images. 1072 samples of rough textured
-ant cuticle textures comprise 43\% of the dataset. The remaining 1427 samples of
-smooth textured ant cuticle textures comprise 57\% of the dataset. Due to the
-variety of the ant head image attributes, we apply simple preprocessing before
-the images are used in our model. We want the images to have a uniform size for
-simplicity in our classification process. Since the ant head images are
-typically centered in the image, we apply a center crop to each image to create
-a square image of the same size. Once the image is square, we resize each image
-to a fixed size of 256x256 pixels. We leave other discrepancies in the images
-untouched. A summary of the resulting dataset is shared in Table
-\ref{tab:dataset-summary}.
+The completed dataset\footnote{All code is publicly available on GitHub
+    \url{https://github.com/ngngardner/cuticulus}} contains 2,499 images as a
+4-dimensional array with shape of (samples, rows, columns, channels), of
+which there are 3 channels extracted from the RGB images. 1072 samples of
+rough textured ant cuticle textures comprise 43\% of the dataset. The
+remaining 1427 samples of smooth textured ant cuticle textures comprise 57\%
+of the dataset. Due to the variety of the ant head image attributes, we
+apply simple preprocessing before the images are used in our model. We want
+the images to have a uniform size for simplicity in our classification
+process. Since the ant head images are typically centered in the image, we
+apply a center crop to each image to create a square image of the same size.
+Once the image is square, we resize each image to a fixed size of 256x256
+pixels. We leave other discrepancies in the images untouched. A summary of
+the resulting dataset is shared in Table \ref{tab:dataset-summary}.
 
 \begin{table}[h]
     \centering
@@ -940,7 +931,7 @@ in future work. Our categorization system is novel in the field of automated
 insect identification due to the broad number of species captured by it.
 Additionally, a model that is pre-trained on a diverse image task such as ResNet
 can be transferred to our domain of texture analysis \footnote{All code is
-    publicly available on GitHub (https://github.com/ngngardner/cuticulus)}.
+    publicly available on GitHub \url{https://github.com/ngngardner/cuticulus}}.
 However, a deep learning algorithm created specifically for the domain of
 texture analysis had the best results in our experiments. In future work, we
 will continue to explore texture classes present in the dataset which are not
