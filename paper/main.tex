@@ -221,15 +221,14 @@ been used for textural image interpretation \cite{hassner_use_1981,
 image texture into a set of basic feature images. Gabor filters and wavelet
 expansions are two of the widely used approaches \cite{bovik_multichannel_1990}.
 
-
-\subsection{Deep learning}
-
 Liu et al. gave a comprehensive survey on textural characterization in which
 they call this feature extraction as texture representation \cite{liu_bow_2019}.
 Their survey on bag of words and convolutional neural networks (CNNs)
 \cite{krizhevsky_imagenet_2017} provides information on spatial relationship
 concepts. The K-views was developed for taking the spatial information in the
 clustering approach \cite{hung_image_2019}.
+
+\subsection{Deep learning for texture analysis}
 
 In the past decade, deep learning using CNNs has emerged as the mainstream
 technology for image analysis. Following this trend, various related network
@@ -304,8 +303,11 @@ across 8 families \cite{feng_automated_2013}. Their results
 techniques for the semantic visual attributes of the moth wings are sufficient
 for training a classifier to classify an image between 10 randomly selected moth
 species. Marques et al. \cite{marques_ant_2018} propose an ensemble-based method
-to classify a large number of ant genera. They use ant images sourced from AntWeb
-in order to classify 44,806 specimens with at least 1 picture into 57 genera.
+to classify a large number of ant genera. They use ant head, profile, and dorsal
+images sourced from AntWeb in order to classify 44,806 specimens with at least
+one picture into 57 genera. Although the images used in their work are also from
+AntWeb, our goal is the classification of the ant cuticle micro sculpturing into
+broad groups based solely on the ant head images.
 
 Urteaga et al. \cite{urteaga_scorpions_2016} use machine learning methods in
 order to classify images between two different scorpion species:
@@ -344,10 +346,14 @@ of insects.
 In this section, we describe the creation of the custom dataset used in this
 research. We use ant head images from AntWeb \cite{perrichot_antweb_2012} and
 define two categories for them based on the appearance of the cuticle texture:
-\textit{rough} and \textit{smooth}. For each species used, there exists only one
-ant head image. We also refer to these ant head images, which describe the pose
-of the ant, as ant cuticule images, due to the clear cuticle texture present on
-the head. Some randomly selected images from each category are shown in Figures
+\textit{rough} and \textit{smooth}. The original AntWeb dataset was extended
+with these categories for each applicable ant specimen. The extended dataset is
+used for classifying the cuticle micro sculpturing into the broad groups. Due to
+the large number of ant species, it is quite difficult to obtain lab-quality
+specimen photos. For each species used, there exists only one ant head image. We
+also refer to these ant head images, which describe the pose of the ant, as ant
+cuticule images, due to the clear cuticle texture present on the head. Some
+randomly selected images from each category are shown in Figures
 \ref{fig:smooth-cuticle-texture} and \ref{fig:rough-cuticle-texture}.
 
 To begin, a master spreadsheet was created with the 2,499 different ant species
@@ -374,15 +380,16 @@ primary categories: rough and smooth.
     \label{fig:rough-cuticle-texture}
 \end{figure}
 
-Initially, the sculpture identification protocol had 5 subcategories of cuticle
-texture: smooth, punctate, striate, reticulate, and tuberous. For simplicity, we
-worked only with the two main categories, and the other 4 categories were
-combined to the single rough category. The training set identifications were
-reviewed together as a group by the assistants. Once training was complete,
-assistants were assigned the same genera of ants to identify independently each
-week. A weekly meeting was held to discuss identifications and assign new ones.
-These identifications were collected in the master spreadsheet and the
-identifications were assigned to individual ant species on a majority basis.
+Initially, the sculpture identification protocol had five subcategories of
+cuticle texture: smooth, punctate, striate, reticulate, and tuberous. For
+simplicity, we worked only with the two main categories, and the other four
+categories were combined to the single rough category. The training set
+identifications were reviewed together as a group by the assistants. Once
+training was complete, assistants were assigned the same genera of ants to
+identify independently each week. A weekly meeting was held to discuss
+identifications and assign new ones. These identifications were collected in the
+master spreadsheet and the identifications were assigned to individual ant
+species on a majority basis.
 
 To collect the images from AntWeb\footnote{\url{https://www.antweb.org/}}, the
 assistants followed the taxonomy information available in the master spreadsheet
@@ -439,7 +446,7 @@ the resulting dataset is shared in Table \ref{tab:dataset-summary}.
     \label{tab:dataset-summary}
 \end{table}
 
-\section{K-views, K-means, and deep learning models for experiments}
+\section{Methods tested}
 
 % \subsection{Classical texture analysis methods}
 
@@ -528,13 +535,14 @@ exactly the same number of samples.
 
 % \subsection{Evaluation}
 
-We evaluate the performance of the models using accuracy, precision, and F1
-score. We also apply Grad-CAM with manual inspection to visualize the activation
-weights for classified images to show which features lead to the
-classification result. Finally, we apply t-SNE to visualize the separation
-learned for the model to further analyze the classifications made by the model.
+We evaluate the performance of the models using accuracy, precision, F1 score
+and Matthew's correlation coefficient (MCC) \cite{chicco_matthews_2021}. We also
+apply Grad-CAM with manual inspection to visualize the activation weights for
+classified images to show which features lead to the classification result.
+Finally, we apply t-SNE to visualize the separation learned for the model to
+further analyze the classifications made by the model.
 
-\section{Experimental results and analysis}
+\section{Results}
 
 % \subsection{Environment}
 

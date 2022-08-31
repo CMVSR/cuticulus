@@ -1,30 +1,30 @@
-\begin{tabular}{lcccc}
+\begin{tabular}{lccccc}
     \toprule
-    Model                                   & Accuracy & Precision & Recall & F1   \\
+    Model                                   & Accuracy & Precision & Recall & F1   & MCC   \\
     \midrule
-    K-means                                 & 0.47     & 0.07      & 0.35   & 0.11 \\
-    K-views (15 $\times$ 15)                & 0.56     & 0.58      & 0.56   & 0.57 \\
-    K-views (17 $\times$ 17)                & 0.62     & 0.79      & 0.59   & 0.68 \\
-    K-views (19 $\times$ 19)                & 0.62     & 0.80      & 0.59   & 0.68 \\
-    K-views (25 $\times$ 25)                & 0.52     & 0.71      & 0.51   & 0.59 \\
+    K-means                                 & 0.47     & 0.07      & 0.35   & 0.11 & -0.10 \\
+    K-views (15 $\times$ 15)                & 0.56     & 0.58      & 0.56   & 0.57 & 0.12  \\
+    K-views (17 $\times$ 17)                & 0.62     & 0.79      & 0.59   & 0.68 & 0.26  \\
+    K-views (19 $\times$ 19)                & 0.62     & 0.80      & 0.59   & 0.68 & 0.26  \\
+    K-views (25 $\times$ 25)                & 0.52     & 0.71      & 0.51   & 0.59 & 0.03  \\
     \hline
-    ResNet18                                & 0.80     & 0.72      & 0.67   & 0.69 \\
-    ResNet18 (fine-tuned)                   & 0.88     & 0.87      & 0.77   & 0.82 \\
-    ResNet50                                & 0.78     & 0.59      & 0.67   & 0.62 \\
-    ResNet50 (fine-tuned)                   & 0.87     & 0.83      & 0.78   & 0.80 \\
-    ResNet101                               & 0.77     & 0.63      & 0.62   & 0.62 \\
-    ResNet101 (fine-tuned)                  & 0.89     & 0.87      & 0.78   & 0.82 \\
+    ResNet18                                & 0.80     & 0.72      & 0.67   & 0.69 & 0.55  \\
+    ResNet18 (fine-tuned)                   & 0.88     & 0.87      & 0.77   & 0.82 & 0.73  \\
+    ResNet50                                & 0.78     & 0.59      & 0.67   & 0.62 & 0.47  \\
+    ResNet50 (fine-tuned)                   & 0.87     & 0.83      & 0.78   & 0.80 & 0.71  \\
+    ResNet101                               & 0.77     & 0.63      & 0.62   & 0.62 & 0.46  \\
+    ResNet101 (fine-tuned)                  & 0.89     & 0.87      & 0.78   & 0.82 & 0.74  \\
     \hline
-    VGG11                                   & 0.80     & 0.73      & 0.66   & 0.69 \\
-    VGG13                                   & 0.82     & 0.69      & 0.71   & 0.69 \\
-    VGG16                                   & 0.80     & 0.65      & 0.67   & 0.65 \\
-    VGG19                                   & 0.81     & 0.67      & 0.68   & 0.64 \\
+    VGG11                                   & 0.80     & 0.73      & 0.66   & 0.69 & 0.55  \\
+    VGG13                                   & 0.82     & 0.69      & 0.71   & 0.69 & 0.56  \\
+    VGG16                                   & 0.80     & 0.65      & 0.67   & 0.65 & 0.52  \\
+    VGG19                                   & 0.81     & 0.67      & 0.68   & 0.64 & 0.53  \\
     \hline
-    DRP Multi-layer                         & 0.87     & 0.89      & 0.92   & 0.91 \\
-    DRP Multi-layer (fine-tuned)            & 0.88     & 0.89      & 0.93   & 0.91 \\
-    DRP Single-layer                        & 0.88     & 0.90      & 0.94   & 0.92 \\
-    DRP Single-layer (fine-tuned)           & 0.88     & 0.90      & 0.93   & 0.91 \\
-    DRP Single-layer Auxiliary              & 0.87     & 0.89      & 0.92   & 0.90 \\
-    DRP Single-layer Auxiliary (fine-tuned) & 0.89     & 0.90      & 0.94   & 0.92 \\
+    DRP Multi-layer                         & 0.87     & 0.89      & 0.92   & 0.91 & 0.70  \\
+    DRP Multi-layer (fine-tuned)            & 0.88     & 0.89      & 0.93   & 0.91 & 0.72  \\
+    DRP Single-layer                        & 0.88     & 0.90      & 0.94   & 0.92 & 0.73  \\
+    DRP Single-layer (fine-tuned)           & 0.88     & 0.90      & 0.93   & 0.91 & 0.74  \\
+    DRP Single-layer Auxiliary              & 0.87     & 0.89      & 0.92   & 0.90 & 0.70  \\
+    DRP Single-layer Auxiliary (fine-tuned) & 0.89     & 0.90      & 0.94   & 0.92 & 0.75  \\
     \bottomrule
 \end{tabular}
