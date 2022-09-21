@@ -20,16 +20,16 @@
 \newcommand{\ep}{\varepsilon}
 \newcommand{\eps}[1]{{#1}_{\varepsilon}}
 
-\def\typeofarticle{Research Article} 
+\def\typeofarticle{Research article} 
 \def\currentvolume{2} 
 \def\currentissue{2}
 \def\currentyear{2022} 
 \def\currentmonth{} 
 \def\ppages{xx--xx} 
-\def\DOI{xxxx} 
-\def\Received{xx xx 2022} 
-\def\Revised{xx xx 2022}
-\def\Accepted{xx xx 2022} 
+\def\DOI{10.3934/aci.2022xxx} 
+\def\Received{22 July 2022} 
+\def\Revised{31 August 2022}
+\def\Accepted{01 September 2022} 
 \def\Published{xx 2022}
 
 \numberwithin{equation}{section}
@@ -51,10 +51,10 @@
     John Paul Hellenbrand\affil{2},
     Anthony Phan\affil{1},
     Haige Zhu\affil{1},
-    Zhiling Long\affil{4},
+    Zhiling Long\affil{4}, \\
     Min Wang\affil{3},
     Clint Penick\affil{2},
-    and Chih-Cheng Hung\affil{1}\corrauth
+    and Chih-Cheng Hung\affil{1,}\corrauth
 }%
 
 % \shortauthors is used in copyright information in the end of the paper
@@ -71,7 +71,7 @@
     \addr{\affilnum{4}}{Department of Informatics and Mathematics,
         Mercer University, Atlanta, GA, USA}%
 }
-\corraddr{chung1@kennesaw.edu}
+\corraddr{Email: chung1@kennesaw.edu.}
 
 \editor{Pasi Fr\"{a}nti}
 
@@ -109,7 +109,7 @@ Due to the extensive number of insect species, manual exploration of
 insect-based information is difficult and often requires expert training.
 Therefore, automated entomology has attracted biologists and computer
 scientists, and is expected to be a major contribution to the future of
-insect-based research \cite{martineau_survey_2017}. One of the most commonly
+insect-based research~\cite{martineau_survey_2017}. One of the most commonly
 used data types for insect analysis is image data. To develop an image-based
 system for insect analysis, we can utilize existing work in general
 image analysis methods.
@@ -325,7 +325,7 @@ Lim et al. \cite{lim_performance_2017} apply a CNN-based algorithm for insect
 classification. Lim et al. \cite{lim_performance_2017} classify a subset of
 insect species and families based on the classes available in the ImageNet
 dataset. ImageNet is a widely used dataset of images labeled by experts with
-millions of images and thousands of categories \cite{deng_imagenet_2009}. In the
+millions of images and thousands of categories~\cite{deng_imagenet_2009}. In the
 ImageNet dataset, there are some categories that specify the class of the insect
 on a species level, e.g. \textit{monarch butterfly} and \textit{ringlet
     butterfly} as well as some categories that specify the class of the insect on a
@@ -364,7 +364,7 @@ team was given a training set of photos to identify from the genus
 \textit{Polyrhachis}. The sculpture identification protocol describes the two
 primary categories: rough and smooth.
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.7\textwidth]{assets/images/smooth_full_collage.png}
     \caption{Examples of smooth cuticle texture ant images in the dataset after
@@ -372,7 +372,7 @@ primary categories: rough and smooth.
     \label{fig:smooth-cuticle-texture}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.7\textwidth]{assets/images/rough_full_collage.png}
     \caption{Examples of rough cuticle texture ant images in the dataset after
@@ -557,6 +557,14 @@ torchvision\footnote{\url{https://pytorch.org/vision}} library. DRP model code
 was tweaked from the original author's uploaded code on
 GitHub\footnote{\url{https://github.com/maoshangbo/DRP-Texture-Recognition}}.
 
+The results show that the fine-tuned ResNet models outperform the VGG and
+randomly initialized ResNet models on the task of ant head image classification.
+The DRP models perform better than the the general deep learning models VGG and
+ResNet on the task of ant head image classification. The fine-tuned DRP
+single-layer model with auxiliary classifier performed the best with an average
+F1 score of 0.92. We further analyze the separation learned by both ResNet101
+models in the following section.
+
 % \subsection{Experimental results}
 
 We share the results on each algorithm specified in Section 4. Both the K-means
@@ -569,19 +577,14 @@ preferable metric to the accuracy.
 \begin{table}[h]
     \centering
     \caption{Experimental results of different algorithms}
+    \small
     \input{assets/results.tex}
     \label{tab:results}
 \end{table}
 
-\FloatBarrier
+%\FloatBarrier
 
-The results show that the fine-tuned ResNet models outperform the VGG and
-randomly initialized ResNet models on the task of ant head image classification.
-The DRP models perform better than the the general deep learning models VGG and
-ResNet on the task of ant head image classification. The fine-tuned DRP
-single-layer model with auxiliary classifier performed the best with an average
-F1 score of 0.92. We further analyze the separation learned by both ResNet101
-models in the following section.
+
 
 % \colorbox{green}{(TODO: DRP is best performing model, it should be included in
 %     visualization.)}
@@ -590,7 +593,7 @@ models in the following section.
 
 % \subsection{t-SNE Visualization}
 
-\begin{figure}[h]
+\begin{figure}[h!]
     \centering
     \begin{subfigure}{.45\textwidth}
         \includegraphics[width=1\linewidth]{thesis_assets/plots/resnet101_gt_tsne.png}
@@ -616,7 +619,7 @@ the visual results of the t-SNE visualization, we can see that the fine-tuned
 model learned a stronger separation of the two classes, which reinforces the
 results that the fine-tuned model received a higher average accuracy.
 
-\begin{figure}[h]
+\begin{figure}[h!]
     \centering
     \begin{subfigure}{.45\textwidth}
         \includegraphics[width=1\linewidth]{thesis_assets/plots/fresnet101_gt_tsne.png}
@@ -767,46 +770,46 @@ model confidence to examine further.
 \begin{figure}
     \centering
     \begin{subfigure}{\segmentedsubwidth}
-        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/r103.png}
+        \includegraphics[width=1\linewidth]{figs/r103.png}
         \caption*{Rough texture}
     \end{subfigure}
     \begin{subfigure}{\segmentedsubwidth}
-        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/r111.png}
+        \includegraphics[width=1\linewidth]{figs/r111.png}
         \caption*{Rough texture}
     \end{subfigure}
     \begin{subfigure}{\segmentedsubwidth}
-        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/s105.png}
+        \includegraphics[width=1\linewidth]{figs/s105.png}
         \caption*{Smooth texture}
     \end{subfigure}
     \begin{subfigure}{\segmentedsubwidth}
-        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/s107.png}
+        \includegraphics[width=1\linewidth]{figs/s107.png}
         \caption*{Smooth texture}
     \end{subfigure}
 
     \begin{subfigure}{\segmentedsubwidth}
-        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/15/r103.png}
+        \includegraphics[width=1\linewidth]{figs/15/r103.png}
     \end{subfigure}
     \begin{subfigure}{\segmentedsubwidth}
-        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/15/r111.png}
+        \includegraphics[width=1\linewidth]{figs/15/r111.png}
     \end{subfigure}
     \begin{subfigure}{\segmentedsubwidth}
-        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/15/s105.png}
+        \includegraphics[width=1\linewidth]{figs/15/s105.png}
     \end{subfigure}
     \begin{subfigure}{\segmentedsubwidth}
-        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/15/s107.png}
+        \includegraphics[width=1\linewidth]{figs/15/s107.png}
     \end{subfigure}
 
     \begin{subfigure}{\segmentedsubwidth}
-        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/19/r103.png}
+        \includegraphics[width=1\linewidth]{figs/19/r103.png}
     \end{subfigure}
     \begin{subfigure}{\segmentedsubwidth}
-        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/19/r111.png}
+        \includegraphics[width=1\linewidth]{figs/19/r111.png}
     \end{subfigure}
     \begin{subfigure}{\segmentedsubwidth}
-        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/19/s105.png}
+        \includegraphics[width=1\linewidth]{figs/19/s105.png}
     \end{subfigure}
     \begin{subfigure}{\segmentedsubwidth}
-        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/19/s107.png}
+        \includegraphics[width=1\linewidth]{figs/19/s107.png}
     \end{subfigure}
     \caption{Raw images are shown with corresponding segmented outputs from
         K-views algorithm. The second row shows the results of using size of 15
@@ -823,12 +826,16 @@ patches for rough, and 493 patches for smooth are used with patch sizes of 15
 $\times$ 15 and 19 $\times$ 19. Hence, the three classes are utilized in the
 clustering. These patches are extracted from two rough and two smooth images
 with sizes of 608 $\times$ 608. The K-views algorithm converges early although
-we set the maximum number of iterations to be 1000. These experimental results
-are preliminary due to the minimal number of source images used and future work
-will explore a more expansive approach to the problem.
+we set the maximum number of iterations to be 1000. In order to classify an
+image with K-views, the input image is split into patches. Then, each patch is
+assigned to a cluster based on the distance to the cluster. If there are more
+`smooth' patches, than `rough' patches, then the image will be classified as
+rough. These experimental results are preliminary due to the minimal number of
+source images used and future work will explore a more expansive approach to the
+problem.
 
-\FloatBarrier
-\section{Conclusion}
+
+\section{Conclusions}
 We have shown in this work that a deep learning approach and classical image
 texture analysis methods can be used to automatically categorize ants based on
 their cuticle texture, therefore supporting research on the evaluation of the
@@ -842,6 +849,9 @@ texture analysis had an F1 score of 92\% in our experiments. In future work, we
 will continue to explore texture classes present in the dataset which are not
 captured by the binary class system. We will also investigate application of
 texture-based deep maching learning in image texture analysis.
+
+\section*{Conflict of interest}
+All authors declare no conflicts of interest in this paper.
 
 \bibliographystyle{AIMS}
 \bibliography{main.bib,article.bib}
