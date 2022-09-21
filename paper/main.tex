@@ -823,17 +823,12 @@ model confidence to examine further.
 \FloatBarrier Some classified results from the K-views are shown in Figure
 \ref{fig:kviews_segmented}. A training set of 550 patches for background, 455
 patches for rough, and 493 patches for smooth are used with patch sizes of 15
-$\times$ 15 and 19 $\times$ 19. Hence, the three classes are utilized in the
-clustering. These patches are extracted from two rough and two smooth images
-with sizes of 608 $\times$ 608. The K-views algorithm converges early although
-we set the maximum number of iterations to be 1000. In order to classify an
-image with K-views, the input image is split into patches. Then, each patch is
-assigned to a cluster based on the distance to the cluster. If there are more
-`smooth' patches, than `rough' patches, then the image will be classified as
-rough. These experimental results are preliminary due to the minimal number of
-source images used and future work will explore a more expansive approach to the
+$\times$ 15 and 19 $\times$ 19. These patches are extracted from two rough and
+two smooth images with sizes of 608 $\times$ 608. The K-views algorithm
+converges early although we set the maximum number of iterations to be 1000.
+These experimental results are preliminary due to the minimal number of source
+images used and future work will explore a more expansive approach to the
 problem.
-
 
 \section{Conclusions}
 We have shown in this work that a deep learning approach and classical image
