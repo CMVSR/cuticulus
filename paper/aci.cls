@@ -18,7 +18,7 @@
 \RequirePackage{ifthen,calc}
 \RequirePackage{amsfonts,amssymb,amsmath,amsthm}
 \RequirePackage[colorlinks,linkcolor=black,citecolor=black,urlcolor=black,breaklinks]{hyperref}
-\RequirePackage[a4paper,top=2.54cm,bottom=2.54cm,left=1.90cm,right=1.90cm,%
+\RequirePackage[a4paper,top=2.50cm,bottom=2.50cm,left=1.90cm,right=1.90cm,%
                 headsep=1em,includehead,includefoot]{geometry}
 \RequirePackage{float}
 \RequirePackage{indentfirst}
@@ -393,7 +393,7 @@
        Received: \Received \\
        Revised: \Revised \\
       Accepted: \Accepted \\
-      Published: \Published \\ [-2.7ex]
+      Published: \Published \\ [-3ex]
     \end{tabular}  \par
     \noindent\rule{\textwidth}{1mm}
 }}%
