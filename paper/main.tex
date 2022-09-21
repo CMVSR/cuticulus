@@ -459,27 +459,43 @@ textures that have basic local patterns repeated in a periodic manner. In
 contrast to the K-means, K-views looks at the neighboring pixels for providing
 the spatial relationship for classification.
 
-For the feasibility study in this ant image datasets, we tested the statistical
-clusterings methods and deep learning methods separately. Both K-means and
+For the feasibility study in these ant image datasets, we tested the statistical
+clustering methods and deep learning methods separately. Both K-means and
 K-views were used for statistical clustering methods. The experiments may
 indicate how well the statistical approach and deep learning networks will do in
-this type of textural images. In pre-processing the dataset for the statistical
-clustering methods, we apply the Gabor filter to transform the gray-scale ant
-image into four Gabor-filtered channels, subtract the gray-scale image from each
-channel, and take the absolute value of the resulting images. This
-pre-processing will highlight some of characteristic features in textures, such
-as edge-like in the image. This step is very useful in feeding the datasets to
-the K-views algorithms. The theta $\theta$ parameters in the Gabor filters used
-are multiples of $\pi/4$ radians starting from $0$ to $\pi$ radians. The Gabor
-filter lambda $\lambda$ parameter is equal to $\pi$. In order to classify an
-image with K-views or K-means we count the number of pixels assigned to each
-cluster.
+this type of textural images. A pre-processing step of the dataset for the
+statistical clustering methods is shown below. This pre-processing will
+highlight some of characteristic features in textures, such as edge-like in the
+image. This step is very useful in feeding the datasets to the K-views
+algorithms. In order to classify an image with K-views or K-means in which we
+count the number of pixels assigned to each cluster. A brief procedure for
+K-views experiments is given below for training and classification.
+\begin{description}
+    \item[Step 1:] Pre-processing the dataset: apply the Gabor filter to
+          transform the gray-scale ant image into four Gabor-filtered channels,
+          subtract the gray-scale image from each channel, and take the absolute
+          value of the resulting images. The theta θ parameters in the Gabor
+          filters used are multiples of π/4 radians starting from 0 to π
+          radians. The Gabor filter lambda λ parameter is equal to π.
 
-In our experiments, we use $k=3$ clusters; one for background, and the other two
-as rough and smooth. To determine if an image is rough or smooth, we choose the
-cluster with the majority number of pixels. The number of pixels assigned to the
-background cluster are ignored for classification.
+    \item[Step 2:] Initialize k = 3 clusters; one for background, and the other
+          two as rough and smooth.
 
+    \item[Step 3:] Extract patches for each cluster for the clustering.
+
+    \item[Step 4:] Calculate the mean of each cluster once the training
+          converges.
+
+    \item[Step 5:] Use the mean of the cluster for the classification. To
+          determine if an image is rough or smooth, we choose the cluster with
+          the majority number of pixels. The number of pixels assigned to the
+          background cluster are ignored for classification.
+\end{description}
+
+\noindent Steps 2 to 4 are for training and step 5 is for the classification.
+For the K-means experiments, it will be the same as the K-views except no
+patches are used.
+\newline
 % \subsection{Deep learning models used for the experiments}
 
 The first deep learning model used in our experiment is \textit{visual geometry
