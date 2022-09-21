@@ -457,8 +457,7 @@ which uses characteristic views for image texture representation
 \cite{hung_use_2002}. The K-views algorithm is suitable for classifying image
 textures that have basic local patterns repeated in a periodic manner. In
 contrast to the K-means, K-views looks at the neighboring pixels for providing
-the spatial relationship for classification.  Several variations of the basic
-K-views model have been proposed \cite{yang_image_2003, lan_improved_2010}.
+the spatial relationship for classification.
 
 For the feasibility study in this ant image datasets, we tested the statistical
 clusterings methods and deep learning methods separately. Both K-means and
@@ -472,7 +471,14 @@ pre-processing will highlight some of characteristic features in textures, such
 as edge-like in the image. This step is very useful in feeding the datasets to
 the K-views algorithms. The theta $\theta$ parameters in the Gabor filters used
 are multiples of $\pi/4$ radians starting from $0$ to $\pi$ radians. The Gabor
-filter lambda $\lambda$ parameter is equal to $\pi$.
+filter lambda $\lambda$ parameter is equal to $\pi$. In order to classify an
+image with K-views or K-means we count the number of pixels assigned to each
+cluster.
+
+In our experiments, we use $k=3$ clusters; one for background, and the other two
+as rough and smooth. To determine if an image is rough or smooth, we choose the
+cluster with the majority number of pixels. The number of pixels assigned to the
+background cluster are ignored for classification.
 
 % \subsection{Deep learning models used for the experiments}
 
@@ -583,13 +589,6 @@ single-layer model with auxiliary classifier performed the best with an average
 F1 score of 0.92. We further analyze the separation learned by both ResNet101
 models in the following section.
 
-% \colorbox{green}{(TODO: DRP is best performing model, it should be included in
-%     visualization.)}
-
-% \subsection{Clustering segmentation}
-
-% \subsection{t-SNE Visualization}
-
 \begin{figure}[h]
     \centering
     \begin{subfigure}{.45\textwidth}
@@ -670,43 +669,43 @@ model confidence to examine further.
 \begin{figure}
     \centering
     \begin{subfigure}{\subwidth}
-        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/correct_ideal/518.png}
         \caption*{Smooth texture}
+        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/correct_ideal/518.png}
         \label{fig:correct_ideal_518}
     \end{subfigure}
     \begin{subfigure}{\subwidth}
-        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/correct_ideal/808.png}
         \caption*{Smooth texture}
+        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/correct_ideal/808.png}
         \label{fig:correct_ideal_808}
     \end{subfigure}
     \begin{subfigure}{\subwidth}
-        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/correct_ideal/842.png}
         \caption*{Rough texture}
+        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/correct_ideal/842.png}
         \label{fig:correct_ideal_842}
     \end{subfigure}
     \begin{subfigure}{\subwidth}
-        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/correct_ideal/1091.png}
         \caption*{Rough texture}
+        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/correct_ideal/1091.png}
         \label{fig:correct_ideal_1091}
     \end{subfigure}
     \begin{subfigure}{\subwidth}
-        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/correct_nonideal/346.png}
         \caption*{Rough texture}
+        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/correct_nonideal/346.png}
         \label{fig:correct_nonideal_346}
     \end{subfigure}
     \begin{subfigure}{\subwidth}
-        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/correct_nonideal/1554.png}
         \caption*{Rough texture}
+        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/correct_nonideal/1554.png}
         \label{fig:correct_nonideal_1554}
     \end{subfigure}
     \begin{subfigure}{\subwidth}
-        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/correct_nonideal/1694.png}
         \caption*{Rough texture}
+        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/correct_nonideal/1694.png}
         \label{fig:correct_nonideal_1694}
     \end{subfigure}
     \begin{subfigure}{\subwidth}
-        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/correct_nonideal/388.png}
         \caption*{Smooth texture}
+        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/correct_nonideal/388.png}
         \label{fig:correct_nonideal_388}
     \end{subfigure}
     \caption{GradCAM visualization for correctly classified images from
@@ -718,43 +717,43 @@ model confidence to examine further.
 \begin{figure}
     \centering
     \begin{subfigure}{\subwidth}
-        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/incorrect_ideal/84.png}
         \caption*{Rough texture}
+        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/incorrect_ideal/84.png}
         \label{fig:incorrect_ideal_84}
     \end{subfigure}
     \begin{subfigure}{\subwidth}
-        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/incorrect_ideal/86.png}
         \caption*{Smooth texture}
+        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/incorrect_ideal/86.png}
         \label{fig:incorrect_ideal_86}
     \end{subfigure}
     \begin{subfigure}{\subwidth}
-        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/incorrect_ideal/177.png}
         \caption*{Smooth texture}
+        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/incorrect_ideal/177.png}
         \label{fig:incorrect_ideal_177}
     \end{subfigure}
     \begin{subfigure}{\subwidth}
-        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/incorrect_ideal/197.png}
         \caption*{Smooth texture}
+        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/incorrect_ideal/197.png}
         \label{fig:incorrect_ideal_197}
     \end{subfigure}
     \begin{subfigure}{\subwidth}
-        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/incorrect_nonideal/1.png}
         \caption*{Rough texture}
+        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/incorrect_nonideal/1.png}
         \label{fig:incorrect_nonideal_1}
     \end{subfigure}
     \begin{subfigure}{\subwidth}
-        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/incorrect_nonideal/22.png}
         \caption*{Rough texture}
+        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/incorrect_nonideal/22.png}
         \label{fig:incorrect_nonideal_22}
     \end{subfigure}
     \begin{subfigure}{\subwidth}
-        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/incorrect_nonideal/61.png}
         \caption*{Rough texture}
+        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/incorrect_nonideal/61.png}
         \label{fig:incorrect_nonideal_61}
     \end{subfigure}
     \begin{subfigure}{\subwidth}
-        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/incorrect_nonideal/204.png}
         \caption*{Rough texture}
+        \includegraphics[width=1\linewidth]{thesis_assets/gradcam/incorrect_nonideal/204.png}
         \label{fig:incorrect_nonideal_204}
     \end{subfigure}
     \caption{GradCAM visualization for incorrectly classified images from
@@ -767,20 +766,20 @@ model confidence to examine further.
 \begin{figure}
     \centering
     \begin{subfigure}{\segmentedsubwidth}
+        \caption*{Rough texture}
         \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/r103.png}
-        \caption*{Rough texture}
     \end{subfigure}
     \begin{subfigure}{\segmentedsubwidth}
+        \caption*{Rough texture}
         \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/r111.png}
-        \caption*{Rough texture}
     \end{subfigure}
     \begin{subfigure}{\segmentedsubwidth}
+        \caption*{Smooth texture}
         \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/s105.png}
-        \caption*{Smooth texture}
     \end{subfigure}
     \begin{subfigure}{\segmentedsubwidth}
-        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/s107.png}
         \caption*{Smooth texture}
+        \includegraphics[width=1\linewidth]{/home/ngardn10/projects/cuticulus/paper/assets/images/kviews/s107.png}
     \end{subfigure}
 
     \begin{subfigure}{\segmentedsubwidth}
@@ -820,12 +819,12 @@ model confidence to examine further.
 \FloatBarrier Some classified results from the K-views are shown in Figure
 \ref{fig:kviews_segmented}. A training set of 550 patches for background, 455
 patches for rough, and 493 patches for smooth are used with patch sizes of 15
-$\times$ 15 and 19 $\times$ 19. Hence, the three classes are utilized in the
-clustering. These patches are extracted from two rough and two smooth images
-with sizes of 608 $\times$ 608. The K-views algorithm converges early although
-we set the maximum number of iterations to be 1000. These experimental results
-are preliminary due to the minimal number of source images used and future work
-will explore a more expansive approach to the problem.
+$\times$ 15 and 19 $\times$ 19. These patches are extracted from two rough and
+two smooth images with sizes of 608 $\times$ 608. The K-views algorithm
+converges early although we set the maximum number of iterations to be 1000.
+These experimental results are preliminary due to the minimal number of source
+images used and future work will explore a more expansive approach to the
+problem.
 
 \FloatBarrier
 \section{Conclusion}
