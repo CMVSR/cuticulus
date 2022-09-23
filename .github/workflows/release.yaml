@@ -47,12 +47,17 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Configure git
+        run: |
+          git config --local user.email "<>"
+          git config --local user.name "Github Actions"
+
       - name: Update pyproject.toml
         id: update_pyproject
         run: |
-          poetry version ${{ steps.tag_version.outputs.new_tag }}
-          git config --local user.email "<>"
-          git config --local user.name "<>"
+          TAG=${{ steps.tag_version.outputs.new_tag }}
+          # remove the v prefix
+          poetry version ${TAG:1}
           git add pyproject.toml
           git commit -m "[skip ci] Bump version to ${{ steps.tag_version.outputs.new_tag }}"
           git push
