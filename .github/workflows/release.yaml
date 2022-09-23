@@ -41,12 +41,13 @@ jobs:
       - name: Run application
         run: poetry run cuticulus
           
-      - name: Bump version and push tag
-        id: tag_version_first
+      - name: Bump version and push tag (dry-run)
+        id: tag_version_dry_run
         uses: mathieudutour/github-tag-action@v6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           tag_prefix: ''
+          dry_run: true
 
       - name: Configure git
         run: |
@@ -56,24 +57,24 @@ jobs:
       - name: Update pyproject.toml
         id: update_pyproject
         run: |
-          poetry version ${{ steps.tag_version_first.outputs.new_tag }}
+          poetry version ${{ steps.tag_version_dry_run.outputs.new_tag }}
           git add pyproject.toml
-          git commit -m "[skip ci] Bump version to ${{ steps.tag_version_first.outputs.new_tag }}"
+          git commit -m "[skip ci] Bump version to ${{ steps.tag_version_dry_run.outputs.new_tag }}"
           git push
           echo "::set-output name=sha::$(git rev-parse HEAD)"
 
-      - name: Rebuild tag (to include pyproject.toml)
-        id: tag_version_second
+      - name: Bump version and push tag (include pyproject.toml)
+        id: tag_version
         uses: mathieudutour/github-tag-action@v6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           commit_sha: ${{ steps.update_pyproject.outputs.sha }}
-          custom_tag: ${{ steps.tag_version_first.outputs.new_tag }}
+          custom_tag: ${{ steps.tag_version_dry_run.outputs.new_tag }}
           tag_prefix: ''
 
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:
           artifacts: "dataset.zip"
-          tag: ${{ steps.tag_version_second.outputs.new_tag }}
-          body: ${{ steps.tag_version_second.outputs.changelog }}
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
