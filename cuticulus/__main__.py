@@ -1,24 +1,36 @@
 """Main entrypoint."""
+import shutil
+from pathlib import Path
 
-from cuticulus.core.collages import build_collage
-from cuticulus.datasets import RoughSmoothSub
+from dotenv import load_dotenv
+
+from cuticulus.datasets import RoughSmoothFull
 
 
 def main():
     """Run main function."""
-    patch_size = (32, 32)
-    ds = RoughSmoothSub(
-        size=patch_size,
-        rebuild=True,
+    # load environment variables
+    if not Path('.env').exists():
+        shutil.copy('.env.example', '.env')
+    load_dotenv()
+
+    # build the dataset
+    image_size = (256, 256)
+    ds = RoughSmoothFull(
+        size=image_size,
     )
 
-    build_collage(
-        ds.labels,
-        ds.images,
-        name='rs',
-        rows=10,
-        cols=10,
-    )
+    # create output directory
+    output_path = Path('dataset')
+    if output_path.exists():
+        shutil.rmtree(output_path)
+    output_path.mkdir(exist_ok=True)
+    shutil.copytree(ds.dir_path, output_path / ds.dir_path.name)
+
+    # create output zip file
+    if Path('{0}.zip').exists():
+        shutil.rmtree(Path('{0}.zip'))
+    shutil.make_archive(output_path, 'zip', output_path)
 
 
 if __name__ == '__main__':
