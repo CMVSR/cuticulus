@@ -3,11 +3,8 @@ import shutil
 from pathlib import Path
 
 from dotenv import load_dotenv
-from juliacall import Main as jl
 
 from cuticulus.datasets import RoughSmoothFull
-
-jl.seval('using Pkg; Pkg.instantiate(); Pkg.resolve()')
 
 
 def main():
