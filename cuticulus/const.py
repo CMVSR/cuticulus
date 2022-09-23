@@ -1,7 +1,7 @@
 """Global constants module."""
 
-GDRIVE_URL = 'https://drive.google.com'
-DATASET_URL = '{0}/uc?id=1xABlWE790uWmT0mMxbDjn9KZlNUB6Y57'.format(GDRIVE_URL)
+DATASET_URL = 'http://cuticulus-dataset.storage.googleapis.com/dataset.zip'
+DATASET_HASH = 'dd16dc2f12c25c830acbe57001f8cad5e9d57bd26283412f7469be93527e5b1f'  # noqa
 
 # dataset
 LABEL_COLS = ('Jp', 'Becca', 'Katy')

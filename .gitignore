@@ -1,7 +1,6 @@
 # custom
 .env
 .vscode
-.direnv
 dataset
 dataset/**/*
 dataset.zip
@@ -11,9 +10,6 @@ output
 output/**/*
 temp_*
 results
-
-# nix
-result
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
