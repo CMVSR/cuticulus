@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cuticulus"
-version = "0.0.2"
+version = "0.0.3"
 description = ""
 authors = ["Noah Gardner <ngngardner@gmail.com>"]
 license = "MIT"
