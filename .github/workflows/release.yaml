@@ -10,12 +10,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.0.2
+
+      - name: Cache Poetry cache
+        uses: actions/cache@v3.0.8
+        with:
+          path: ~/.cache/pypoetry
+          key: poetry-cache-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
+
+      - name: Cache Packages
+        uses: actions/cache@v3.0.8
+        with:
+          path: ~/.local
+          key: poetry-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
 
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4.1.0
         with:
-          python-version: 3.9
+          python-version: 3.10
 
       - name: Setup Poetry
         uses: Gr1N/setup-poetry@v7
@@ -23,17 +35,31 @@ jobs:
       - name: Install dependencies
         run: poetry install
 
+      - name: Import module
+        run: poetry run python -c "from cuticulus import datasets"
+
       - name: Run application
         run: poetry run cuticulus
+          
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.0
 
-      # - name: Bump version and push tag
-      #   id: tag_version
-      #   uses: mathieudutour/github-tag-action@v6.0
+      - name: Update pyproject.toml
+        id: update_pyproject
+        run: |
+          poetry version ${{ steps.tag_version.outputs.new_tag }}
+          git config --local user.email "<>"
+          git config --local user.name "<>"
+          git add pyproject.toml
+          git commit -m "[skip ci] Bump version to ${{ steps.tag_version.outputs.new_tag }}"
+          git push
+          echo "::set-output name=sha::$(git rev-parse HEAD)"
 
-      # - name: Create a GitHub release
-      #   uses: ncipollo/release-action@v1
-      #   with:
-      #     tag: ${{ steps.tag_version.outputs.new_tag }}
-      #     name: Release ${{ steps.tag_version.outputs.new_tag }}
-      #     body: ${{ steps.tag_version.outputs.changelog }}
-      #     artifacts: "dataset.zip"
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "dataset.zip"
+          commit: ${{ steps.update_pyproject.outputs.sha }}
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
